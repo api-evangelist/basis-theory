@@ -1,0 +1,377 @@
+{
+  "info": {
+    "name": "Basis Theory API",
+    "description": "PCI Level 1 compliant tokenization and data vault platform. Tokens, Tokenize/Detokenize, Applications, Proxy, Reactors, 3D Secure, Tenants, Logs, and Webhooks. Authenticate every request with the BT-API-KEY header.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      { "key": "key", "value": "BT-API-KEY", "type": "string" },
+      { "key": "value", "value": "{{BT_API_KEY}}", "type": "string" },
+      { "key": "in", "value": "header", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://api.basistheory.com", "type": "string" },
+    { "key": "BT_API_KEY", "value": "", "type": "string" },
+    { "key": "tokenId", "value": "", "type": "string" },
+    { "key": "applicationId", "value": "", "type": "string" },
+    { "key": "proxyId", "value": "", "type": "string" },
+    { "key": "reactorId", "value": "", "type": "string" },
+    { "key": "sessionId", "value": "", "type": "string" },
+    { "key": "webhookId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Tokens",
+      "item": [
+        {
+          "name": "Create Token",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/tokens", "host": ["{{baseUrl}}"], "path": ["tokens"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"card\",\n  \"data\": {\n    \"number\": \"4242424242424242\",\n    \"expiration_month\": 12,\n    \"expiration_year\": 2030,\n    \"cvc\": \"123\"\n  },\n  \"metadata\": { \"customer_id\": \"abc123\" }\n}"
+            }
+          }
+        },
+        {
+          "name": "List Tokens",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v2/tokens?size=20", "host": ["{{baseUrl}}"], "path": ["v2", "tokens"], "query": [ { "key": "size", "value": "20" } ] }
+          }
+        },
+        {
+          "name": "Get Token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/tokens/{{tokenId}}", "host": ["{{baseUrl}}"], "path": ["tokens", "{{tokenId}}"] }
+          }
+        },
+        {
+          "name": "Update Token",
+          "request": {
+            "method": "PATCH",
+            "header": [ { "key": "Content-Type", "value": "application/merge-patch+json" } ],
+            "url": { "raw": "{{baseUrl}}/tokens/{{tokenId}}", "host": ["{{baseUrl}}"], "path": ["tokens", "{{tokenId}}"] },
+            "body": { "mode": "raw", "raw": "{\n  \"metadata\": { \"status\": \"verified\" }\n}" }
+          }
+        },
+        {
+          "name": "Delete Token",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/tokens/{{tokenId}}", "host": ["{{baseUrl}}"], "path": ["tokens", "{{tokenId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tokenize / Detokenize",
+      "item": [
+        {
+          "name": "Tokenize",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/tokens/tokenize", "host": ["{{baseUrl}}"], "path": ["tokens", "tokenize"] },
+            "body": { "mode": "raw", "raw": "{\n  \"card\": { \"type\": \"card\", \"data\": { \"number\": \"4242424242424242\", \"expiration_month\": 12, \"expiration_year\": 2030 } },\n  \"ssn\": { \"type\": \"social_security_number\", \"data\": \"123-45-6789\" }\n}" }
+          }
+        },
+        {
+          "name": "Detokenize",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/tokens/detokenize", "host": ["{{baseUrl}}"], "path": ["tokens", "detokenize"] },
+            "body": { "mode": "raw", "raw": "{\n  \"card_number\": \"{{ token: <tokenId> | json: '$.number' }}\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Token Intents",
+      "item": [
+        {
+          "name": "Create Token Intent",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/token-intents", "host": ["{{baseUrl}}"], "path": ["token-intents"] },
+            "body": { "mode": "raw", "raw": "{\n  \"type\": \"card\",\n  \"data\": { \"number\": \"4242424242424242\", \"expiration_month\": 12, \"expiration_year\": 2030, \"cvc\": \"123\" }\n}" }
+          }
+        },
+        {
+          "name": "Get Token Intent",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/token-intents/:id", "host": ["{{baseUrl}}"], "path": ["token-intents", ":id"], "variable": [ { "key": "id", "value": "" } ] }
+          }
+        },
+        {
+          "name": "Delete Token Intent",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/token-intents/:id", "host": ["{{baseUrl}}"], "path": ["token-intents", ":id"], "variable": [ { "key": "id", "value": "" } ] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Applications",
+      "item": [
+        {
+          "name": "Create Application",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/applications", "host": ["{{baseUrl}}"], "path": ["applications"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Backend Service\",\n  \"type\": \"private\",\n  \"permissions\": [ \"token:create\", \"token:read\", \"token:use\" ]\n}" }
+          }
+        },
+        {
+          "name": "List Applications",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/applications", "host": ["{{baseUrl}}"], "path": ["applications"] } }
+        },
+        {
+          "name": "Get Application",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/applications/{{applicationId}}", "host": ["{{baseUrl}}"], "path": ["applications", "{{applicationId}}"] } }
+        },
+        {
+          "name": "Get Application By Key",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/applications/key", "host": ["{{baseUrl}}"], "path": ["applications", "key"] } }
+        },
+        {
+          "name": "Update Application",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/applications/{{applicationId}}", "host": ["{{baseUrl}}"], "path": ["applications", "{{applicationId}}"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Backend Service\",\n  \"permissions\": [ \"token:create\", \"token:read\" ]\n}" }
+          }
+        },
+        {
+          "name": "Delete Application",
+          "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/applications/{{applicationId}}", "host": ["{{baseUrl}}"], "path": ["applications", "{{applicationId}}"] } }
+        }
+      ]
+    },
+    {
+      "name": "Proxy",
+      "item": [
+        {
+          "name": "Create Proxy",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/proxies", "host": ["{{baseUrl}}"], "path": ["proxies"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Process Payment Proxy\",\n  \"destination_url\": \"https://api.example.com/charges\",\n  \"require_auth\": true\n}" }
+          }
+        },
+        {
+          "name": "List Proxies",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/proxies", "host": ["{{baseUrl}}"], "path": ["proxies"] } }
+        },
+        {
+          "name": "Get Proxy",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/proxies/{{proxyId}}", "host": ["{{baseUrl}}"], "path": ["proxies", "{{proxyId}}"] } }
+        },
+        {
+          "name": "Update Proxy",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/proxies/{{proxyId}}", "host": ["{{baseUrl}}"], "path": ["proxies", "{{proxyId}}"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Process Payment Proxy\",\n  \"destination_url\": \"https://api.example.com/charges\",\n  \"require_auth\": true\n}" }
+          }
+        },
+        {
+          "name": "Patch Proxy",
+          "request": {
+            "method": "PATCH",
+            "header": [ { "key": "Content-Type", "value": "application/merge-patch+json" } ],
+            "url": { "raw": "{{baseUrl}}/proxies/{{proxyId}}", "host": ["{{baseUrl}}"], "path": ["proxies", "{{proxyId}}"] },
+            "body": { "mode": "raw", "raw": "{\n  \"require_auth\": false\n}" }
+          }
+        },
+        {
+          "name": "Delete Proxy",
+          "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/proxies/{{proxyId}}", "host": ["{{baseUrl}}"], "path": ["proxies", "{{proxyId}}"] } }
+        },
+        {
+          "name": "Invoke Ephemeral Proxy (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "BT-PROXY-URL", "value": "https://api.example.com/charges" }
+            ],
+            "url": { "raw": "{{baseUrl}}/proxy", "host": ["{{baseUrl}}"], "path": ["proxy"] },
+            "body": { "mode": "raw", "raw": "{\n  \"card_number\": \"{{ token: <tokenId> | json: '$.number' }}\"\n}" }
+          }
+        },
+        {
+          "name": "Invoke Pre-Configured Proxy (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "BT-PROXY-KEY", "value": "<proxy-key>" }
+            ],
+            "url": { "raw": "{{baseUrl}}/proxy", "host": ["{{baseUrl}}"], "path": ["proxy"] },
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 1000\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reactors",
+      "item": [
+        {
+          "name": "Create Reactor",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/reactors", "host": ["{{baseUrl}}"], "path": ["reactors"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Charge Card Reactor\",\n  \"code\": \"module.exports = async function (req) { return { raw: { ok: true } }; };\",\n  \"configuration\": { \"API_KEY\": \"sk_test_123\" }\n}" }
+          }
+        },
+        {
+          "name": "List Reactors",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/reactors", "host": ["{{baseUrl}}"], "path": ["reactors"] } }
+        },
+        {
+          "name": "Get Reactor",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/reactors/{{reactorId}}", "host": ["{{baseUrl}}"], "path": ["reactors", "{{reactorId}}"] } }
+        },
+        {
+          "name": "Update Reactor",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/reactors/{{reactorId}}", "host": ["{{baseUrl}}"], "path": ["reactors", "{{reactorId}}"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Charge Card Reactor\",\n  \"code\": \"module.exports = async function (req) { return { raw: { ok: true } }; };\"\n}" }
+          }
+        },
+        {
+          "name": "Delete Reactor",
+          "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/reactors/{{reactorId}}", "host": ["{{baseUrl}}"], "path": ["reactors", "{{reactorId}}"] } }
+        },
+        {
+          "name": "Invoke Reactor",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/reactors/{{reactorId}}/react", "host": ["{{baseUrl}}"], "path": ["reactors", "{{reactorId}}", "react"] },
+            "body": { "mode": "raw", "raw": "{\n  \"args\": {\n    \"card\": \"{{ token: <tokenId> }}\"\n  }\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3D Secure",
+      "item": [
+        {
+          "name": "Create 3DS Session",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/3ds/sessions", "host": ["{{baseUrl}}"], "path": ["3ds", "sessions"] },
+            "body": { "mode": "raw", "raw": "{\n  \"token_id\": \"{{tokenId}}\",\n  \"type\": \"customer\",\n  \"device\": \"browser\"\n}" }
+          }
+        },
+        {
+          "name": "Get 3DS Session",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/3ds/sessions/{{sessionId}}", "host": ["{{baseUrl}}"], "path": ["3ds", "sessions", "{{sessionId}}"] } }
+        },
+        {
+          "name": "Authenticate 3DS Session",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/3ds/sessions/{{sessionId}}/authenticate", "host": ["{{baseUrl}}"], "path": ["3ds", "sessions", "{{sessionId}}", "authenticate"] },
+            "body": { "mode": "raw", "raw": "{\n  \"authentication_category\": \"payment\",\n  \"authentication_type\": \"payment-transaction\",\n  \"purchase_info\": { \"amount\": \"1000\", \"currency\": \"840\" }\n}" }
+          }
+        },
+        {
+          "name": "Get 3DS Challenge Result",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/3ds/sessions/{{sessionId}}/challenge-result", "host": ["{{baseUrl}}"], "path": ["3ds", "sessions", "{{sessionId}}", "challenge-result"] } }
+        }
+      ]
+    },
+    {
+      "name": "Tenants & Logs",
+      "item": [
+        {
+          "name": "Get Tenant",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/tenants/self", "host": ["{{baseUrl}}"], "path": ["tenants", "self"] } }
+        },
+        {
+          "name": "Update Tenant",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/tenants/self", "host": ["{{baseUrl}}"], "path": ["tenants", "self"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"My Tenant\",\n  \"settings\": { \"deduplicate_tokens\": true }\n}" }
+          }
+        },
+        {
+          "name": "Get Tenant Usage Report",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/tenants/self/reports/usage", "host": ["{{baseUrl}}"], "path": ["tenants", "self", "reports", "usage"] } }
+        },
+        {
+          "name": "List Logs",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/logs?size=20", "host": ["{{baseUrl}}"], "path": ["logs"], "query": [ { "key": "size", "value": "20" } ] } }
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "Create Webhook",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/webhooks", "host": ["{{baseUrl}}"], "path": ["webhooks"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Token Events\",\n  \"url\": \"https://example.com/webhooks/basis-theory\",\n  \"notify_email\": \"ops@example.com\",\n  \"events\": [ \"token.created\", \"token.deleted\" ]\n}" }
+          }
+        },
+        {
+          "name": "List Webhooks",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/webhooks", "host": ["{{baseUrl}}"], "path": ["webhooks"] } }
+        },
+        {
+          "name": "Get Webhook",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/webhooks/{{webhookId}}", "host": ["{{baseUrl}}"], "path": ["webhooks", "{{webhookId}}"] } }
+        },
+        {
+          "name": "Update Webhook",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/webhooks/{{webhookId}}", "host": ["{{baseUrl}}"], "path": ["webhooks", "{{webhookId}}"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Token Events\",\n  \"url\": \"https://example.com/webhooks/basis-theory\",\n  \"events\": [ \"token.created\" ]\n}" }
+          }
+        },
+        {
+          "name": "Delete Webhook",
+          "request": { "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/webhooks/{{webhookId}}", "host": ["{{baseUrl}}"], "path": ["webhooks", "{{webhookId}}"] } }
+        },
+        {
+          "name": "List Webhook Event Types",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/webhooks/event-types", "host": ["{{baseUrl}}"], "path": ["webhooks", "event-types"] } }
+        }
+      ]
+    }
+  ]
+}

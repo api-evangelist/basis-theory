@@ -1,0 +1,139 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Basis Theory
+providerId: basis-theory
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: true
+tags:
+- Tokenization
+- Data Vault
+- PCI Compliance
+- Payments
+- Security
+- Plans
+description: >-
+  Basis Theory publishes packaged plans plus usage. A free tier is available to
+  get started. The Starter plan is a flat monthly fee that bundles a
+  production-ready PCI Level 1 environment with an included allotment of
+  monthly active tokens, after which usage is metered. The Enterprise plan is
+  custom-quoted and adds PII/PHI compliance, unlimited monthly interactions per
+  token, agentic enrollments, custom log retention and payload sizing, uptime
+  guarantees, and white-glove support. A Scale tier is referenced between
+  Starter and Enterprise. Token, Proxy, Reactor, 3DS, and Webhook APIs are
+  included across paid plans; billing is anchored on monthly active tokens.
+notes: >-
+  Prices captured from the public basistheory.com/pricing page; the Scale tier
+  details and overage rates are not fully published and should be confirmed
+  with Basis Theory sales during reconciliation.
+sources:
+- https://basistheory.com/pricing
+- https://developers.basistheory.com/docs
+plans:
+- id: basis-theory-free
+  name: Free
+  type: free
+  description: >-
+    Free tier to get started building against the platform in a test
+    environment with no upfront commitment.
+  entries:
+  - label: Get Started Free
+    name: free
+    type: free
+    metric: tokens
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0
+    userMultiplied: false
+  elements:
+  - name: Tokens
+  - name: Tokenize / Detokenize
+  - name: Proxy
+  - name: Reactors
+- id: basis-theory-starter
+  name: Starter
+  type: flat
+  description: >-
+    Flat monthly fee bundling a production-ready PCI Level 1 environment with
+    an included allotment of monthly active tokens; additional usage is
+    metered.
+  entries:
+  - label: Starter Subscription
+    name: starter_subscription
+    type: flat
+    metric: subscription
+    limit: 1
+    timeFrame: month
+    geo: us
+    unit: 1
+    price: $995 per month
+    userMultiplied: false
+  - label: Included Monthly Active Tokens
+    name: included_monthly_active_tokens
+    type: included
+    metric: tokens
+    limit: 20000
+    timeFrame: month
+    geo: us
+    unit: 1
+    price: included in subscription
+    userMultiplied: false
+  elements:
+  - name: Production-ready PCI environment
+  - name: PCI Attestation of Compliance (AOC)
+  - name: 1MB payload limit
+  - name: 24 hours of logs
+  - name: US environment only
+- id: basis-theory-scale
+  name: Scale
+  type: tiered
+  description: >-
+    Mid-tier plan positioned between Starter and Enterprise; specific pricing
+    and limits are not fully published.
+  entries:
+  - label: Scale Subscription
+    name: scale_subscription
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: see Basis Theory pricing page / contact sales
+    userMultiplied: false
+  elements:
+  - name: Higher included monthly active tokens
+  - name: Expanded payload and log limits
+- id: basis-theory-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Custom-quoted plan adding PII/PHI compliance, unlimited monthly
+    interactions per token, agentic enrollments, custom log access and payload
+    sizing, uptime guarantees, white-label cName, dedicated IP, SSO/SAML, and
+    enterprise support. Contact Basis Theory sales.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: PII and PHI compliance options
+  - name: Unlimited monthly interactions per token
+  - name: Agentic enrollments
+  - name: Custom log access and payload sizing
+  - name: Uptime guarantees
+  - name: White-label cName, dedicated IP, SSO/SAML
+  - name: Enterprise support (onboarding, integration, P1)
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

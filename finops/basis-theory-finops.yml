@@ -1,0 +1,99 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Basis Theory
+providerId: basis-theory
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: true
+tags:
+- Tokenization
+- Data Vault
+- PCI Compliance
+- Payments
+- Security
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Basis Theory spend. Basis Theory bills a flat monthly
+  subscription that bundles a PCI Level 1 environment plus an included
+  allotment of monthly active tokens (MATs), with metered overage on active
+  tokens beyond the included amount. Enterprise agreements move to custom
+  contracts with unlimited monthly interactions per token. The primary cost
+  driver is the count of monthly active tokens; Proxy, Reactor, 3DS, and
+  Webhook usage are included within paid plans.
+notes: >-
+  Overage rates beyond included monthly active tokens and Scale-tier pricing
+  are not fully published; verify against a Basis Theory order form during
+  reconciliation.
+sources:
+- https://basistheory.com/pricing
+- https://developers.basistheory.com/docs
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Basis Theory
+serviceCategory: Security and Compliance
+billingModel:
+  pricingCategory: Subscription-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Purchase
+  - Usage
+  - Adjustment
+focusColumns:
+  ServiceName: Basis Theory Platform
+  ServiceCategory: Security and Compliance
+  ProviderName: Basis Theory
+  PublisherName: Basis Theory
+  InvoiceIssuerName: Basis Theory
+  BillingCurrency: USD
+  ChargeCategory: Purchase
+  PricingCategory: Subscription-Based
+meters:
+- name: subscription_fee
+  description: Flat monthly plan fee that bundles the PCI environment and included monthly active tokens.
+  unit: months
+  aggregation: sum
+  dimensions:
+  - tenant
+  - plan
+- name: monthly_active_tokens
+  description: Distinct tokens active in a billing month; the primary metered cost driver above the included allotment.
+  unit: tokens
+  aggregation: max
+  dimensions:
+  - tenant
+  - token_type
+- name: included_monthly_active_tokens
+  description: Monthly active tokens included in the plan at no additional charge.
+  unit: tokens
+  aggregation: max
+  dimensions:
+  - tenant
+  - plan
+- name: token_interactions
+  description: Read/use interactions per token; metered on Starter/Scale, unlimited on Enterprise.
+  unit: interactions
+  aggregation: sum
+  dimensions:
+  - tenant
+  - token
+principles:
+- name: Visibility
+  description: Pull the tenant usage report (GET /tenants/self/reports/usage) to track monthly active tokens against the plan allotment.
+- name: Allocation
+  description: Use containers, metadata, and per-application keys to attribute token spend to teams and workloads.
+- name: Optimization
+  description: Set token expirations and deduplication to reduce monthly active tokens; consolidate workloads under appropriate plans before overage applies.
+- name: Accountability
+  description: Assign owners per application key; review monthly active token burn against the included allotment each billing cycle.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,365 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Basis Theory API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "apikey": {
+        "key": "BT-API-KEY",
+        "value": "{{BT_API_KEY}}",
+        "in": "header"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Tokens", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a token", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/tokens",
+            "body": { "type": "json", "data": "{\"type\":\"card\",\"data\":{\"number\":\"4242424242424242\",\"expiration_month\":12,\"expiration_year\":2030,\"cvc\":\"123\"},\"metadata\":{\"customer_id\":\"abc123\"}}" }
+          },
+          "docs": "Tokenizes a single piece of sensitive data and stores it in the vault."
+        },
+        {
+          "info": { "name": "List tokens", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/v2/tokens?size=20" },
+          "docs": "Returns a cursor-paginated list of tokens for the tenant."
+        },
+        {
+          "info": { "name": "Get a token", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/tokens/{{tokenId}}" },
+          "docs": "Retrieves a specific token by id."
+        },
+        {
+          "info": { "name": "Update a token", "type": "http" },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.basistheory.com/tokens/{{tokenId}}",
+            "body": { "type": "json", "data": "{\"metadata\":{\"status\":\"verified\"}}" }
+          },
+          "docs": "Partially updates a token using JSON merge patch semantics."
+        },
+        {
+          "info": { "name": "Delete a token", "type": "http" },
+          "http": { "method": "DELETE", "url": "https://api.basistheory.com/tokens/{{tokenId}}" },
+          "docs": "Removes a token from the vault."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Tokenize / Detokenize", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Tokenize", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/tokens/tokenize",
+            "body": { "type": "json", "data": "{\"card\":{\"type\":\"card\",\"data\":{\"number\":\"4242424242424242\",\"expiration_month\":12,\"expiration_year\":2030}},\"ssn\":{\"type\":\"social_security_number\",\"data\":\"123-45-6789\"}}" }
+          },
+          "docs": "Batch tokenization of an arbitrary object graph."
+        },
+        {
+          "info": { "name": "Detokenize", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/tokens/detokenize",
+            "body": { "type": "json", "data": "{\"card_number\":\"{{ token: <tokenId> | json: '$.number' }}\"}" }
+          },
+          "docs": "Batch detokenization resolving expressions back to plaintext."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Token Intents", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a token intent", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/token-intents",
+            "body": { "type": "json", "data": "{\"type\":\"card\",\"data\":{\"number\":\"4242424242424242\",\"expiration_month\":12,\"expiration_year\":2030,\"cvc\":\"123\"}}" }
+          },
+          "docs": "Creates a short-lived token intent that captures sensitive data."
+        },
+        {
+          "info": { "name": "Get a token intent", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/token-intents/{{tokenIntentId}}" },
+          "docs": "Retrieves a token intent by id."
+        },
+        {
+          "info": { "name": "Delete a token intent", "type": "http" },
+          "http": { "method": "DELETE", "url": "https://api.basistheory.com/token-intents/{{tokenIntentId}}" },
+          "docs": "Deletes a token intent by id."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Applications", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create an application", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/applications",
+            "body": { "type": "json", "data": "{\"name\":\"Backend Service\",\"type\":\"private\",\"permissions\":[\"token:create\",\"token:read\",\"token:use\"]}" }
+          },
+          "docs": "Creates an application (API credential) with permissions and rules."
+        },
+        {
+          "info": { "name": "List applications", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/applications" },
+          "docs": "Lists applications for the tenant."
+        },
+        {
+          "info": { "name": "Get an application", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/applications/{{applicationId}}" },
+          "docs": "Retrieves an application by id."
+        },
+        {
+          "info": { "name": "Get application by key", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/applications/key" },
+          "docs": "Returns the application associated with the BT-API-KEY used on the request."
+        },
+        {
+          "info": { "name": "Update an application", "type": "http" },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.basistheory.com/applications/{{applicationId}}",
+            "body": { "type": "json", "data": "{\"name\":\"Backend Service\",\"permissions\":[\"token:create\",\"token:read\"]}" }
+          },
+          "docs": "Updates an application."
+        },
+        {
+          "info": { "name": "Delete an application", "type": "http" },
+          "http": { "method": "DELETE", "url": "https://api.basistheory.com/applications/{{applicationId}}" },
+          "docs": "Deletes an application."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Proxy", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a pre-configured proxy", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/proxies",
+            "body": { "type": "json", "data": "{\"name\":\"Process Payment Proxy\",\"destination_url\":\"https://api.example.com/charges\",\"require_auth\":true}" }
+          },
+          "docs": "Creates a pre-configured proxy."
+        },
+        {
+          "info": { "name": "List pre-configured proxies", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/proxies" },
+          "docs": "Lists pre-configured proxies."
+        },
+        {
+          "info": { "name": "Get a pre-configured proxy", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/proxies/{{proxyId}}" },
+          "docs": "Retrieves a pre-configured proxy by id."
+        },
+        {
+          "info": { "name": "Update a pre-configured proxy", "type": "http" },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.basistheory.com/proxies/{{proxyId}}",
+            "body": { "type": "json", "data": "{\"name\":\"Process Payment Proxy\",\"destination_url\":\"https://api.example.com/charges\",\"require_auth\":true}" }
+          },
+          "docs": "Replaces a pre-configured proxy."
+        },
+        {
+          "info": { "name": "Patch a pre-configured proxy", "type": "http" },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.basistheory.com/proxies/{{proxyId}}",
+            "body": { "type": "json", "data": "{\"require_auth\":false}" }
+          },
+          "docs": "Partially updates a pre-configured proxy."
+        },
+        {
+          "info": { "name": "Delete a pre-configured proxy", "type": "http" },
+          "http": { "method": "DELETE", "url": "https://api.basistheory.com/proxies/{{proxyId}}" },
+          "docs": "Deletes a pre-configured proxy."
+        },
+        {
+          "info": { "name": "Invoke ephemeral proxy (POST)", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/proxy",
+            "body": { "type": "json", "data": "{\"card_number\":\"{{ token: <tokenId> | json: '$.number' }}\"}" }
+          },
+          "docs": "Invokes the ephemeral proxy. Supply the BT-PROXY-URL header with the destination base URL."
+        },
+        {
+          "info": { "name": "Invoke pre-configured proxy (POST)", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/proxy",
+            "body": { "type": "json", "data": "{\"amount\":1000}" }
+          },
+          "docs": "Invokes a pre-configured proxy. Supply the BT-PROXY-KEY header with the proxy key."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Reactors", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a reactor", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/reactors",
+            "body": { "type": "json", "data": "{\"name\":\"Charge Card Reactor\",\"code\":\"module.exports = async function (req) { return { raw: { ok: true } }; };\",\"configuration\":{\"API_KEY\":\"sk_test_123\"}}" }
+          },
+          "docs": "Creates a serverless reactor function."
+        },
+        {
+          "info": { "name": "List reactors", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/reactors" },
+          "docs": "Lists reactors for the tenant."
+        },
+        {
+          "info": { "name": "Get a reactor", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/reactors/{{reactorId}}" },
+          "docs": "Retrieves a reactor by id."
+        },
+        {
+          "info": { "name": "Update a reactor", "type": "http" },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.basistheory.com/reactors/{{reactorId}}",
+            "body": { "type": "json", "data": "{\"name\":\"Charge Card Reactor\",\"code\":\"module.exports = async function (req) { return { raw: { ok: true } }; };\"}" }
+          },
+          "docs": "Replaces a reactor."
+        },
+        {
+          "info": { "name": "Delete a reactor", "type": "http" },
+          "http": { "method": "DELETE", "url": "https://api.basistheory.com/reactors/{{reactorId}}" },
+          "docs": "Deletes a reactor."
+        },
+        {
+          "info": { "name": "Invoke a reactor", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/reactors/{{reactorId}}/react",
+            "body": { "type": "json", "data": "{\"args\":{\"card\":\"{{ token: <tokenId> }}\"}}" }
+          },
+          "docs": "Invokes a reactor, detokenizing tokens referenced in args."
+        }
+      ]
+    },
+    {
+      "info": { "name": "3D Secure", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a 3DS session", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/3ds/sessions",
+            "body": { "type": "json", "data": "{\"token_id\":\"{{tokenId}}\",\"type\":\"customer\",\"device\":\"browser\"}" }
+          },
+          "docs": "Creates a 3D Secure session against a tokenized card."
+        },
+        {
+          "info": { "name": "Get a 3DS session", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/3ds/sessions/{{sessionId}}" },
+          "docs": "Retrieves a 3DS session by id."
+        },
+        {
+          "info": { "name": "Authenticate a 3DS session", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/3ds/sessions/{{sessionId}}/authenticate",
+            "body": { "type": "json", "data": "{\"authentication_category\":\"payment\",\"authentication_type\":\"payment-transaction\",\"purchase_info\":{\"amount\":\"1000\",\"currency\":\"840\"}}" }
+          },
+          "docs": "Runs frictionless or challenge authentication for the session."
+        },
+        {
+          "info": { "name": "Get a 3DS challenge result", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/3ds/sessions/{{sessionId}}/challenge-result" },
+          "docs": "Retrieves the challenge outcome for a session."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Tenants & Logs", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Get the current tenant", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/tenants/self" },
+          "docs": "Retrieves the current tenant."
+        },
+        {
+          "info": { "name": "Update the current tenant", "type": "http" },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.basistheory.com/tenants/self",
+            "body": { "type": "json", "data": "{\"name\":\"My Tenant\",\"settings\":{\"deduplicate_tokens\":true}}" }
+          },
+          "docs": "Updates the current tenant."
+        },
+        {
+          "info": { "name": "Get the tenant usage report", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/tenants/self/reports/usage" },
+          "docs": "Retrieves the tenant monthly active token usage report."
+        },
+        {
+          "info": { "name": "List logs", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/logs?size=20" },
+          "docs": "Lists audit log entries for the tenant."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Webhooks", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a webhook", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/webhooks",
+            "body": { "type": "json", "data": "{\"name\":\"Token Events\",\"url\":\"https://example.com/webhooks/basis-theory\",\"notify_email\":\"ops@example.com\",\"events\":[\"token.created\",\"token.deleted\"]}" }
+          },
+          "docs": "Registers a webhook URL and subscribes to event types."
+        },
+        {
+          "info": { "name": "List webhooks", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/webhooks" },
+          "docs": "Lists webhooks for the tenant."
+        },
+        {
+          "info": { "name": "Get a webhook", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/webhooks/{{webhookId}}" },
+          "docs": "Retrieves a webhook by id."
+        },
+        {
+          "info": { "name": "Update a webhook", "type": "http" },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.basistheory.com/webhooks/{{webhookId}}",
+            "body": { "type": "json", "data": "{\"name\":\"Token Events\",\"url\":\"https://example.com/webhooks/basis-theory\",\"events\":[\"token.created\"]}" }
+          },
+          "docs": "Updates a webhook subscription."
+        },
+        {
+          "info": { "name": "Delete a webhook", "type": "http" },
+          "http": { "method": "DELETE", "url": "https://api.basistheory.com/webhooks/{{webhookId}}" },
+          "docs": "Deletes a webhook subscription."
+        },
+        {
+          "info": { "name": "List webhook event types", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.basistheory.com/webhooks/event-types" },
+          "docs": "Lists the available webhook event types."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

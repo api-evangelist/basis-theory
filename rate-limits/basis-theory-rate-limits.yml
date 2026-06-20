@@ -1,0 +1,64 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Basis Theory
+providerId: basis-theory
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- Tokenization
+- Data Vault
+- PCI Compliance
+- Payments
+- Security
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Basis Theory applies per-tenant request rate limits and per-request
+  detokenization caps across its APIs, and returns HTTP 429 when limits are
+  exceeded. Documented hard caps include at most 20 tokens detokenized within a
+  single Proxy request and at most 100 tokens detokenized within a single
+  Reactor request. A tenant may register up to five webhook URLs. Numeric
+  requests-per-second limits are governed by plan and are not fully published;
+  those values are not reconciled in this artifact.
+notes: >-
+  Confirm per-plan request-per-second limits and any burst allowances with
+  Basis Theory during reconciliation; the per-request detokenization caps and
+  the five-webhook limit are documented in the developer docs.
+sources:
+- https://developers.basistheory.com/docs/api/proxies
+- https://developers.basistheory.com/docs/api/reactors
+- https://developers.basistheory.com/docs/api/webhooks/api
+responseCodes:
+  throttled: 429
+limits:
+- name: Proxy Detokenization Per Request
+  scope: request
+  metric: tokens
+  limit: 20
+  notes: At most 20 tokens may be detokenized within a single Proxy request.
+- name: Reactor Detokenization Per Request
+  scope: request
+  metric: tokens
+  limit: 100
+  notes: At most 100 tokens may be detokenized within a single Reactor request.
+- name: Webhook URLs Per Tenant
+  scope: tenant
+  metric: webhooks
+  limit: 5
+  notes: Each tenant may register up to five webhook URLs.
+- name: Requests Per Second
+  scope: tenant
+  metric: requests
+  limit: see provider documentation
+  notes: Per-tenant request rate limits are governed by plan; not publicly enumerated.
+policies:
+- name: Tiered Limits
+  description: Limits scale with plan; Enterprise agreements may raise or remove default caps.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor Retry-After on HTTP 429 responses.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

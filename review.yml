@@ -1,0 +1,114 @@
+aid: basis-theory
+name: Basis Theory
+review:
+  question: Does Basis Theory expose a documented public WebSocket API?
+  answer: false
+  date: '2026-06-20'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    Per API Evangelist scope, AsyncAPI is authored only for documented
+    event-driven transports (WebSocket, SSE, or message brokers). Basis
+    Theory delivers asynchronous notifications via HTTP webhooks - the
+    platform POSTs event payloads to tenant-registered URLs - which is a
+    server-to-client HTTP callback pattern, not a streaming transport. No
+    AsyncAPI document was created because no WebSocket or SSE surface is
+    documented. The webhook surface is modeled in the OpenAPI document as
+    REST management endpoints under /webhooks.
+findings:
+  summary: |
+    Basis Theory does not publish a documented public WebSocket API. The
+    platform is a PCI-compliant tokenization and data vault exposing REST
+    (HTTPS) endpoints under https://api.basistheory.com (and
+    https://api.test.basistheory.com for TEST tenants), authenticated with
+    the BT-API-KEY request header. Asynchronous behavior is delivered two
+    ways, neither of which is WebSocket: (1) outbound webhooks, where Basis
+    Theory POSTs event payloads to tenant-registered URLs (up to five per
+    tenant), managed via REST CRUD under /webhooks; and (2) asynchronous
+    Reactor invocation, which is still initiated over REST. No realtime,
+    bidirectional ws:// or wss:// endpoint is documented for tokens, proxy,
+    reactors, 3DS, or any other product surface.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.basistheory.com
+      documented: true
+    - protocol: Webhooks
+      scheme: https
+      note: Outbound HTTP callbacks POSTed by Basis Theory to tenant-registered URLs. Not WebSocket; not client-initiated streaming.
+      documented: true
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented in Basis Theory's API reference for any product as of the review date.
+  endpointsConfirmedRest:
+    - POST   https://api.basistheory.com/tokens
+    - GET    https://api.basistheory.com/v2/tokens
+    - GET    https://api.basistheory.com/tokens/{id}
+    - PATCH  https://api.basistheory.com/tokens/{id}
+    - DELETE https://api.basistheory.com/tokens/{id}
+    - POST   https://api.basistheory.com/tokens/tokenize
+    - POST   https://api.basistheory.com/tokens/detokenize
+    - POST   https://api.basistheory.com/token-intents
+    - GET    https://api.basistheory.com/token-intents/{id}
+    - DELETE https://api.basistheory.com/token-intents/{id}
+    - POST   https://api.basistheory.com/applications
+    - GET    https://api.basistheory.com/applications
+    - GET    https://api.basistheory.com/applications/{id}
+    - GET    https://api.basistheory.com/applications/key
+    - PUT    https://api.basistheory.com/applications/{id}
+    - DELETE https://api.basistheory.com/applications/{id}
+    - POST   https://api.basistheory.com/proxies
+    - GET    https://api.basistheory.com/proxies
+    - GET    https://api.basistheory.com/proxies/{id}
+    - PUT    https://api.basistheory.com/proxies/{id}
+    - PATCH  https://api.basistheory.com/proxies/{id}
+    - DELETE https://api.basistheory.com/proxies/{id}
+    - "GET/POST/PUT/PATCH/DELETE https://api.basistheory.com/proxy"
+    - POST   https://api.basistheory.com/reactors
+    - GET    https://api.basistheory.com/reactors
+    - GET    https://api.basistheory.com/reactors/{id}
+    - PUT    https://api.basistheory.com/reactors/{id}
+    - PATCH  https://api.basistheory.com/reactors/{id}
+    - DELETE https://api.basistheory.com/reactors/{id}
+    - POST   https://api.basistheory.com/reactors/{id}/react
+    - POST   https://api.basistheory.com/3ds/sessions
+    - GET    https://api.basistheory.com/3ds/sessions/{id}
+    - POST   https://api.basistheory.com/3ds/sessions/{id}/authenticate
+    - GET    https://api.basistheory.com/3ds/sessions/{id}/challenge-result
+    - GET    https://api.basistheory.com/tenants/self
+    - PUT    https://api.basistheory.com/tenants/self
+    - DELETE https://api.basistheory.com/tenants/self
+    - GET    https://api.basistheory.com/tenants/self/reports/usage
+    - GET    https://api.basistheory.com/logs
+    - POST   https://api.basistheory.com/webhooks
+    - GET    https://api.basistheory.com/webhooks
+    - GET    https://api.basistheory.com/webhooks/{id}
+    - PUT    https://api.basistheory.com/webhooks/{id}
+    - DELETE https://api.basistheory.com/webhooks/{id}
+    - GET    https://api.basistheory.com/webhooks/event-types
+sources:
+  - url: https://developers.basistheory.com/docs/api/
+    type: Documentation
+    note: API overview lists REST base URLs and JSON request/response conventions; no WebSocket mentioned.
+  - url: https://developers.basistheory.com/docs/api/tokens
+    type: APIReference
+    note: Token CRUD, tokenize, and detokenize are all HTTPS REST endpoints.
+  - url: https://developers.basistheory.com/docs/api/proxies
+    type: APIReference
+    note: Proxy (pre-configured and ephemeral) is invoked over REST via the /proxy endpoint; detokenization happens inline.
+  - url: https://developers.basistheory.com/docs/api/webhooks/api
+    type: APIReference
+    note: Asynchronous notifications use outbound HTTP webhooks, not WebSocket; managed via REST CRUD.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket or SSE protocol surface exists. Asynchronous behavior is
+    delivered via outbound HTTP webhooks, which are modeled as REST
+    management endpoints in the OpenAPI document. No AsyncAPI artifact was
+    authored because there is no documented streaming or message-broker
+    transport to model.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
