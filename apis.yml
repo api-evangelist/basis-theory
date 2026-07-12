@@ -202,6 +202,12 @@ apis:
     event subscriptions so downstream systems are notified of token, reactor, and
     other lifecycle events.
 common:
+- type: TrustCenter
+  url: security/basis-theory-trust-center.yml
+- type: DomainSecurity
+  url: security/basis-theory-domain-security.yml
+- type: Authentication
+  url: authentication/basis-theory-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/Basis-Theory
 - type: LinkedIn
@@ -216,6 +222,8 @@ common:
   url: rate-limits/basis-theory-rate-limits.yml
 - type: FinOps
   url: finops/basis-theory-finops.yml
+- type: Blog
+  url: https://blog.basistheory.com/rss.xml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

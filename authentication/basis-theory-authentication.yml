@@ -1,0 +1,17 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/basis-theory-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: ApiKey
+  type: apiKey
+  in: header
+  parameter: BT-API-KEY
+  description: Authenticate every request with a Basis Theory Application key supplied in the
+    BT-API-KEY request header.
+  sources:
+  - openapi/basis-theory-openapi.yml
