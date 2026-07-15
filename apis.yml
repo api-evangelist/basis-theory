@@ -202,6 +202,8 @@ apis:
     event subscriptions so downstream systems are notified of token, reactor, and
     other lifecycle events.
 common:
+- type: AgenticAccess
+  url: agentic-access/basis-theory-agentic-access.yml
 - type: TrustCenter
   url: security/basis-theory-trust-center.yml
 - type: DomainSecurity
