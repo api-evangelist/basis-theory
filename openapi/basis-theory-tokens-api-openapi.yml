@@ -1,0 +1,327 @@
+openapi: 3.0.1
+info:
+  title: Basis Theory 3D Secure Tokens API
+  description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
+  termsOfService: https://basistheory.com/terms
+  contact:
+    name: Basis Theory Support
+    email: support@basistheory.com
+    url: https://developers.basistheory.com
+  version: '1.0'
+servers:
+- url: https://api.basistheory.com
+  description: Production environment (PRODUCTION tenants)
+- url: https://api.test.basistheory.com
+  description: Test environment (TEST tenants)
+security:
+- ApiKey: []
+tags:
+- name: Tokens
+  description: Create, retrieve, search, update, and delete tokens.
+paths:
+  /tokens:
+    post:
+      operationId: createToken
+      tags:
+      - Tokens
+      summary: Create a token
+      description: Tokenizes a single piece of sensitive data and stores it in the vault.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTokenRequest'
+      responses:
+        '201':
+          description: The created token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+  /v2/tokens:
+    get:
+      operationId: listTokens
+      tags:
+      - Tokens
+      summary: List tokens
+      description: Returns a cursor-paginated list of tokens for the tenant.
+      parameters:
+      - name: id
+        in: query
+        description: Filter by one or more token ids.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: type
+        in: query
+        description: Filter by one or more token types.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: start
+        in: query
+        description: Cursor for the next page of results.
+        schema:
+          type: string
+      - name: size
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+          default: 20
+      responses:
+        '200':
+          description: A paginated list of tokens.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenCursorPaginatedList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /tokens/{id}:
+    get:
+      operationId: getToken
+      tags:
+      - Tokens
+      summary: Get a token
+      parameters:
+      - $ref: '#/components/parameters/TokenId'
+      responses:
+        '200':
+          description: The requested token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateToken
+      tags:
+      - Tokens
+      summary: Update a token
+      description: Partially updates a token using JSON merge patch semantics.
+      parameters:
+      - $ref: '#/components/parameters/TokenId'
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/UpdateTokenRequest'
+      responses:
+        '200':
+          description: The updated token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+    delete:
+      operationId: deleteToken
+      tags:
+      - Tokens
+      summary: Delete a token
+      parameters:
+      - $ref: '#/components/parameters/TokenId'
+      responses:
+        '204':
+          description: The token was deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Forbidden:
+      description: The application lacks the required permission.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+  schemas:
+    Token:
+      type: object
+      properties:
+        id:
+          type: string
+        tenant_id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          description: The token type, e.g. token, card, bank, social_security_number.
+        data:
+          description: The token data (masked unless detokenized).
+        mask:
+          description: The masking expression applied to the data.
+        fingerprint:
+          type: string
+        fingerprint_expression:
+          type: string
+        containers:
+          type: array
+          items:
+            type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        search_indexes:
+          type: array
+          items:
+            type: string
+        expires_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    CreateTokenRequest:
+      type: object
+      required:
+      - type
+      - data
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        data:
+          description: The sensitive value to tokenize. May be a primitive or an object.
+        mask:
+          description: A masking expression used to reveal a non-sensitive portion of the data.
+        containers:
+          type: array
+          items:
+            type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        search_indexes:
+          type: array
+          items:
+            type: string
+        fingerprint_expression:
+          type: string
+        deduplicate_token:
+          type: boolean
+        expires_at:
+          type: string
+          format: date-time
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    UpdateTokenRequest:
+      type: object
+      properties:
+        data: {}
+        mask: {}
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        search_indexes:
+          type: array
+          items:
+            type: string
+        fingerprint_expression:
+          type: string
+    CursorPagination:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    TokenCursorPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/CursorPagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Token'
+  parameters:
+    TokenId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the token.
+      schema:
+        type: string
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: BT-API-KEY
+      description: Authenticate every request with a Basis Theory Application key supplied in the BT-API-KEY request header.

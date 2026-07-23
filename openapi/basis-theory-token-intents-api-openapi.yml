@@ -1,0 +1,175 @@
+openapi: 3.0.1
+info:
+  title: Basis Theory 3D Secure Token Intents API
+  description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
+  termsOfService: https://basistheory.com/terms
+  contact:
+    name: Basis Theory Support
+    email: support@basistheory.com
+    url: https://developers.basistheory.com
+  version: '1.0'
+servers:
+- url: https://api.basistheory.com
+  description: Production environment (PRODUCTION tenants)
+- url: https://api.test.basistheory.com
+  description: Test environment (TEST tenants)
+security:
+- ApiKey: []
+tags:
+- name: Token Intents
+  description: Short-lived intents that capture data before conversion to a token.
+paths:
+  /token-intents:
+    post:
+      operationId: createTokenIntent
+      tags:
+      - Token Intents
+      summary: Create a token intent
+      description: Creates a short-lived token intent that captures sensitive data. A token intent can later be converted into a permanent token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTokenIntentRequest'
+      responses:
+        '201':
+          description: The created token intent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenIntent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+  /token-intents/{id}:
+    get:
+      operationId: getTokenIntent
+      tags:
+      - Token Intents
+      summary: Get a token intent
+      parameters:
+      - $ref: '#/components/parameters/TokenIntentId'
+      responses:
+        '200':
+          description: The requested token intent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenIntent'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteTokenIntent
+      tags:
+      - Token Intents
+      summary: Delete a token intent
+      parameters:
+      - $ref: '#/components/parameters/TokenIntentId'
+      responses:
+        '204':
+          description: The token intent was deleted.
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Forbidden:
+      description: The application lacks the required permission.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+  schemas:
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    TokenIntent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+        tenant_id:
+          type: string
+          format: uuid
+        fingerprint:
+          type: string
+        card:
+          type: object
+          additionalProperties: true
+        expires_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    CreateTokenIntentRequest:
+      type: object
+      required:
+      - type
+      - data
+      properties:
+        type:
+          type: string
+        data: {}
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+  parameters:
+    TokenIntentId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the token intent.
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: BT-API-KEY
+      description: Authenticate every request with a Basis Theory Application key supplied in the BT-API-KEY request header.

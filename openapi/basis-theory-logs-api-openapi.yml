@@ -1,0 +1,107 @@
+openapi: 3.0.1
+info:
+  title: Basis Theory 3D Secure Logs API
+  description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
+  termsOfService: https://basistheory.com/terms
+  contact:
+    name: Basis Theory Support
+    email: support@basistheory.com
+    url: https://developers.basistheory.com
+  version: '1.0'
+servers:
+- url: https://api.basistheory.com
+  description: Production environment (PRODUCTION tenants)
+- url: https://api.test.basistheory.com
+  description: Test environment (TEST tenants)
+security:
+- ApiKey: []
+tags:
+- name: Logs
+  description: List audit logs of platform activity.
+paths:
+  /logs:
+    get:
+      operationId: listLogs
+      tags:
+      - Logs
+      summary: List logs
+      parameters:
+      - name: entity_type
+        in: query
+        schema:
+          type: string
+      - name: entity_id
+        in: query
+        schema:
+          type: string
+      - name: start_date
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - name: end_date
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - name: size
+        in: query
+        schema:
+          type: integer
+          default: 20
+      responses:
+        '200':
+          description: A paginated list of log entries.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogPaginatedList'
+components:
+  schemas:
+    Log:
+      type: object
+      properties:
+        tenant_id:
+          type: string
+          format: uuid
+        actor_id:
+          type: string
+        actor_type:
+          type: string
+        entity_type:
+          type: string
+        entity_id:
+          type: string
+        operation:
+          type: string
+        message:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    LogPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Log'
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type: integer
+        page_number:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: BT-API-KEY
+      description: Authenticate every request with a Basis Theory Application key supplied in the BT-API-KEY request header.

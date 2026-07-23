@@ -1,0 +1,239 @@
+openapi: 3.0.1
+info:
+  title: Basis Theory 3D Secure API
+  description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
+  termsOfService: https://basistheory.com/terms
+  contact:
+    name: Basis Theory Support
+    email: support@basistheory.com
+    url: https://developers.basistheory.com
+  version: '1.0'
+servers:
+- url: https://api.basistheory.com
+  description: Production environment (PRODUCTION tenants)
+- url: https://api.test.basistheory.com
+  description: Test environment (TEST tenants)
+security:
+- ApiKey: []
+tags:
+- name: 3D Secure
+  description: Create and authenticate 3D Secure sessions.
+paths:
+  /3ds/sessions:
+    post:
+      operationId: create3dsSession
+      tags:
+      - 3D Secure
+      summary: Create a 3DS session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Create3dsSessionRequest'
+      responses:
+        '201':
+          description: The created 3DS session.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreeDSSession'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+  /3ds/sessions/{id}:
+    get:
+      operationId: get3dsSession
+      tags:
+      - 3D Secure
+      summary: Get a 3DS session
+      parameters:
+      - $ref: '#/components/parameters/ThreeDSSessionId'
+      responses:
+        '200':
+          description: The requested 3DS session.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreeDSSession'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /3ds/sessions/{id}/authenticate:
+    post:
+      operationId: authenticate3dsSession
+      tags:
+      - 3D Secure
+      summary: Authenticate a 3DS session
+      parameters:
+      - $ref: '#/components/parameters/ThreeDSSessionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Authenticate3dsRequest'
+      responses:
+        '200':
+          description: The authentication result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreeDSSession'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+  /3ds/sessions/{id}/challenge-result:
+    get:
+      operationId: get3dsChallengeResult
+      tags:
+      - 3D Secure
+      summary: Get a 3DS challenge result
+      parameters:
+      - $ref: '#/components/parameters/ThreeDSSessionId'
+      responses:
+        '200':
+          description: The challenge result for the session.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreeDSSession'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    ThreeDSSession:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+          format: uuid
+        token_id:
+          type: string
+        type:
+          type: string
+        device:
+          type: string
+        version:
+          type: string
+        method_url:
+          type: string
+        threeds_version:
+          type: string
+        authentication_value:
+          type: string
+        eci:
+          type: string
+        authentication_status:
+          type: string
+        authentication_status_code:
+          type: string
+        liability_shifted:
+          type: boolean
+        acs_transaction_id:
+          type: string
+        ds_transaction_id:
+          type: string
+        expires_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+    Create3dsSessionRequest:
+      type: object
+      properties:
+        token_id:
+          type: string
+        token_intent_id:
+          type: string
+        type:
+          type: string
+          enum:
+          - customer
+          - merchant
+        device:
+          type: string
+          enum:
+          - browser
+          - app
+        device_info:
+          type: object
+          additionalProperties: true
+        pan:
+          type: object
+          properties:
+            number:
+              type: string
+            expiration_month:
+              type: string
+            expiration_year:
+              type: string
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    Authenticate3dsRequest:
+      type: object
+      properties:
+        authentication_category:
+          type: string
+        authentication_type:
+          type: string
+        challenge_preference:
+          type: string
+        merchant_info:
+          type: object
+          additionalProperties: true
+        cardholder_info:
+          type: object
+          additionalProperties: true
+        purchase_info:
+          type: object
+          additionalProperties: true
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+  parameters:
+    ThreeDSSessionId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the 3DS session.
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: BT-API-KEY
+      description: Authenticate every request with a Basis Theory Application key supplied in the BT-API-KEY request header.

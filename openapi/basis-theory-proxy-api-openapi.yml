@@ -1,0 +1,443 @@
+openapi: 3.0.1
+info:
+  title: Basis Theory 3D Secure Proxy API
+  description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
+  termsOfService: https://basistheory.com/terms
+  contact:
+    name: Basis Theory Support
+    email: support@basistheory.com
+    url: https://developers.basistheory.com
+  version: '1.0'
+servers:
+- url: https://api.basistheory.com
+  description: Production environment (PRODUCTION tenants)
+- url: https://api.test.basistheory.com
+  description: Test environment (TEST tenants)
+security:
+- ApiKey: []
+tags:
+- name: Proxy
+  description: Manage pre-configured proxies and invoke the detokenizing Proxy.
+paths:
+  /proxies:
+    post:
+      operationId: createProxy
+      tags:
+      - Proxy
+      summary: Create a pre-configured proxy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProxyRequest'
+      responses:
+        '201':
+          description: The created proxy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proxy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+    get:
+      operationId: listProxies
+      tags:
+      - Proxy
+      summary: List pre-configured proxies
+      responses:
+        '200':
+          description: A paginated list of proxies.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProxyPaginatedList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /proxies/{id}:
+    get:
+      operationId: getProxy
+      tags:
+      - Proxy
+      summary: Get a pre-configured proxy
+      parameters:
+      - $ref: '#/components/parameters/ProxyId'
+      responses:
+        '200':
+          description: The requested proxy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proxy'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateProxy
+      tags:
+      - Proxy
+      summary: Update a pre-configured proxy
+      parameters:
+      - $ref: '#/components/parameters/ProxyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProxyRequest'
+      responses:
+        '200':
+          description: The updated proxy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proxy'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: patchProxy
+      tags:
+      - Proxy
+      summary: Patch a pre-configured proxy
+      parameters:
+      - $ref: '#/components/parameters/ProxyId'
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/CreateProxyRequest'
+      responses:
+        '200':
+          description: The patched proxy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proxy'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteProxy
+      tags:
+      - Proxy
+      summary: Delete a pre-configured proxy
+      parameters:
+      - $ref: '#/components/parameters/ProxyId'
+      responses:
+        '204':
+          description: The proxy was deleted.
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /proxy:
+    get:
+      operationId: invokeProxyGet
+      tags:
+      - Proxy
+      summary: Invoke the proxy (GET)
+      description: Invokes the Proxy. For a pre-configured proxy supply the `BT-PROXY-KEY` header; for an ephemeral proxy supply the `BT-PROXY-URL` header with the destination base URL. The Proxy detokenizes any detokenization expressions in the request and forwards the result to the destination.
+      parameters:
+      - $ref: '#/components/parameters/BtProxyUrl'
+      - $ref: '#/components/parameters/BtProxyKey'
+      responses:
+        '200':
+          description: The response forwarded from the destination.
+        '400':
+          description: Bad proxy request.
+    post:
+      operationId: invokeProxyPost
+      tags:
+      - Proxy
+      summary: Invoke the proxy (POST)
+      parameters:
+      - $ref: '#/components/parameters/BtProxyUrl'
+      - $ref: '#/components/parameters/BtProxyKey'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: The response forwarded from the destination.
+    put:
+      operationId: invokeProxyPut
+      tags:
+      - Proxy
+      summary: Invoke the proxy (PUT)
+      parameters:
+      - $ref: '#/components/parameters/BtProxyUrl'
+      - $ref: '#/components/parameters/BtProxyKey'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: The response forwarded from the destination.
+    patch:
+      operationId: invokeProxyPatch
+      tags:
+      - Proxy
+      summary: Invoke the proxy (PATCH)
+      parameters:
+      - $ref: '#/components/parameters/BtProxyUrl'
+      - $ref: '#/components/parameters/BtProxyKey'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: The response forwarded from the destination.
+    delete:
+      operationId: invokeProxyDelete
+      tags:
+      - Proxy
+      summary: Invoke the proxy (DELETE)
+      parameters:
+      - $ref: '#/components/parameters/BtProxyUrl'
+      - $ref: '#/components/parameters/BtProxyKey'
+      responses:
+        '200':
+          description: The response forwarded from the destination.
+components:
+  parameters:
+    BtProxyUrl:
+      name: BT-PROXY-URL
+      in: header
+      required: false
+      description: For ephemeral proxy requests, the destination base URL to proxy to.
+      schema:
+        type: string
+        format: uri
+    ProxyId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the proxy.
+      schema:
+        type: string
+        format: uuid
+    BtProxyKey:
+      name: BT-PROXY-KEY
+      in: header
+      required: false
+      description: For pre-configured proxy requests, the short key identifying the proxy.
+      schema:
+        type: string
+  schemas:
+    ProxyPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Proxy'
+    ProxyTransform:
+      type: object
+      properties:
+        type:
+          type: string
+        code:
+          type: string
+        matcher:
+          type: string
+    CreateProxyRequest:
+      type: object
+      required:
+      - name
+      - destination_url
+      properties:
+        name:
+          type: string
+        destination_url:
+          type: string
+          format: uri
+        request_reactor_id:
+          type: string
+          format: uuid
+        response_reactor_id:
+          type: string
+          format: uuid
+        request_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        response_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        application:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+        require_auth:
+          type: boolean
+          default: true
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type: integer
+        page_number:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    AccessRule:
+      type: object
+      properties:
+        description:
+          type: string
+        priority:
+          type: integer
+        container:
+          type: string
+        transform:
+          type: string
+          enum:
+          - redact
+          - mask
+          - reveal
+        permissions:
+          type: array
+          items:
+            type: string
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        key:
+          type: string
+          description: The application key, returned only on creation when create_key is true.
+        type:
+          type: string
+          enum:
+          - public
+          - private
+          - management
+          - expiring
+        permissions:
+          type: array
+          items:
+            type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessRule'
+        expires_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    Proxy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        key:
+          type: string
+        tenant_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        destination_url:
+          type: string
+          format: uri
+        request_reactor_id:
+          type: string
+          format: uuid
+        response_reactor_id:
+          type: string
+          format: uuid
+        request_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        response_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        application:
+          $ref: '#/components/schemas/Application'
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+        require_auth:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+  responses:
+    Forbidden:
+      description: The application lacks the required permission.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: BT-API-KEY
+      description: Authenticate every request with a Basis Theory Application key supplied in the BT-API-KEY request header.

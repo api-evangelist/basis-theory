@@ -1,0 +1,324 @@
+openapi: 3.0.1
+info:
+  title: Basis Theory 3D Secure Applications API
+  description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
+  termsOfService: https://basistheory.com/terms
+  contact:
+    name: Basis Theory Support
+    email: support@basistheory.com
+    url: https://developers.basistheory.com
+  version: '1.0'
+servers:
+- url: https://api.basistheory.com
+  description: Production environment (PRODUCTION tenants)
+- url: https://api.test.basistheory.com
+  description: Test environment (TEST tenants)
+security:
+- ApiKey: []
+tags:
+- name: Applications
+  description: Manage API credentials, permissions, and access rules.
+paths:
+  /applications:
+    post:
+      operationId: createApplication
+      tags:
+      - Applications
+      summary: Create an application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApplicationRequest'
+      responses:
+        '201':
+          description: The created application, including the generated key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+    get:
+      operationId: listApplications
+      tags:
+      - Applications
+      summary: List applications
+      parameters:
+      - name: id
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+      - name: type
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: A paginated list of applications.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationPaginatedList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /applications/{id}:
+    get:
+      operationId: getApplication
+      tags:
+      - Applications
+      summary: Get an application
+      parameters:
+      - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: The requested application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateApplication
+      tags:
+      - Applications
+      summary: Update an application
+      parameters:
+      - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateApplicationRequest'
+      responses:
+        '200':
+          description: The updated application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+    delete:
+      operationId: deleteApplication
+      tags:
+      - Applications
+      summary: Delete an application
+      parameters:
+      - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '204':
+          description: The application was deleted.
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /applications/key:
+    get:
+      operationId: getApplicationByKey
+      tags:
+      - Applications
+      summary: Get application by key
+      description: Returns the application associated with the BT-API-KEY used on the request.
+      responses:
+        '200':
+          description: The application for the supplied key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    ApplicationPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+    UpdateApplicationRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessRule'
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    CreateApplicationRequest:
+      type: object
+      required:
+      - name
+      - type
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - public
+          - private
+          - management
+          - expiring
+        permissions:
+          type: array
+          items:
+            type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessRule'
+        create_key:
+          type: boolean
+          default: true
+        expires_at:
+          type: string
+          format: date-time
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type: integer
+        page_number:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    AccessRule:
+      type: object
+      properties:
+        description:
+          type: string
+        priority:
+          type: integer
+        container:
+          type: string
+        transform:
+          type: string
+          enum:
+          - redact
+          - mask
+          - reveal
+        permissions:
+          type: array
+          items:
+            type: string
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        key:
+          type: string
+          description: The application key, returned only on creation when create_key is true.
+        type:
+          type: string
+          enum:
+          - public
+          - private
+          - management
+          - expiring
+        permissions:
+          type: array
+          items:
+            type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessRule'
+        expires_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+  responses:
+    Forbidden:
+      description: The application lacks the required permission.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+  parameters:
+    ApplicationId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the application.
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: BT-API-KEY
+      description: Authenticate every request with a Basis Theory Application key supplied in the BT-API-KEY request header.

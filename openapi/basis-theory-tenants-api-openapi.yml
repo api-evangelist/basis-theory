@@ -1,0 +1,182 @@
+openapi: 3.0.1
+info:
+  title: Basis Theory 3D Secure Tenants API
+  description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
+  termsOfService: https://basistheory.com/terms
+  contact:
+    name: Basis Theory Support
+    email: support@basistheory.com
+    url: https://developers.basistheory.com
+  version: '1.0'
+servers:
+- url: https://api.basistheory.com
+  description: Production environment (PRODUCTION tenants)
+- url: https://api.test.basistheory.com
+  description: Test environment (TEST tenants)
+security:
+- ApiKey: []
+tags:
+- name: Tenants
+  description: Manage the current tenant, usage reports, and security contact.
+paths:
+  /tenants/self:
+    get:
+      operationId: getTenant
+      tags:
+      - Tenants
+      summary: Get the current tenant
+      responses:
+        '200':
+          description: The current tenant.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      operationId: updateTenant
+      tags:
+      - Tenants
+      summary: Update the current tenant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantRequest'
+      responses:
+        '200':
+          description: The updated tenant.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+    delete:
+      operationId: deleteTenant
+      tags:
+      - Tenants
+      summary: Delete the current tenant
+      responses:
+        '204':
+          description: The tenant was deleted.
+  /tenants/self/reports/usage:
+    get:
+      operationId: getTenantUsageReport
+      tags:
+      - Tenants
+      summary: Get the tenant usage report
+      responses:
+        '200':
+          description: The tenant usage report.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantUsageReport'
+components:
+  schemas:
+    UpdateTenantRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        settings:
+          $ref: '#/components/schemas/TenantSettings'
+    TenantSettings:
+      type: object
+      properties:
+        fingerprint_tokens:
+          type: boolean
+        deduplicate_tokens:
+          type: boolean
+        disable_ephemeral_proxy:
+          type: boolean
+        token_deduplication_behavior:
+          type: string
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    Tenant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        owner_id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum:
+          - TEST
+          - PRODUCTION
+        name:
+          type: string
+        settings:
+          $ref: '#/components/schemas/TenantSettings'
+        created_by:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    TenantUsageReport:
+      type: object
+      properties:
+        token_report:
+          type: object
+          properties:
+            included_monthly_active_tokens:
+              type: integer
+            monthly_active_tokens:
+              type: integer
+            metrics_by_type:
+              type: object
+              additionalProperties:
+                type: object
+                additionalProperties: true
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+  responses:
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: BT-API-KEY
+      description: Authenticate every request with a Basis Theory Application key supplied in the BT-API-KEY request header.

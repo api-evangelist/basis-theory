@@ -1,0 +1,353 @@
+openapi: 3.0.1
+info:
+  title: Basis Theory 3D Secure Reactors API
+  description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
+  termsOfService: https://basistheory.com/terms
+  contact:
+    name: Basis Theory Support
+    email: support@basistheory.com
+    url: https://developers.basistheory.com
+  version: '1.0'
+servers:
+- url: https://api.basistheory.com
+  description: Production environment (PRODUCTION tenants)
+- url: https://api.test.basistheory.com
+  description: Test environment (TEST tenants)
+security:
+- ApiKey: []
+tags:
+- name: Reactors
+  description: Manage and invoke serverless Reactor functions.
+paths:
+  /reactors:
+    post:
+      operationId: createReactor
+      tags:
+      - Reactors
+      summary: Create a reactor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReactorRequest'
+      responses:
+        '201':
+          description: The created reactor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reactor'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+    get:
+      operationId: listReactors
+      tags:
+      - Reactors
+      summary: List reactors
+      responses:
+        '200':
+          description: A paginated list of reactors.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReactorPaginatedList'
+  /reactors/{id}:
+    get:
+      operationId: getReactor
+      tags:
+      - Reactors
+      summary: Get a reactor
+      parameters:
+      - $ref: '#/components/parameters/ReactorId'
+      responses:
+        '200':
+          description: The requested reactor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reactor'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateReactor
+      tags:
+      - Reactors
+      summary: Update a reactor
+      parameters:
+      - $ref: '#/components/parameters/ReactorId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReactorRequest'
+      responses:
+        '200':
+          description: The updated reactor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reactor'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: patchReactor
+      tags:
+      - Reactors
+      summary: Patch a reactor
+      parameters:
+      - $ref: '#/components/parameters/ReactorId'
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/CreateReactorRequest'
+      responses:
+        '200':
+          description: The patched reactor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reactor'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteReactor
+      tags:
+      - Reactors
+      summary: Delete a reactor
+      parameters:
+      - $ref: '#/components/parameters/ReactorId'
+      responses:
+        '204':
+          description: The reactor was deleted.
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /reactors/{id}/react:
+    post:
+      operationId: invokeReactor
+      tags:
+      - Reactors
+      summary: Invoke a reactor
+      description: Invokes a reactor, detokenizing any tokens referenced in `args` and running the reactor's code. Requires an application with token:use permission.
+      parameters:
+      - $ref: '#/components/parameters/ReactorId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReactRequest'
+      responses:
+        '200':
+          description: The reactor response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReactResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+components:
+  schemas:
+    ReactResponse:
+      type: object
+      properties:
+        tokens:
+          type: object
+          additionalProperties: true
+        raw:
+          type: object
+          additionalProperties: true
+    ReactorPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reactor'
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    ReactRequest:
+      type: object
+      required:
+      - args
+      properties:
+        args:
+          type: object
+          additionalProperties: true
+          description: 'Arguments passed to the reactor. May contain detokenization expressions of the form {{ token: <tokenId> }}.'
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type: integer
+        page_number:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    AccessRule:
+      type: object
+      properties:
+        description:
+          type: string
+        priority:
+          type: integer
+        container:
+          type: string
+        transform:
+          type: string
+          enum:
+          - redact
+          - mask
+          - reveal
+        permissions:
+          type: array
+          items:
+            type: string
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        key:
+          type: string
+          description: The application key, returned only on creation when create_key is true.
+        type:
+          type: string
+          enum:
+          - public
+          - private
+          - management
+          - expiring
+        permissions:
+          type: array
+          items:
+            type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessRule'
+        expires_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    Reactor:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        code:
+          type: string
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+        application:
+          $ref: '#/components/schemas/Application'
+        state:
+          type: string
+          description: Provisioning state for asynchronous runtimes.
+        created_at:
+          type: string
+          format: date-time
+    CreateReactorRequest:
+      type: object
+      required:
+      - name
+      - code
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+        application:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+        runtime:
+          type: object
+          additionalProperties: true
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+  parameters:
+    ReactorId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the reactor.
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: BT-API-KEY
+      description: Authenticate every request with a Basis Theory Application key supplied in the BT-API-KEY request header.

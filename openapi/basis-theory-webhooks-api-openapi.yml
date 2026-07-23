@@ -1,0 +1,251 @@
+openapi: 3.0.1
+info:
+  title: Basis Theory 3D Secure Webhooks API
+  description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
+  termsOfService: https://basistheory.com/terms
+  contact:
+    name: Basis Theory Support
+    email: support@basistheory.com
+    url: https://developers.basistheory.com
+  version: '1.0'
+servers:
+- url: https://api.basistheory.com
+  description: Production environment (PRODUCTION tenants)
+- url: https://api.test.basistheory.com
+  description: Test environment (TEST tenants)
+security:
+- ApiKey: []
+tags:
+- name: Webhooks
+  description: Register webhook URLs and subscribe to event types.
+paths:
+  /webhooks:
+    post:
+      operationId: createWebhook
+      tags:
+      - Webhooks
+      summary: Create a webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWebhookRequest'
+      responses:
+        '201':
+          description: The created webhook.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+    get:
+      operationId: listWebhooks
+      tags:
+      - Webhooks
+      summary: List webhooks
+      responses:
+        '200':
+          description: A paginated list of webhooks.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookPaginatedList'
+  /webhooks/{id}:
+    get:
+      operationId: getWebhook
+      tags:
+      - Webhooks
+      summary: Get a webhook
+      parameters:
+      - $ref: '#/components/parameters/WebhookId'
+      responses:
+        '200':
+          description: The requested webhook.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateWebhook
+      tags:
+      - Webhooks
+      summary: Update a webhook
+      parameters:
+      - $ref: '#/components/parameters/WebhookId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWebhookRequest'
+      responses:
+        '200':
+          description: The updated webhook.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteWebhook
+      tags:
+      - Webhooks
+      summary: Delete a webhook
+      parameters:
+      - $ref: '#/components/parameters/WebhookId'
+      responses:
+        '204':
+          description: The webhook was deleted.
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /webhooks/event-types:
+    get:
+      operationId: listWebhookEventTypes
+      tags:
+      - Webhooks
+      summary: List available webhook event types
+      responses:
+        '200':
+          description: The available event types.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+components:
+  schemas:
+    WebhookPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Webhook'
+    Webhook:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+          - enabled
+          - disabled
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+        notify_email:
+          type: string
+          format: email
+        events:
+          type: array
+          items:
+            type: string
+        created_by:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type: integer
+        page_number:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    CreateWebhookRequest:
+      type: object
+      required:
+      - name
+      - url
+      - events
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+        notify_email:
+          type: string
+          format: email
+        status:
+          type: string
+          enum:
+          - enabled
+          - disabled
+        events:
+          type: array
+          items:
+            type: string
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+  parameters:
+    WebhookId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the webhook.
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: BT-API-KEY
+      description: Authenticate every request with a Basis Theory Application key supplied in the BT-API-KEY request header.
