@@ -7,7 +7,20 @@ description: Basis Theory is a PCI Level 1 compliant tokenization and data vault
   cardholder data, PII, PHI, and bank account numbers - without that data ever touching
   their own systems, using tokens, a detokenizing Proxy, serverless Reactors, and
   3D Secure authentication.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/basis-theory.png
 tags:
 - Tokenization
 - Data Vault
@@ -18,189 +31,466 @@ created: '2026-06-20'
 modified: '2026-06-20'
 specificationVersion: '0.19'
 apis:
-- aid: basis-theory:basis-theory-tokens-api
-  name: Basis Theory Tokens API
-  tags:
-  - Tokens
-  - Tokenization
-  - Data Vault
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+- aid: basis-theory:basis-theory-3d-secure-api
+  name: Basis Theory 3D Secure API
+  description: Create and authenticate 3D Secure sessions.
   humanURL: https://developers.basistheory.com/docs/api/tokens
   baseURL: https://api.basistheory.com
-  properties:
-  - url: https://developers.basistheory.com/docs/api/tokens
-    type: Documentation
-  - url: https://developers.basistheory.com/docs/api/tokens/token-object
-    type: APIReference
-  - url: openapi/basis-theory-openapi.yml
-    type: OpenAPI
-  - url: collections/basis-theory.postman_collection.json
-    type: PostmanCollection
-  - url: collections/basis-theory.opencollection.json
-    type: OpenCollection
-  description: Create, retrieve, search, update, and delete tokens that securely vault
-    sensitive data with masking, metadata, search indexes, fingerprinting, and token
-    intents.
-- aid: basis-theory:basis-theory-tokenize-detokenize-api
-  name: Basis Theory Tokenize / Detokenize API
   tags:
-  - Tokenize
-  - Detokenize
-  - Batch
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.basistheory.com/docs/api/tokens/tokenize
-  baseURL: https://api.basistheory.com
+  - 3D Secure
   properties:
-  - url: https://developers.basistheory.com/docs/api/tokens/tokenize
-    type: Documentation
-  - url: https://developers.basistheory.com/docs/api/tokens/detokenize
-    type: APIReference
-  - url: openapi/basis-theory-openapi.yml
-    type: OpenAPI
-  - url: collections/basis-theory.postman_collection.json
-    type: PostmanCollection
-  - url: collections/basis-theory.opencollection.json
-    type: OpenCollection
-  description: Batch tokenization and detokenization endpoints that vault arbitrary
-    object graphs into tokens and resolve token identifiers back to plaintext for
-    authorized applications.
+  - type: OpenAPI
+    url: openapi/basis-theory-3d-secure-api-openapi.yml
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/token-object
+  - type: PostmanCollection
+    url: collections/basis-theory.postman_collection.json
+  - type: OpenCollection
+    url: collections/basis-theory.opencollection.json
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens/tokenize
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/detokenize
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/applications
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/applications/application-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/proxies
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/proxies/pre-configured-proxies
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/reactors
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/reactors/reactor-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/3ds
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/3ds/sessions
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tenants
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/logs
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/webhooks
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/webhooks/api
 - aid: basis-theory:basis-theory-applications-api
   name: Basis Theory Applications API
+  description: Manage API credentials, permissions, and access rules.
+  humanURL: https://developers.basistheory.com/docs/api/tokens
+  baseURL: https://api.basistheory.com
   tags:
   - Applications
-  - API Keys
-  - Permissions
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.basistheory.com/docs/api/applications
-  baseURL: https://api.basistheory.com
   properties:
-  - url: https://developers.basistheory.com/docs/api/applications
-    type: Documentation
-  - url: https://developers.basistheory.com/docs/api/applications/application-object
-    type: APIReference
-  - url: openapi/basis-theory-openapi.yml
-    type: OpenAPI
-  - url: collections/basis-theory.postman_collection.json
-    type: PostmanCollection
-  - url: collections/basis-theory.opencollection.json
-    type: OpenCollection
-  description: Manage Applications (API credentials) with fine-grained permissions
-    and access rules - the public, private, management, and expiring application types
-    that authenticate every call to the platform.
+  - type: OpenAPI
+    url: openapi/basis-theory-applications-api-openapi.yml
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/token-object
+  - type: PostmanCollection
+    url: collections/basis-theory.postman_collection.json
+  - type: OpenCollection
+    url: collections/basis-theory.opencollection.json
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens/tokenize
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/detokenize
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/applications
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/applications/application-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/proxies
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/proxies/pre-configured-proxies
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/reactors
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/reactors/reactor-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/3ds
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/3ds/sessions
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tenants
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/logs
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/webhooks
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/webhooks/api
+- aid: basis-theory:basis-theory-logs-api
+  name: Basis Theory Logs API
+  description: List audit logs of platform activity.
+  humanURL: https://developers.basistheory.com/docs/api/tokens
+  baseURL: https://api.basistheory.com
+  tags:
+  - Logs
+  properties:
+  - type: OpenAPI
+    url: openapi/basis-theory-logs-api-openapi.yml
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/token-object
+  - type: PostmanCollection
+    url: collections/basis-theory.postman_collection.json
+  - type: OpenCollection
+    url: collections/basis-theory.opencollection.json
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens/tokenize
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/detokenize
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/applications
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/applications/application-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/proxies
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/proxies/pre-configured-proxies
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/reactors
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/reactors/reactor-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/3ds
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/3ds/sessions
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tenants
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/logs
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/webhooks
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/webhooks/api
 - aid: basis-theory:basis-theory-proxy-api
   name: Basis Theory Proxy API
+  description: Manage pre-configured proxies and invoke the detokenizing Proxy.
+  humanURL: https://developers.basistheory.com/docs/api/tokens
+  baseURL: https://api.basistheory.com
   tags:
   - Proxy
-  - Detokenize
-  - Outbound
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.basistheory.com/docs/api/proxies
-  baseURL: https://api.basistheory.com
   properties:
-  - url: https://developers.basistheory.com/docs/api/proxies
-    type: Documentation
-  - url: https://developers.basistheory.com/docs/api/proxies/pre-configured-proxies
-    type: APIReference
-  - url: openapi/basis-theory-openapi.yml
-    type: OpenAPI
-  - url: collections/basis-theory.postman_collection.json
-    type: PostmanCollection
-  - url: collections/basis-theory.opencollection.json
-    type: OpenCollection
-  description: Manage pre-configured proxies and invoke the Proxy (pre-configured or
-    ephemeral) to detokenize data inline and forward plaintext to a trusted third-party
-    destination over HTTP without storing it on your servers.
+  - type: OpenAPI
+    url: openapi/basis-theory-proxy-api-openapi.yml
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/token-object
+  - type: PostmanCollection
+    url: collections/basis-theory.postman_collection.json
+  - type: OpenCollection
+    url: collections/basis-theory.opencollection.json
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens/tokenize
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/detokenize
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/applications
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/applications/application-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/proxies
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/proxies/pre-configured-proxies
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/reactors
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/reactors/reactor-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/3ds
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/3ds/sessions
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tenants
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/logs
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/webhooks
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/webhooks/api
 - aid: basis-theory:basis-theory-reactors-api
   name: Basis Theory Reactors API
+  description: Manage and invoke serverless Reactor functions.
+  humanURL: https://developers.basistheory.com/docs/api/tokens
+  baseURL: https://api.basistheory.com
   tags:
   - Reactors
-  - Serverless
-  - Detokenize
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.basistheory.com/docs/api/reactors
-  baseURL: https://api.basistheory.com
   properties:
-  - url: https://developers.basistheory.com/docs/api/reactors
-    type: Documentation
-  - url: https://developers.basistheory.com/docs/api/reactors/reactor-object
-    type: APIReference
-  - url: openapi/basis-theory-openapi.yml
-    type: OpenAPI
-  - url: collections/basis-theory.postman_collection.json
-    type: PostmanCollection
-  - url: collections/basis-theory.opencollection.json
-    type: OpenCollection
-  description: Create and manage serverless Reactors - sandboxed JavaScript functions
-    that detokenize tokens and run custom logic against third-party services - and
-    invoke them synchronously or asynchronously.
-- aid: basis-theory:basis-theory-3ds-api
-  name: Basis Theory 3D Secure API
-  tags:
-  - 3DS
-  - Authentication
-  - Payments
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.basistheory.com/docs/api/3ds
-  baseURL: https://api.basistheory.com
-  properties:
-  - url: https://developers.basistheory.com/docs/api/3ds
-    type: Documentation
-  - url: https://developers.basistheory.com/docs/api/3ds/sessions
-    type: APIReference
-  - url: openapi/basis-theory-openapi.yml
-    type: OpenAPI
-  - url: collections/basis-theory.postman_collection.json
-    type: PostmanCollection
-  - url: collections/basis-theory.opencollection.json
-    type: OpenCollection
-  description: Create 3D Secure sessions against tokenized cards, run frictionless
-    or challenge authentication, and retrieve authentication values, ECI, and liability-shift
-    results for payment flows.
+  - type: OpenAPI
+    url: openapi/basis-theory-reactors-api-openapi.yml
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/token-object
+  - type: PostmanCollection
+    url: collections/basis-theory.postman_collection.json
+  - type: OpenCollection
+    url: collections/basis-theory.opencollection.json
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens/tokenize
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/detokenize
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/applications
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/applications/application-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/proxies
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/proxies/pre-configured-proxies
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/reactors
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/reactors/reactor-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/3ds
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/3ds/sessions
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tenants
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/logs
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/webhooks
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/webhooks/api
 - aid: basis-theory:basis-theory-tenants-api
   name: Basis Theory Tenants API
+  description: Manage the current tenant, usage reports, and security contact.
+  humanURL: https://developers.basistheory.com/docs/api/tokens
+  baseURL: https://api.basistheory.com
   tags:
   - Tenants
-  - Usage
-  - Logs
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.basistheory.com/docs/api/tenants
-  baseURL: https://api.basistheory.com
   properties:
-  - url: https://developers.basistheory.com/docs/api/tenants
-    type: Documentation
-  - url: https://developers.basistheory.com/docs/api/logs
-    type: APIReference
-  - url: openapi/basis-theory-openapi.yml
-    type: OpenAPI
-  - url: collections/basis-theory.postman_collection.json
-    type: PostmanCollection
-  - url: collections/basis-theory.opencollection.json
-    type: OpenCollection
-  description: Read and manage the current tenant, retrieve monthly active token usage
-    reports, manage the security contact, and list audit logs of platform activity.
+  - type: OpenAPI
+    url: openapi/basis-theory-tenants-api-openapi.yml
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/token-object
+  - type: PostmanCollection
+    url: collections/basis-theory.postman_collection.json
+  - type: OpenCollection
+    url: collections/basis-theory.opencollection.json
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens/tokenize
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/detokenize
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/applications
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/applications/application-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/proxies
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/proxies/pre-configured-proxies
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/reactors
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/reactors/reactor-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/3ds
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/3ds/sessions
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tenants
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/logs
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/webhooks
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/webhooks/api
+- aid: basis-theory:basis-theory-token-intents-api
+  name: Basis Theory Token Intents API
+  description: Short-lived intents that capture data before conversion to a token.
+  humanURL: https://developers.basistheory.com/docs/api/tokens
+  baseURL: https://api.basistheory.com
+  tags:
+  - Token Intents
+  properties:
+  - type: OpenAPI
+    url: openapi/basis-theory-token-intents-api-openapi.yml
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/token-object
+  - type: PostmanCollection
+    url: collections/basis-theory.postman_collection.json
+  - type: OpenCollection
+    url: collections/basis-theory.opencollection.json
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens/tokenize
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/detokenize
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/applications
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/applications/application-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/proxies
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/proxies/pre-configured-proxies
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/reactors
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/reactors/reactor-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/3ds
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/3ds/sessions
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tenants
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/logs
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/webhooks
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/webhooks/api
+- aid: basis-theory:basis-theory-tokenize-detokenize-api
+  name: Basis Theory Tokenize / Detokenize API
+  description: Batch tokenization and detokenization.
+  humanURL: https://developers.basistheory.com/docs/api/tokens
+  baseURL: https://api.basistheory.com
+  tags:
+  - Tokenize / Detokenize
+  properties:
+  - type: OpenAPI
+    url: openapi/basis-theory-tokenize-detokenize-api-openapi.yml
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/token-object
+  - type: PostmanCollection
+    url: collections/basis-theory.postman_collection.json
+  - type: OpenCollection
+    url: collections/basis-theory.opencollection.json
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens/tokenize
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/detokenize
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/applications
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/applications/application-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/proxies
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/proxies/pre-configured-proxies
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/reactors
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/reactors/reactor-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/3ds
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/3ds/sessions
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tenants
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/logs
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/webhooks
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/webhooks/api
+- aid: basis-theory:basis-theory-tokens-api
+  name: Basis Theory Tokens API
+  description: Create, retrieve, search, update, and delete tokens.
+  humanURL: https://developers.basistheory.com/docs/api/tokens
+  baseURL: https://api.basistheory.com
+  tags:
+  - Tokens
+  properties:
+  - type: OpenAPI
+    url: openapi/basis-theory-tokens-api-openapi.yml
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/token-object
+  - type: PostmanCollection
+    url: collections/basis-theory.postman_collection.json
+  - type: OpenCollection
+    url: collections/basis-theory.opencollection.json
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens/tokenize
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/detokenize
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/applications
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/applications/application-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/proxies
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/proxies/pre-configured-proxies
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/reactors
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/reactors/reactor-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/3ds
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/3ds/sessions
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tenants
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/logs
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/webhooks
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/webhooks/api
 - aid: basis-theory:basis-theory-webhooks-api
   name: Basis Theory Webhooks API
+  description: Register webhook URLs and subscribe to event types.
+  humanURL: https://developers.basistheory.com/docs/api/tokens
+  baseURL: https://api.basistheory.com
   tags:
   - Webhooks
-  - Events
-  - Notifications
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developers.basistheory.com/docs/api/webhooks
-  baseURL: https://api.basistheory.com
   properties:
-  - url: https://developers.basistheory.com/docs/api/webhooks
-    type: Documentation
-  - url: https://developers.basistheory.com/docs/api/webhooks/api
-    type: APIReference
-  - url: openapi/basis-theory-openapi.yml
-    type: OpenAPI
-  - url: collections/basis-theory.postman_collection.json
-    type: PostmanCollection
-  - url: collections/basis-theory.opencollection.json
-    type: OpenCollection
-  description: Register webhook URLs, subscribe to platform event types, and manage
-    event subscriptions so downstream systems are notified of token, reactor, and
-    other lifecycle events.
+  - type: OpenAPI
+    url: openapi/basis-theory-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/token-object
+  - type: PostmanCollection
+    url: collections/basis-theory.postman_collection.json
+  - type: OpenCollection
+    url: collections/basis-theory.opencollection.json
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tokens/tokenize
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/tokens/detokenize
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/applications
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/applications/application-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/proxies
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/proxies/pre-configured-proxies
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/reactors
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/reactors/reactor-object
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/3ds
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/3ds/sessions
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/tenants
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/logs
+  - type: Documentation
+    url: https://developers.basistheory.com/docs/api/webhooks
+  - type: APIReference
+    url: https://developers.basistheory.com/docs/api/webhooks/api
 common:
 - type: AgenticAccess
   url: agentic-access/basis-theory-agentic-access.yml
