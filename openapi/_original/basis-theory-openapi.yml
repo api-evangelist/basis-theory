@@ -1,0 +1,1830 @@
+openapi: 3.0.1
+info:
+  title: Basis Theory API
+  description: >-
+    The Basis Theory API is a PCI Level 1 compliant tokenization and data vault
+    platform. It lets developers tokenize, store, and use sensitive data -
+    cardholder data, PII, PHI, and bank account numbers - without that data
+    touching their own systems. The API exposes Tokens, batch Tokenize /
+    Detokenize, Applications, the detokenizing Proxy (pre-configured and
+    ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks.
+    All requests are authenticated with a `BT-API-KEY` request header.
+  termsOfService: https://basistheory.com/terms
+  contact:
+    name: Basis Theory Support
+    email: support@basistheory.com
+    url: https://developers.basistheory.com
+  version: '1.0'
+servers:
+  - url: https://api.basistheory.com
+    description: Production environment (PRODUCTION tenants)
+  - url: https://api.test.basistheory.com
+    description: Test environment (TEST tenants)
+security:
+  - ApiKey: []
+tags:
+  - name: Tokens
+    description: Create, retrieve, search, update, and delete tokens.
+  - name: Tokenize / Detokenize
+    description: Batch tokenization and detokenization.
+  - name: Token Intents
+    description: Short-lived intents that capture data before conversion to a token.
+  - name: Applications
+    description: Manage API credentials, permissions, and access rules.
+  - name: Proxy
+    description: Manage pre-configured proxies and invoke the detokenizing Proxy.
+  - name: Reactors
+    description: Manage and invoke serverless Reactor functions.
+  - name: 3D Secure
+    description: Create and authenticate 3D Secure sessions.
+  - name: Tenants
+    description: Manage the current tenant, usage reports, and security contact.
+  - name: Logs
+    description: List audit logs of platform activity.
+  - name: Webhooks
+    description: Register webhook URLs and subscribe to event types.
+paths:
+  /tokens:
+    post:
+      operationId: createToken
+      tags:
+        - Tokens
+      summary: Create a token
+      description: Tokenizes a single piece of sensitive data and stores it in the vault.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTokenRequest'
+      responses:
+        '201':
+          description: The created token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+  /v2/tokens:
+    get:
+      operationId: listTokens
+      tags:
+        - Tokens
+      summary: List tokens
+      description: Returns a cursor-paginated list of tokens for the tenant.
+      parameters:
+        - name: id
+          in: query
+          description: Filter by one or more token ids.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: type
+          in: query
+          description: Filter by one or more token types.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: start
+          in: query
+          description: Cursor for the next page of results.
+          schema:
+            type: string
+        - name: size
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: A paginated list of tokens.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenCursorPaginatedList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /tokens/{id}:
+    get:
+      operationId: getToken
+      tags:
+        - Tokens
+      summary: Get a token
+      parameters:
+        - $ref: '#/components/parameters/TokenId'
+      responses:
+        '200':
+          description: The requested token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateToken
+      tags:
+        - Tokens
+      summary: Update a token
+      description: Partially updates a token using JSON merge patch semantics.
+      parameters:
+        - $ref: '#/components/parameters/TokenId'
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/UpdateTokenRequest'
+      responses:
+        '200':
+          description: The updated token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+    delete:
+      operationId: deleteToken
+      tags:
+        - Tokens
+      summary: Delete a token
+      parameters:
+        - $ref: '#/components/parameters/TokenId'
+      responses:
+        '204':
+          description: The token was deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /tokens/tokenize:
+    post:
+      operationId: tokenize
+      tags:
+        - Tokenize / Detokenize
+      summary: Tokenize
+      description: >-
+        Batch tokenization. Accepts an arbitrary object graph containing token
+        requests and returns the same shape with each request replaced by the
+        created token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenizeRequest'
+      responses:
+        '200':
+          description: The tokenized object graph.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+  /tokens/detokenize:
+    post:
+      operationId: detokenize
+      tags:
+        - Tokenize / Detokenize
+      summary: Detokenize
+      description: >-
+        Batch detokenization. Accepts an object graph containing detokenization
+        expressions and returns the same shape with each expression replaced by
+        the plaintext token data.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: The detokenized object graph.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+  /token-intents:
+    post:
+      operationId: createTokenIntent
+      tags:
+        - Token Intents
+      summary: Create a token intent
+      description: >-
+        Creates a short-lived token intent that captures sensitive data. A
+        token intent can later be converted into a permanent token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTokenIntentRequest'
+      responses:
+        '201':
+          description: The created token intent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenIntent'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+  /token-intents/{id}:
+    get:
+      operationId: getTokenIntent
+      tags:
+        - Token Intents
+      summary: Get a token intent
+      parameters:
+        - $ref: '#/components/parameters/TokenIntentId'
+      responses:
+        '200':
+          description: The requested token intent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenIntent'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteTokenIntent
+      tags:
+        - Token Intents
+      summary: Delete a token intent
+      parameters:
+        - $ref: '#/components/parameters/TokenIntentId'
+      responses:
+        '204':
+          description: The token intent was deleted.
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /applications:
+    post:
+      operationId: createApplication
+      tags:
+        - Applications
+      summary: Create an application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApplicationRequest'
+      responses:
+        '201':
+          description: The created application, including the generated key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+    get:
+      operationId: listApplications
+      tags:
+        - Applications
+      summary: List applications
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+        - name: type
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: A paginated list of applications.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationPaginatedList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /applications/{id}:
+    get:
+      operationId: getApplication
+      tags:
+        - Applications
+      summary: Get an application
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: The requested application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateApplication
+      tags:
+        - Applications
+      summary: Update an application
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateApplicationRequest'
+      responses:
+        '200':
+          description: The updated application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+    delete:
+      operationId: deleteApplication
+      tags:
+        - Applications
+      summary: Delete an application
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '204':
+          description: The application was deleted.
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /applications/key:
+    get:
+      operationId: getApplicationByKey
+      tags:
+        - Applications
+      summary: Get application by key
+      description: Returns the application associated with the BT-API-KEY used on the request.
+      responses:
+        '200':
+          description: The application for the supplied key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /proxies:
+    post:
+      operationId: createProxy
+      tags:
+        - Proxy
+      summary: Create a pre-configured proxy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProxyRequest'
+      responses:
+        '201':
+          description: The created proxy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proxy'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+    get:
+      operationId: listProxies
+      tags:
+        - Proxy
+      summary: List pre-configured proxies
+      responses:
+        '200':
+          description: A paginated list of proxies.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProxyPaginatedList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /proxies/{id}:
+    get:
+      operationId: getProxy
+      tags:
+        - Proxy
+      summary: Get a pre-configured proxy
+      parameters:
+        - $ref: '#/components/parameters/ProxyId'
+      responses:
+        '200':
+          description: The requested proxy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proxy'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateProxy
+      tags:
+        - Proxy
+      summary: Update a pre-configured proxy
+      parameters:
+        - $ref: '#/components/parameters/ProxyId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProxyRequest'
+      responses:
+        '200':
+          description: The updated proxy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proxy'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: patchProxy
+      tags:
+        - Proxy
+      summary: Patch a pre-configured proxy
+      parameters:
+        - $ref: '#/components/parameters/ProxyId'
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/CreateProxyRequest'
+      responses:
+        '200':
+          description: The patched proxy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proxy'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteProxy
+      tags:
+        - Proxy
+      summary: Delete a pre-configured proxy
+      parameters:
+        - $ref: '#/components/parameters/ProxyId'
+      responses:
+        '204':
+          description: The proxy was deleted.
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /proxy:
+    get:
+      operationId: invokeProxyGet
+      tags:
+        - Proxy
+      summary: Invoke the proxy (GET)
+      description: >-
+        Invokes the Proxy. For a pre-configured proxy supply the `BT-PROXY-KEY`
+        header; for an ephemeral proxy supply the `BT-PROXY-URL` header with the
+        destination base URL. The Proxy detokenizes any detokenization
+        expressions in the request and forwards the result to the destination.
+      parameters:
+        - $ref: '#/components/parameters/BtProxyUrl'
+        - $ref: '#/components/parameters/BtProxyKey'
+      responses:
+        '200':
+          description: The response forwarded from the destination.
+        '400':
+          description: Bad proxy request.
+    post:
+      operationId: invokeProxyPost
+      tags:
+        - Proxy
+      summary: Invoke the proxy (POST)
+      parameters:
+        - $ref: '#/components/parameters/BtProxyUrl'
+        - $ref: '#/components/parameters/BtProxyKey'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: The response forwarded from the destination.
+    put:
+      operationId: invokeProxyPut
+      tags:
+        - Proxy
+      summary: Invoke the proxy (PUT)
+      parameters:
+        - $ref: '#/components/parameters/BtProxyUrl'
+        - $ref: '#/components/parameters/BtProxyKey'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: The response forwarded from the destination.
+    patch:
+      operationId: invokeProxyPatch
+      tags:
+        - Proxy
+      summary: Invoke the proxy (PATCH)
+      parameters:
+        - $ref: '#/components/parameters/BtProxyUrl'
+        - $ref: '#/components/parameters/BtProxyKey'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: The response forwarded from the destination.
+    delete:
+      operationId: invokeProxyDelete
+      tags:
+        - Proxy
+      summary: Invoke the proxy (DELETE)
+      parameters:
+        - $ref: '#/components/parameters/BtProxyUrl'
+        - $ref: '#/components/parameters/BtProxyKey'
+      responses:
+        '200':
+          description: The response forwarded from the destination.
+  /reactors:
+    post:
+      operationId: createReactor
+      tags:
+        - Reactors
+      summary: Create a reactor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReactorRequest'
+      responses:
+        '201':
+          description: The created reactor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reactor'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+    get:
+      operationId: listReactors
+      tags:
+        - Reactors
+      summary: List reactors
+      responses:
+        '200':
+          description: A paginated list of reactors.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReactorPaginatedList'
+  /reactors/{id}:
+    get:
+      operationId: getReactor
+      tags:
+        - Reactors
+      summary: Get a reactor
+      parameters:
+        - $ref: '#/components/parameters/ReactorId'
+      responses:
+        '200':
+          description: The requested reactor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reactor'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateReactor
+      tags:
+        - Reactors
+      summary: Update a reactor
+      parameters:
+        - $ref: '#/components/parameters/ReactorId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReactorRequest'
+      responses:
+        '200':
+          description: The updated reactor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reactor'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: patchReactor
+      tags:
+        - Reactors
+      summary: Patch a reactor
+      parameters:
+        - $ref: '#/components/parameters/ReactorId'
+      requestBody:
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/CreateReactorRequest'
+      responses:
+        '200':
+          description: The patched reactor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reactor'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteReactor
+      tags:
+        - Reactors
+      summary: Delete a reactor
+      parameters:
+        - $ref: '#/components/parameters/ReactorId'
+      responses:
+        '204':
+          description: The reactor was deleted.
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /reactors/{id}/react:
+    post:
+      operationId: invokeReactor
+      tags:
+        - Reactors
+      summary: Invoke a reactor
+      description: >-
+        Invokes a reactor, detokenizing any tokens referenced in `args` and
+        running the reactor's code. Requires an application with token:use
+        permission.
+      parameters:
+        - $ref: '#/components/parameters/ReactorId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReactRequest'
+      responses:
+        '200':
+          description: The reactor response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReactResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+  /3ds/sessions:
+    post:
+      operationId: create3dsSession
+      tags:
+        - 3D Secure
+      summary: Create a 3DS session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Create3dsSessionRequest'
+      responses:
+        '201':
+          description: The created 3DS session.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreeDSSession'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+  /3ds/sessions/{id}:
+    get:
+      operationId: get3dsSession
+      tags:
+        - 3D Secure
+      summary: Get a 3DS session
+      parameters:
+        - $ref: '#/components/parameters/ThreeDSSessionId'
+      responses:
+        '200':
+          description: The requested 3DS session.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreeDSSession'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /3ds/sessions/{id}/authenticate:
+    post:
+      operationId: authenticate3dsSession
+      tags:
+        - 3D Secure
+      summary: Authenticate a 3DS session
+      parameters:
+        - $ref: '#/components/parameters/ThreeDSSessionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Authenticate3dsRequest'
+      responses:
+        '200':
+          description: The authentication result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreeDSSession'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+  /3ds/sessions/{id}/challenge-result:
+    get:
+      operationId: get3dsChallengeResult
+      tags:
+        - 3D Secure
+      summary: Get a 3DS challenge result
+      parameters:
+        - $ref: '#/components/parameters/ThreeDSSessionId'
+      responses:
+        '200':
+          description: The challenge result for the session.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreeDSSession'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /tenants/self:
+    get:
+      operationId: getTenant
+      tags:
+        - Tenants
+      summary: Get the current tenant
+      responses:
+        '200':
+          description: The current tenant.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      operationId: updateTenant
+      tags:
+        - Tenants
+      summary: Update the current tenant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantRequest'
+      responses:
+        '200':
+          description: The updated tenant.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+    delete:
+      operationId: deleteTenant
+      tags:
+        - Tenants
+      summary: Delete the current tenant
+      responses:
+        '204':
+          description: The tenant was deleted.
+  /tenants/self/reports/usage:
+    get:
+      operationId: getTenantUsageReport
+      tags:
+        - Tenants
+      summary: Get the tenant usage report
+      responses:
+        '200':
+          description: The tenant usage report.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantUsageReport'
+  /logs:
+    get:
+      operationId: listLogs
+      tags:
+        - Logs
+      summary: List logs
+      parameters:
+        - name: entity_type
+          in: query
+          schema:
+            type: string
+        - name: entity_id
+          in: query
+          schema:
+            type: string
+        - name: start_date
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: end_date
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: A paginated list of log entries.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogPaginatedList'
+  /webhooks:
+    post:
+      operationId: createWebhook
+      tags:
+        - Webhooks
+      summary: Create a webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWebhookRequest'
+      responses:
+        '201':
+          description: The created webhook.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
+    get:
+      operationId: listWebhooks
+      tags:
+        - Webhooks
+      summary: List webhooks
+      responses:
+        '200':
+          description: A paginated list of webhooks.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookPaginatedList'
+  /webhooks/{id}:
+    get:
+      operationId: getWebhook
+      tags:
+        - Webhooks
+      summary: Get a webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookId'
+      responses:
+        '200':
+          description: The requested webhook.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateWebhook
+      tags:
+        - Webhooks
+      summary: Update a webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWebhookRequest'
+      responses:
+        '200':
+          description: The updated webhook.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteWebhook
+      tags:
+        - Webhooks
+      summary: Delete a webhook
+      parameters:
+        - $ref: '#/components/parameters/WebhookId'
+      responses:
+        '204':
+          description: The webhook was deleted.
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /webhooks/event-types:
+    get:
+      operationId: listWebhookEventTypes
+      tags:
+        - Webhooks
+      summary: List available webhook event types
+      responses:
+        '200':
+          description: The available event types.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: BT-API-KEY
+      description: >-
+        Authenticate every request with a Basis Theory Application key supplied
+        in the BT-API-KEY request header.
+  parameters:
+    TokenId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the token.
+      schema:
+        type: string
+    TokenIntentId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the token intent.
+      schema:
+        type: string
+        format: uuid
+    ApplicationId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the application.
+      schema:
+        type: string
+        format: uuid
+    ProxyId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the proxy.
+      schema:
+        type: string
+        format: uuid
+    ReactorId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the reactor.
+      schema:
+        type: string
+        format: uuid
+    ThreeDSSessionId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the 3DS session.
+      schema:
+        type: string
+        format: uuid
+    WebhookId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the webhook.
+      schema:
+        type: string
+        format: uuid
+    BtProxyUrl:
+      name: BT-PROXY-URL
+      in: header
+      required: false
+      description: For ephemeral proxy requests, the destination base URL to proxy to.
+      schema:
+        type: string
+        format: uri
+    BtProxyKey:
+      name: BT-PROXY-KEY
+      in: header
+      required: false
+      description: For pre-configured proxy requests, the short key identifying the proxy.
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Forbidden:
+      description: The application lacks the required permission.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+  schemas:
+    Token:
+      type: object
+      properties:
+        id:
+          type: string
+        tenant_id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          description: The token type, e.g. token, card, bank, social_security_number.
+        data:
+          description: The token data (masked unless detokenized).
+        mask:
+          description: The masking expression applied to the data.
+        fingerprint:
+          type: string
+        fingerprint_expression:
+          type: string
+        containers:
+          type: array
+          items:
+            type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        search_indexes:
+          type: array
+          items:
+            type: string
+        expires_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    CreateTokenRequest:
+      type: object
+      required:
+        - type
+        - data
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        data:
+          description: The sensitive value to tokenize. May be a primitive or an object.
+        mask:
+          description: A masking expression used to reveal a non-sensitive portion of the data.
+        containers:
+          type: array
+          items:
+            type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        search_indexes:
+          type: array
+          items:
+            type: string
+        fingerprint_expression:
+          type: string
+        deduplicate_token:
+          type: boolean
+        expires_at:
+          type: string
+          format: date-time
+    UpdateTokenRequest:
+      type: object
+      properties:
+        data: {}
+        mask: {}
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        search_indexes:
+          type: array
+          items:
+            type: string
+        fingerprint_expression:
+          type: string
+    TokenizeRequest:
+      type: object
+      additionalProperties: true
+      description: >-
+        An arbitrary object graph where leaf nodes may be token requests of the
+        form {type, data, ...}. The same shape is returned with each request
+        replaced by its created token.
+    TokenIntent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+        tenant_id:
+          type: string
+          format: uuid
+        fingerprint:
+          type: string
+        card:
+          type: object
+          additionalProperties: true
+        expires_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+    CreateTokenIntentRequest:
+      type: object
+      required:
+        - type
+        - data
+      properties:
+        type:
+          type: string
+        data: {}
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        key:
+          type: string
+          description: The application key, returned only on creation when create_key is true.
+        type:
+          type: string
+          enum:
+            - public
+            - private
+            - management
+            - expiring
+        permissions:
+          type: array
+          items:
+            type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessRule'
+        expires_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+    CreateApplicationRequest:
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - public
+            - private
+            - management
+            - expiring
+        permissions:
+          type: array
+          items:
+            type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessRule'
+        create_key:
+          type: boolean
+          default: true
+        expires_at:
+          type: string
+          format: date-time
+    UpdateApplicationRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessRule'
+    AccessRule:
+      type: object
+      properties:
+        description:
+          type: string
+        priority:
+          type: integer
+        container:
+          type: string
+        transform:
+          type: string
+          enum:
+            - redact
+            - mask
+            - reveal
+        permissions:
+          type: array
+          items:
+            type: string
+    Proxy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        key:
+          type: string
+        tenant_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        destination_url:
+          type: string
+          format: uri
+        request_reactor_id:
+          type: string
+          format: uuid
+        response_reactor_id:
+          type: string
+          format: uuid
+        request_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        response_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        application:
+          $ref: '#/components/schemas/Application'
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+        require_auth:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+    CreateProxyRequest:
+      type: object
+      required:
+        - name
+        - destination_url
+      properties:
+        name:
+          type: string
+        destination_url:
+          type: string
+          format: uri
+        request_reactor_id:
+          type: string
+          format: uuid
+        response_reactor_id:
+          type: string
+          format: uuid
+        request_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        response_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        application:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+        require_auth:
+          type: boolean
+          default: true
+    ProxyTransform:
+      type: object
+      properties:
+        type:
+          type: string
+        code:
+          type: string
+        matcher:
+          type: string
+    Reactor:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        code:
+          type: string
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+        application:
+          $ref: '#/components/schemas/Application'
+        state:
+          type: string
+          description: Provisioning state for asynchronous runtimes.
+        created_at:
+          type: string
+          format: date-time
+    CreateReactorRequest:
+      type: object
+      required:
+        - name
+        - code
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+        application:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+        runtime:
+          type: object
+          additionalProperties: true
+    ReactRequest:
+      type: object
+      required:
+        - args
+      properties:
+        args:
+          type: object
+          additionalProperties: true
+          description: >-
+            Arguments passed to the reactor. May contain detokenization
+            expressions of the form {{ token: <tokenId> }}.
+    ReactResponse:
+      type: object
+      properties:
+        tokens:
+          type: object
+          additionalProperties: true
+        raw:
+          type: object
+          additionalProperties: true
+    ThreeDSSession:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+          format: uuid
+        token_id:
+          type: string
+        type:
+          type: string
+        device:
+          type: string
+        version:
+          type: string
+        method_url:
+          type: string
+        threeds_version:
+          type: string
+        authentication_value:
+          type: string
+        eci:
+          type: string
+        authentication_status:
+          type: string
+        authentication_status_code:
+          type: string
+        liability_shifted:
+          type: boolean
+        acs_transaction_id:
+          type: string
+        ds_transaction_id:
+          type: string
+        expires_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+    Create3dsSessionRequest:
+      type: object
+      properties:
+        token_id:
+          type: string
+        token_intent_id:
+          type: string
+        type:
+          type: string
+          enum:
+            - customer
+            - merchant
+        device:
+          type: string
+          enum:
+            - browser
+            - app
+        device_info:
+          type: object
+          additionalProperties: true
+        pan:
+          type: object
+          properties:
+            number:
+              type: string
+            expiration_month:
+              type: string
+            expiration_year:
+              type: string
+    Authenticate3dsRequest:
+      type: object
+      properties:
+        authentication_category:
+          type: string
+        authentication_type:
+          type: string
+        challenge_preference:
+          type: string
+        merchant_info:
+          type: object
+          additionalProperties: true
+        cardholder_info:
+          type: object
+          additionalProperties: true
+        purchase_info:
+          type: object
+          additionalProperties: true
+    Tenant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        owner_id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum:
+            - TEST
+            - PRODUCTION
+        name:
+          type: string
+        settings:
+          $ref: '#/components/schemas/TenantSettings'
+        created_by:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    TenantSettings:
+      type: object
+      properties:
+        fingerprint_tokens:
+          type: boolean
+        deduplicate_tokens:
+          type: boolean
+        disable_ephemeral_proxy:
+          type: boolean
+        token_deduplication_behavior:
+          type: string
+    UpdateTenantRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        settings:
+          $ref: '#/components/schemas/TenantSettings'
+    TenantUsageReport:
+      type: object
+      properties:
+        token_report:
+          type: object
+          properties:
+            included_monthly_active_tokens:
+              type: integer
+            monthly_active_tokens:
+              type: integer
+            metrics_by_type:
+              type: object
+              additionalProperties:
+                type: object
+                additionalProperties: true
+    Log:
+      type: object
+      properties:
+        tenant_id:
+          type: string
+          format: uuid
+        actor_id:
+          type: string
+        actor_type:
+          type: string
+        entity_type:
+          type: string
+        entity_id:
+          type: string
+        operation:
+          type: string
+        message:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    Webhook:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+            - enabled
+            - disabled
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+        notify_email:
+          type: string
+          format: email
+        events:
+          type: array
+          items:
+            type: string
+        created_by:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    CreateWebhookRequest:
+      type: object
+      required:
+        - name
+        - url
+        - events
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+        notify_email:
+          type: string
+          format: email
+        status:
+          type: string
+          enum:
+            - enabled
+            - disabled
+        events:
+          type: array
+          items:
+            type: string
+    CursorPagination:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type: integer
+        page_number:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    TokenCursorPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/CursorPagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Token'
+    ApplicationPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+    ProxyPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Proxy'
+    ReactorPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reactor'
+    LogPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Log'
+    WebhookPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Webhook'
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string

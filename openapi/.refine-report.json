@@ -1,0 +1,32 @@
+{
+  "provider": "basis-theory",
+  "sources": [
+    "basis-theory-3d-secure-api-openapi.yml",
+    "basis-theory-applications-api-openapi.yml",
+    "basis-theory-logs-api-openapi.yml",
+    "basis-theory-proxy-api-openapi.yml",
+    "basis-theory-reactors-api-openapi.yml",
+    "basis-theory-tenants-api-openapi.yml",
+    "basis-theory-token-intents-api-openapi.yml",
+    "basis-theory-tokenize-detokenize-api-openapi.yml",
+    "basis-theory-tokens-api-openapi.yml",
+    "basis-theory-webhooks-api-openapi.yml"
+  ],
+  "outputs": [
+    "basis-theory-3d-secure-api-openapi.yml",
+    "basis-theory-applications-api-openapi.yml",
+    "basis-theory-logs-api-openapi.yml",
+    "basis-theory-proxy-api-openapi.yml",
+    "basis-theory-reactors-api-openapi.yml",
+    "basis-theory-tenants-api-openapi.yml",
+    "basis-theory-token-intents-api-openapi.yml",
+    "basis-theory-tokenize-detokenize-api-openapi.yml",
+    "basis-theory-tokens-api-openapi.yml",
+    "basis-theory-webhooks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
