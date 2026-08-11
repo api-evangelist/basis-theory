@@ -7,6 +7,18 @@ description: Basis Theory is a PCI Level 1 compliant tokenization and data vault
   cardholder data, PII, PHI, and bank account numbers - without that data ever touching
   their own systems, using tokens, a detokenizing Proxy, serverless Reactors, and
   3D Secure authentication.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-11'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
