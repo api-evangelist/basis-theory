@@ -504,7 +504,7 @@ common:
   url: https://basistheory.com/resources/terms-of-service
 - type: Pricing
   url: https://basistheory.com/pricing
-- type: SignUp
+- type: Signup
   url: https://portal.basistheory.com/register
 - type: AgenticAccess
   url: agentic-access/basis-theory-agentic-access.yml

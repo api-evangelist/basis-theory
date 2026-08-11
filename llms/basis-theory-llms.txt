@@ -1,0 +1,78 @@
+# Basis Theory: Built to Keep Customers Transacting
+
+More than a token vault—Basis Theory routes, tokenizes, and optimizes your payments to drive conversion, resilience, and retention.
+
+## Overview
+
+- **[See how your payments stack up. Get a demo and ROI estimate in 24h.](https://basistheory.com/contact)**: Explore how Basis Theory can enhance your payment processes with a demo and a return on investment estimate within 24 hours.
+
+## Why Basis Theory
+
+- **[Why Basis Theory](https://basistheory.com/why-basis-theory)**: Understand the unique advantages of using Basis Theory for payment processing, including statically served components, an independent agnostic vault, a focus on developer experience, and offering best-in-class security.
+
+## Pricing and Implementation
+
+- **[Pricing](https://basistheory.com/pricing)**: Review the pricing structure for Basis Theory services to find a plan that fits your business needs.
+- **[Start implementing](https://portal.basistheory.com/register)**: Begin implementing Basis Theory so that you can route, tokenize, and optimize payments on your platform.
+
+## Documentation and Developer Resources
+
+- **[Developer Documentation](https://developers.basistheory.com/)**: Access comprehensive documentation for all Basis Theory services and features.
+- **[Getting Started | Basis Theory Developer Documentation](https://developers.basistheory.com/docs/)**: A guide for developers to initiate their journey with Basis Theory's API and services.
+- **[API Reference](https://developers.basistheory.com/docs/api/)**: Detailed reference for developers to understand and utilize the Basis Theory API effectively.
+- **[Developer SDK Reference](https://developers.basistheory.com/docs/sdks/)**: Libraries and tools for interacting with the Basis Theory integration.
+
+
+## Payment Solutions
+
+- **[Monetize Payments](https://basistheory.com/solution/monetize-payments)**: Vertical SaaS platforms and two-sided marketplaces leverage Basis Theory to earn revenue from the transaction activity happening on their platform.
+
+
+## Industry Applications and Use Cases
+
+- **[Digital Health](https://basistheory.com/use-cases/health)**: Insights into how Basis Theory can be applied in the digital health sector.
+- **[Fintech](https://basistheory.com/use-cases/fintech)**: Explore the role of Basis Theory in the fintech industry.
+- **[Gaming](https://basistheory.com/use-cases/gaming)**: Understand how Basis Theory supports payment solutions in the gaming industry.
+- **[Ecommerce](https://basistheory.com/#ecom)**: Discover how Basis Theory can optimize payment solutions for ecommerce businesses.
+- **[Subscription](https://basistheory.com/#subs)**: Learn about payment processing tailored for subscription-based services.
+- **[VSaaS](https://basistheory.com/#vsaas)**: Explore the advantages of using Basis Theory in a VSaaS (Payments as a Service) model.
+- **[Creator Economy](https://basistheory.com/#creator)**: Understand how Basis Theory supports creators in managing their payment processes.
+
+## Security, Features, and Compliance
+
+- **[Secure Data Vault](https://developers.basistheory.com/docs/concepts/what-are-tokens)**: Learn about the secure data vault feature that protects sensitive payment information.
+- **[Network Tokens](https://developers.basistheory.com/docs/features/network-tokens)**: Discover how network tokens enhance security in payment transactions.
+- **[Account Updater](https://developers.basistheory.com/docs/features/account-updater)**: Understand the account updater feature that helps maintain up-to-date payment information.
+- **[3D Secure Support](https://developers.basistheory.com/docs/guides/threeds/overview)**: Explore the 3D Secure support offered by Basis Theory to enhance transaction security.
+- **[Custom Payment Flows](https://developers.basistheory.com/docs/concepts/what-is-the-proxy)**: Learn how to create custom payment flows tailored to your business needs.
+- **[Enhanced BIN Service](https://developers.basistheory.com/docs/api/tokens/token-enrichments)**: Discover the enhanced Bank Identification Number (BIN) service for improved transaction processing.
+
+## Insights and Resources
+
+- **[Blog](https://blog.basistheory.com/)**: Access a collection of articles and insights related to payment processing and industry trends.
+- **[Best Payments Resources To Deepen Your Payments Knowledge](https://blog.basistheory.com/payments-resources)**: Curated resources to enhance your understanding of payment systems.
+- **[Payment Reconciliation: Process, Challenges, and How to Automate It](https://blog.basistheory.com/payment-reconciliation)**: An article discussing the payment reconciliation process and automation strategies.
+- **[Top Payment Statistics and Trends](https://blog.basistheory.com/payment-statistics)**: Insights into the latest payment statistics and trends for the year 2023.
+- **[Payments Resources](https://blog.basistheory.com/tag/payments)**: Insights specifically related to payment processing updates.
+- **[Compliance Resources](https://blog.basistheory.com/tag/compliance)**: Updates regarding compliance and regulatory matters.
+
+## Status and Support
+
+- **[System Status](https://status.basistheory.com/)**: Check the current operational status of Basis Theory services.
+- **[Previous incidents - Basis Theory status](https://status.basistheory.com/incidents)**: Review past incidents affecting service availability and performance.
+
+## Legal and Compliance
+
+- **[Terms of Service](https://basistheory.com/resources/terms-of-service)**: Review the terms governing the use of Basis Theory services.
+- **[Master Services Agreement](https://basistheory.com/resources/master-services-agreement)**: Detailed agreement outlining the services provided by Basis Theory.
+- **[Privacy Policy](https://basistheory.com/resources/privacy-policy)**: Understand how Basis Theory handles user data and privacy.
+- **[Cookie Policy](https://basistheory.com/resources/cookie-policy)**: Information on the use of cookies within Basis Theory services.
+- **[Subprocessors - Basis Theory](https://basistheory.com/resources/subprocessors)**: A list of subprocessors utilized by Basis Theory for service delivery.
+
+
+## Educational Content
+
+- **[Forward APIs and What a Merchant Should Know - Blog](https://blog.basistheory.com/forward-api)**: An informative article for merchants about forward APIs.
+- **[What is an Issuer Processor? What Merchants Should Know - Blog](https://blog.basistheory.com/issuer-processor)**: An overview of issuer processors and their relevance to merchants.
+- **[What You Should Know About PCI Violations - Blog](https://blog.basistheory.com/pci-violations)**: Important information regarding PCI compliance and potential violations.
+- **[VSaaS Platforms: Why the Time is Now to Embed Payments - Blog](https://blog.basistheory.com/embedded-payments)**: Discussion on the importance of integrating payments into VSaaS platforms.
