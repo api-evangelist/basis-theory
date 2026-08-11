@@ -492,6 +492,20 @@ apis:
   - type: APIReference
     url: https://developers.basistheory.com/docs/api/webhooks/api
 common:
+- type: Security
+  url: https://basistheory.com/security
+- type: SDKs
+  url: https://developers.basistheory.com/docs/sdks
+- type: StatusPage
+  url: https://status.basistheory.com/
+- type: PrivacyPolicy
+  url: https://basistheory.com/resources/privacy-policy
+- type: TermsOfService
+  url: https://basistheory.com/resources/terms-of-service
+- type: Pricing
+  url: https://basistheory.com/pricing
+- type: SignUp
+  url: https://portal.basistheory.com/register
 - type: AgenticAccess
   url: agentic-access/basis-theory-agentic-access.yml
 - type: TrustCenter
