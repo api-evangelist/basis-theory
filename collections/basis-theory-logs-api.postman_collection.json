@@ -1,0 +1,171 @@
+{
+  "item": [
+    {
+      "id": "950ac9fe-39ae-48f0-a448-e9a7c9d7a733",
+      "name": "Logs",
+      "description": {
+        "content": "List audit logs of platform activity.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4fe77756-a9a5-456b-8560-35f0f160377d",
+          "name": "List logs",
+          "request": {
+            "name": "List logs",
+            "description": {},
+            "url": {
+              "path": [
+                "logs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "entity_type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "entity_id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "start_date",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_date",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "20"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c8fb6163-7d0f-416a-b846-0dae8fe2ad17",
+              "name": "A paginated list of log entries.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "entity_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "entity_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pagination\": {\n    \"total_items\": 150,\n    \"page_number\": 6421,\n    \"page_size\": 1134,\n    \"total_pages\": 1833\n  },\n  \"data\": [\n    {\n      \"tenant_id\": \"ef85c673-3633-2d24-cb37-0ca34d484a2e\",\n      \"actor_id\": \"string\",\n      \"actor_type\": \"string\",\n      \"entity_type\": \"string\",\n      \"entity_id\": \"string\",\n      \"operation\": \"string\",\n      \"message\": \"string\",\n      \"created_at\": \"1965-12-29T03:01:44.457Z\"\n    },\n    {\n      \"tenant_id\": \"1e7e6336-c59c-07c5-2805-fd6b743ba4bf\",\n      \"actor_id\": \"string\",\n      \"actor_type\": \"string\",\n      \"entity_type\": \"string\",\n      \"entity_id\": \"string\",\n      \"operation\": \"string\",\n      \"message\": \"string\",\n      \"created_at\": \"2018-09-07T17:52:53.150Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.basistheory.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "BT-API-KEY"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4791dadc-c6c6-40dd-9054-294a3bbdb00c",
+    "name": "Basis Theory 3D Secure Logs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.\n\nContact Support:\n Name: Basis Theory Support\n Email: support@basistheory.com",
+      "type": "text/plain"
+    }
+  }
+}

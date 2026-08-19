@@ -1,0 +1,678 @@
+{
+  "item": [
+    {
+      "id": "c744b7b1-083d-48ff-bd55-95f54cc14b4d",
+      "name": "3D Secure",
+      "description": {
+        "content": "Create and authenticate 3D Secure sessions.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c36fdc94-669e-4209-bb36-8d3322ba9513",
+          "name": "Create a 3DS session",
+          "request": {
+            "name": "Create a 3DS session",
+            "description": {},
+            "url": {
+              "path": [
+                "3ds",
+                "sessions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token_id\": \"<string>\",\n  \"token_intent_id\": \"<string>\",\n  \"type\": \"<string>\",\n  \"device\": \"<string>\",\n  \"device_info\": {\n    \"key_0\": 5294.890467741748,\n    \"key_1\": false,\n    \"key_2\": true\n  },\n  \"pan\": {\n    \"number\": \"<string>\",\n    \"expiration_month\": \"<string>\",\n    \"expiration_year\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fee5f652-ed0e-4d27-a76a-44d75796c124",
+              "name": "The created 3DS session.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "3ds",
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token_id\": \"<string>\",\n  \"token_intent_id\": \"<string>\",\n  \"type\": \"<string>\",\n  \"device\": \"<string>\",\n  \"device_info\": {\n    \"key_0\": 9117,\n    \"key_1\": 5586.640941892216\n  },\n  \"pan\": {\n    \"number\": \"<string>\",\n    \"expiration_month\": \"<string>\",\n    \"expiration_year\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"c6d8a19c-c141-7d5d-7b8a-14ea0b4f55e7\",\n  \"tenant_id\": \"8bc5d7bf-f1dc-4b5a-3932-b71c58091471\",\n  \"token_id\": \"string\",\n  \"type\": \"string\",\n  \"device\": \"string\",\n  \"version\": \"string\",\n  \"method_url\": \"string\",\n  \"threeds_version\": \"string\",\n  \"authentication_value\": \"string\",\n  \"eci\": \"string\",\n  \"authentication_status\": \"string\",\n  \"authentication_status_code\": \"string\",\n  \"liability_shifted\": false,\n  \"acs_transaction_id\": \"string\",\n  \"ds_transaction_id\": \"string\",\n  \"expires_at\": \"2008-03-16T22:05:25.409Z\",\n  \"created_at\": \"1997-04-29T03:28:56.414Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0e8a44a7-8545-44f7-bb43-5f0be379bf47",
+              "name": "The request failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "3ds",
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token_id\": \"<string>\",\n  \"token_intent_id\": \"<string>\",\n  \"type\": \"<string>\",\n  \"device\": \"<string>\",\n  \"device_info\": {\n    \"key_0\": 9117,\n    \"key_1\": 5586.640941892216\n  },\n  \"pan\": {\n    \"number\": \"<string>\",\n    \"expiration_month\": \"<string>\",\n    \"expiration_year\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 5865,\n  \"errors\": {\n    \"key_0\": [\n      \"string\",\n      \"string\"\n    ],\n    \"key_1\": [\n      \"string\",\n      \"string\"\n    ],\n    \"key_2\": [\n      \"string\",\n      \"string\"\n    ],\n    \"key_3\": [\n      \"string\",\n      \"string\"\n    ],\n    \"key_4\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a65c9a4b-d0a7-4296-81ef-a46af83fd9e0",
+          "name": "Get a 3DS session",
+          "request": {
+            "name": "Get a 3DS session",
+            "description": {},
+            "url": {
+              "path": [
+                "3ds",
+                "sessions",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the 3DS session."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "349af6b8-dc0a-4abc-b890-352fa0743f5f",
+              "name": "The requested 3DS session.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "3ds",
+                    "sessions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the 3DS session."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"c6d8a19c-c141-7d5d-7b8a-14ea0b4f55e7\",\n  \"tenant_id\": \"8bc5d7bf-f1dc-4b5a-3932-b71c58091471\",\n  \"token_id\": \"string\",\n  \"type\": \"string\",\n  \"device\": \"string\",\n  \"version\": \"string\",\n  \"method_url\": \"string\",\n  \"threeds_version\": \"string\",\n  \"authentication_value\": \"string\",\n  \"eci\": \"string\",\n  \"authentication_status\": \"string\",\n  \"authentication_status_code\": \"string\",\n  \"liability_shifted\": false,\n  \"acs_transaction_id\": \"string\",\n  \"ds_transaction_id\": \"string\",\n  \"expires_at\": \"2008-03-16T22:05:25.409Z\",\n  \"created_at\": \"1997-04-29T03:28:56.414Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b95dbb52-ccf9-441a-8fd3-dd929dc2495d",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "3ds",
+                    "sessions",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the 3DS session."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 5454,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5730def7-de4d-4c39-90f8-7bcd2d86f8dd",
+          "name": "Authenticate a 3DS session",
+          "request": {
+            "name": "Authenticate a 3DS session",
+            "description": {},
+            "url": {
+              "path": [
+                "3ds",
+                "sessions",
+                ":id",
+                "authenticate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the 3DS session."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"authentication_category\": \"<string>\",\n  \"authentication_type\": \"<string>\",\n  \"challenge_preference\": \"<string>\",\n  \"merchant_info\": {\n    \"key_0\": 1767.6517360483856\n  },\n  \"cardholder_info\": {\n    \"key_0\": 4196,\n    \"key_1\": \"string\",\n    \"key_2\": false\n  },\n  \"purchase_info\": {\n    \"key_0\": 5644.772115937127\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6b94dc77-94d3-4781-9fe0-7a60ef197234",
+              "name": "The authentication result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "3ds",
+                    "sessions",
+                    ":id",
+                    "authenticate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the 3DS session."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"authentication_category\": \"<string>\",\n  \"authentication_type\": \"<string>\",\n  \"challenge_preference\": \"<string>\",\n  \"merchant_info\": {\n    \"key_0\": \"string\"\n  },\n  \"cardholder_info\": {\n    \"key_0\": 3931.504212304954\n  },\n  \"purchase_info\": {\n    \"key_0\": \"string\",\n    \"key_1\": false,\n    \"key_2\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"c6d8a19c-c141-7d5d-7b8a-14ea0b4f55e7\",\n  \"tenant_id\": \"8bc5d7bf-f1dc-4b5a-3932-b71c58091471\",\n  \"token_id\": \"string\",\n  \"type\": \"string\",\n  \"device\": \"string\",\n  \"version\": \"string\",\n  \"method_url\": \"string\",\n  \"threeds_version\": \"string\",\n  \"authentication_value\": \"string\",\n  \"eci\": \"string\",\n  \"authentication_status\": \"string\",\n  \"authentication_status_code\": \"string\",\n  \"liability_shifted\": false,\n  \"acs_transaction_id\": \"string\",\n  \"ds_transaction_id\": \"string\",\n  \"expires_at\": \"2008-03-16T22:05:25.409Z\",\n  \"created_at\": \"1997-04-29T03:28:56.414Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dd40f2a3-5af9-461d-b562-1ae223c2eaa3",
+              "name": "The request failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "3ds",
+                    "sessions",
+                    ":id",
+                    "authenticate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the 3DS session."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"authentication_category\": \"<string>\",\n  \"authentication_type\": \"<string>\",\n  \"challenge_preference\": \"<string>\",\n  \"merchant_info\": {\n    \"key_0\": \"string\"\n  },\n  \"cardholder_info\": {\n    \"key_0\": 3931.504212304954\n  },\n  \"purchase_info\": {\n    \"key_0\": \"string\",\n    \"key_1\": false,\n    \"key_2\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 8242,\n  \"errors\": {\n    \"key_0\": [\n      \"string\",\n      \"string\"\n    ],\n    \"key_1\": [\n      \"string\",\n      \"string\"\n    ],\n    \"key_2\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b09ee2b2-774f-480a-978d-43e4e167fa7f",
+          "name": "Get a 3DS challenge result",
+          "request": {
+            "name": "Get a 3DS challenge result",
+            "description": {},
+            "url": {
+              "path": [
+                "3ds",
+                "sessions",
+                ":id",
+                "challenge-result"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the 3DS session."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "77b4d2bb-a99c-4e31-bdea-89411558d5ab",
+              "name": "The challenge result for the session.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "3ds",
+                    "sessions",
+                    ":id",
+                    "challenge-result"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the 3DS session."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"c6d8a19c-c141-7d5d-7b8a-14ea0b4f55e7\",\n  \"tenant_id\": \"8bc5d7bf-f1dc-4b5a-3932-b71c58091471\",\n  \"token_id\": \"string\",\n  \"type\": \"string\",\n  \"device\": \"string\",\n  \"version\": \"string\",\n  \"method_url\": \"string\",\n  \"threeds_version\": \"string\",\n  \"authentication_value\": \"string\",\n  \"eci\": \"string\",\n  \"authentication_status\": \"string\",\n  \"authentication_status_code\": \"string\",\n  \"liability_shifted\": false,\n  \"acs_transaction_id\": \"string\",\n  \"ds_transaction_id\": \"string\",\n  \"expires_at\": \"2008-03-16T22:05:25.409Z\",\n  \"created_at\": \"1997-04-29T03:28:56.414Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "98179702-a126-4736-b868-2aa7402dd54d",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "3ds",
+                    "sessions",
+                    ":id",
+                    "challenge-result"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the 3DS session."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 5454,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.basistheory.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "BT-API-KEY"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "e6641838-7d5d-462b-b2e6-05800a15c20a",
+    "name": "Basis Theory 3D Secure API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.\n\nContact Support:\n Name: Basis Theory Support\n Email: support@basistheory.com",
+      "type": "text/plain"
+    }
+  }
+}

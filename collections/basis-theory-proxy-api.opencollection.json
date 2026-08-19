@@ -1,0 +1,253 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Basis Theory 3D Secure Proxy API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "BT-API-KEY",
+      "value": "{{BT-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Proxy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List pre-configured proxies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.basistheory.com/proxies"
+          },
+          "docs": "List pre-configured proxies"
+        },
+        {
+          "info": {
+            "name": "Create a pre-configured proxy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/proxies",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a pre-configured proxy"
+        },
+        {
+          "info": {
+            "name": "Get a pre-configured proxy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.basistheory.com/proxies/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the proxy."
+              }
+            ]
+          },
+          "docs": "Get a pre-configured proxy"
+        },
+        {
+          "info": {
+            "name": "Update a pre-configured proxy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.basistheory.com/proxies/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the proxy."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a pre-configured proxy"
+        },
+        {
+          "info": {
+            "name": "Patch a pre-configured proxy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.basistheory.com/proxies/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the proxy."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Patch a pre-configured proxy"
+        },
+        {
+          "info": {
+            "name": "Delete a pre-configured proxy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.basistheory.com/proxies/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the proxy."
+              }
+            ]
+          },
+          "docs": "Delete a pre-configured proxy"
+        },
+        {
+          "info": {
+            "name": "Invoke the proxy (GET)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.basistheory.com/proxy",
+            "headers": [
+              {
+                "name": "BT-PROXY-URL",
+                "value": ""
+              },
+              {
+                "name": "BT-PROXY-KEY",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Invokes the Proxy. For a pre-configured proxy supply the `BT-PROXY-KEY` header; for an ephemeral proxy supply the `BT-PROXY-URL` header with the destination base URL. The Proxy detokenizes any detokenization expressions in the request and forwards the result to the destination."
+        },
+        {
+          "info": {
+            "name": "Invoke the proxy (POST)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/proxy",
+            "headers": [
+              {
+                "name": "BT-PROXY-URL",
+                "value": ""
+              },
+              {
+                "name": "BT-PROXY-KEY",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invoke the proxy (POST)"
+        },
+        {
+          "info": {
+            "name": "Invoke the proxy (PUT)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.basistheory.com/proxy",
+            "headers": [
+              {
+                "name": "BT-PROXY-URL",
+                "value": ""
+              },
+              {
+                "name": "BT-PROXY-KEY",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invoke the proxy (PUT)"
+        },
+        {
+          "info": {
+            "name": "Invoke the proxy (PATCH)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.basistheory.com/proxy",
+            "headers": [
+              {
+                "name": "BT-PROXY-URL",
+                "value": ""
+              },
+              {
+                "name": "BT-PROXY-KEY",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invoke the proxy (PATCH)"
+        },
+        {
+          "info": {
+            "name": "Invoke the proxy (DELETE)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.basistheory.com/proxy",
+            "headers": [
+              {
+                "name": "BT-PROXY-URL",
+                "value": ""
+              },
+              {
+                "name": "BT-PROXY-KEY",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Invoke the proxy (DELETE)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

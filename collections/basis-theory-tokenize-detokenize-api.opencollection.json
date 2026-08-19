@@ -1,0 +1,56 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Basis Theory 3D Secure Tokenize / Detokenize API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "BT-API-KEY",
+      "value": "{{BT-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tokenize / Detokenize",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Tokenize",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/tokens/tokenize",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Batch tokenization. Accepts an arbitrary object graph containing token requests and returns the same shape with each request replaced by the created token."
+        },
+        {
+          "info": {
+            "name": "Detokenize",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/tokens/detokenize",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Batch detokenization. Accepts an object graph containing detokenization expressions and returns the same shape with each expression replaced by the plaintext token data."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

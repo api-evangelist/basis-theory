@@ -1,0 +1,1622 @@
+{
+  "item": [
+    {
+      "id": "3de01177-070a-4b87-babf-a3f85025c73d",
+      "name": "Proxy",
+      "description": {
+        "content": "Manage pre-configured proxies and invoke the detokenizing Proxy.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "646e301d-7554-4988-b2ec-ac55af2893cd",
+          "name": "Create a pre-configured proxy",
+          "request": {
+            "name": "Create a pre-configured proxy",
+            "description": {},
+            "url": {
+              "path": [
+                "proxies"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"destination_url\": \"<uri>\",\n  \"request_reactor_id\": \"<uuid>\",\n  \"response_reactor_id\": \"<uuid>\",\n  \"request_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"response_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"application\": {\n    \"id\": \"<uuid>\"\n  },\n  \"configuration\": {\n    \"key_0\": \"<string>\"\n  },\n  \"require_auth\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "98b8ac29-dec8-4c22-b34d-e7f0854f0c5f",
+              "name": "The created proxy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"destination_url\": \"<uri>\",\n  \"request_reactor_id\": \"<uuid>\",\n  \"response_reactor_id\": \"<uuid>\",\n  \"request_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"response_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"application\": {\n    \"id\": \"<uuid>\"\n  },\n  \"configuration\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\",\n    \"key_3\": \"<string>\"\n  },\n  \"require_auth\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"bfc3cdf6-c36b-b7c2-2922-bb278c1cef66\",\n  \"key\": \"string\",\n  \"tenant_id\": \"c8c31d87-8001-153b-85e2-a021a2ede0d5\",\n  \"name\": \"string\",\n  \"destination_url\": \"http://lBMlwIzOAqyevSnUh.nsrwDlqRdWGjkvTqtJuYEguO7Ehl5p8gIqwvP\",\n  \"request_reactor_id\": \"8d276622-f35b-fa70-f1d7-f8367bf557e5\",\n  \"response_reactor_id\": \"200538e4-6b2a-bbc8-9189-5dd646805bcd\",\n  \"request_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"response_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"application\": {\n    \"id\": \"388e26e9-fb8b-f538-5179-5c8293bb9af1\",\n    \"tenant_id\": \"1517ca92-3434-03ef-7edf-280555cbd9c6\",\n    \"name\": \"string\",\n    \"key\": \"string\",\n    \"type\": \"expiring\",\n    \"permissions\": [\n      \"string\",\n      \"string\"\n    ],\n    \"rules\": [\n      {\n        \"description\": \"string\",\n        \"priority\": 3867,\n        \"container\": \"string\",\n        \"transform\": \"redact\",\n        \"permissions\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      {\n        \"description\": \"string\",\n        \"priority\": 3821,\n        \"container\": \"string\",\n        \"transform\": \"mask\",\n        \"permissions\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    ],\n    \"expires_at\": \"2021-03-16T10:30:41.760Z\",\n    \"created_at\": \"1952-05-26T05:35:28.599Z\"\n  },\n  \"configuration\": {\n    \"key_0\": \"string\"\n  },\n  \"require_auth\": false,\n  \"created_at\": \"2017-03-18T09:46:41.262Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fd911498-09e1-4fe7-9829-8a3daa0a954e",
+              "name": "The BT-API-KEY header is missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"destination_url\": \"<uri>\",\n  \"request_reactor_id\": \"<uuid>\",\n  \"response_reactor_id\": \"<uuid>\",\n  \"request_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"response_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"application\": {\n    \"id\": \"<uuid>\"\n  },\n  \"configuration\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\",\n    \"key_3\": \"<string>\"\n  },\n  \"require_auth\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 9931,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "71a53136-3060-491e-957a-6b29c431f0aa",
+              "name": "The application lacks the required permission.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"destination_url\": \"<uri>\",\n  \"request_reactor_id\": \"<uuid>\",\n  \"response_reactor_id\": \"<uuid>\",\n  \"request_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"response_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"application\": {\n    \"id\": \"<uuid>\"\n  },\n  \"configuration\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\",\n    \"key_3\": \"<string>\"\n  },\n  \"require_auth\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 9931,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7f6e817c-6263-451a-8a58-63eb2de9c169",
+              "name": "The request failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"destination_url\": \"<uri>\",\n  \"request_reactor_id\": \"<uuid>\",\n  \"response_reactor_id\": \"<uuid>\",\n  \"request_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"response_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"application\": {\n    \"id\": \"<uuid>\"\n  },\n  \"configuration\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\",\n    \"key_3\": \"<string>\"\n  },\n  \"require_auth\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 6367,\n  \"errors\": {\n    \"key_0\": [\n      \"string\",\n      \"string\"\n    ],\n    \"key_1\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9f376042-a47c-45a5-9279-b433fa44c6dd",
+          "name": "List pre-configured proxies",
+          "request": {
+            "name": "List pre-configured proxies",
+            "description": {},
+            "url": {
+              "path": [
+                "proxies"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a716d1dd-aa07-49ea-b1f6-a68633a45611",
+              "name": "A paginated list of proxies.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pagination\": {\n    \"total_items\": 6444,\n    \"page_number\": 1022,\n    \"page_size\": 4232,\n    \"total_pages\": 8144\n  },\n  \"data\": [\n    {\n      \"id\": \"ffdeaf6c-a8dc-f473-2b81-1e5305b48ea0\",\n      \"key\": \"string\",\n      \"tenant_id\": \"1285bf31-0ac1-8145-653b-53b7a17ac24d\",\n      \"name\": \"string\",\n      \"destination_url\": \"http://KTLUGAGohSJeiEMFAzceylXhNmxiNgCj.ohgyxLEvM3BC4XVOfmZQNHa-eIwYRZEl,YmvcyXaubYJoKAjESR\",\n      \"request_reactor_id\": \"bcf0bc95-d095-fce2-00d9-dea101c98890\",\n      \"response_reactor_id\": \"db990a55-0dcf-abfb-2459-83379d78e827\",\n      \"request_transform\": {\n        \"type\": \"<string>\",\n        \"code\": \"<string>\",\n        \"matcher\": \"<string>\"\n      },\n      \"response_transform\": {\n        \"type\": \"<string>\",\n        \"code\": \"<string>\",\n        \"matcher\": \"<string>\"\n      },\n      \"application\": {\n        \"id\": \"563fbd8b-d3ce-a873-df36-06d21a153bd2\",\n        \"tenant_id\": \"4832cf6d-5811-c89d-5759-223c47fcb660\",\n        \"name\": \"string\",\n        \"key\": \"string\",\n        \"type\": \"expiring\",\n        \"permissions\": [\n          \"string\",\n          \"string\"\n        ],\n        \"rules\": [\n          {\n            \"description\": \"string\",\n            \"priority\": 4947,\n            \"container\": \"string\",\n            \"transform\": \"reveal\",\n            \"permissions\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"description\": \"string\",\n            \"priority\": 7877,\n            \"container\": \"string\",\n            \"transform\": \"mask\",\n            \"permissions\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ],\n        \"expires_at\": \"1958-07-27T10:29:40.479Z\",\n        \"created_at\": \"1955-08-17T17:41:30.103Z\"\n      },\n      \"configuration\": {\n        \"key_0\": \"string\"\n      },\n      \"require_auth\": false,\n      \"created_at\": \"1961-10-21T08:09:18.926Z\"\n    },\n    {\n      \"id\": \"b99fd191-155d-1d6a-3d03-e3c79743c616\",\n      \"key\": \"string\",\n      \"tenant_id\": \"090bbf79-a37f-c1bb-b5ff-82f54b8b9466\",\n      \"name\": \"string\",\n      \"destination_url\": \"http://yvBEphzGDgqjQFQsWqzlkpQIRV.eabl7aOCyTxG5q+8xgDqdlBzIs..\",\n      \"request_reactor_id\": \"8b2f5c41-09f5-78f7-f4f7-2beae0299baf\",\n      \"response_reactor_id\": \"98e15894-4b4b-36e3-7c2c-348609787e53\",\n      \"request_transform\": {\n        \"type\": \"<string>\",\n        \"code\": \"<string>\",\n        \"matcher\": \"<string>\"\n      },\n      \"response_transform\": {\n        \"type\": \"<string>\",\n        \"code\": \"<string>\",\n        \"matcher\": \"<string>\"\n      },\n      \"application\": {\n        \"id\": \"ba77d10a-7705-a548-a35d-7bac909cf1e3\",\n        \"tenant_id\": \"4dc9cc0d-9874-eb7c-f51e-30f51b2943ae\",\n        \"name\": \"string\",\n        \"key\": \"string\",\n        \"type\": \"expiring\",\n        \"permissions\": [\n          \"string\",\n          \"string\"\n        ],\n        \"rules\": [\n          {\n            \"description\": \"string\",\n            \"priority\": 7636,\n            \"container\": \"string\",\n            \"transform\": \"redact\",\n            \"permissions\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"description\": \"string\",\n            \"priority\": 3167,\n            \"container\": \"string\",\n            \"transform\": \"redact\",\n            \"permissions\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ],\n        \"expires_at\": \"2000-11-26T22:35:37.023Z\",\n        \"created_at\": \"1950-04-16T09:39:04.902Z\"\n      },\n      \"configuration\": {\n        \"key_0\": \"string\"\n      },\n      \"require_auth\": true,\n      \"created_at\": \"2014-10-20T09:13:00.145Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0cb98279-0a5c-4ef4-8169-0a7e644b12f1",
+              "name": "The BT-API-KEY header is missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 9931,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4f1c2078-121d-4acd-9c5b-bc83a4599f22",
+          "name": "Get a pre-configured proxy",
+          "request": {
+            "name": "Get a pre-configured proxy",
+            "description": {},
+            "url": {
+              "path": [
+                "proxies",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the proxy."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d1956eea-b635-4ff3-b777-84edbf0e7782",
+              "name": "The requested proxy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxies",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the proxy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"0086c028-8e9b-937d-8a90-d040f064228d\",\n  \"key\": \"string\",\n  \"tenant_id\": \"b193903a-a3d1-67d0-c8a0-eb5af88903c1\",\n  \"name\": \"string\",\n  \"destination_url\": \"https://yGuwbgtCY.tiutoEuqt,,ihU6x7TvPOb7dZodOxRIODoPVoO+JAjv4bV7jQpb9FLa89oiwOsq0y04zAx\",\n  \"request_reactor_id\": \"99d5228b-c24a-7043-972c-0a59379d546c\",\n  \"response_reactor_id\": \"3d8e28c6-3b38-5738-2a66-531950f014f8\",\n  \"request_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"response_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"application\": {\n    \"id\": \"d99bd055-6002-1211-c291-8699af5bdc2f\",\n    \"tenant_id\": \"64d895eb-fb88-b2ef-3315-ed8b19c9bcce\",\n    \"name\": \"string\",\n    \"key\": \"string\",\n    \"type\": \"private\",\n    \"permissions\": [\n      \"string\",\n      \"string\"\n    ],\n    \"rules\": [\n      {\n        \"description\": \"string\",\n        \"priority\": 8941,\n        \"container\": \"string\",\n        \"transform\": \"redact\",\n        \"permissions\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      {\n        \"description\": \"string\",\n        \"priority\": 9080,\n        \"container\": \"string\",\n        \"transform\": \"mask\",\n        \"permissions\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    ],\n    \"expires_at\": \"2002-03-24T18:54:31.252Z\",\n    \"created_at\": \"1965-12-07T13:59:29.341Z\"\n  },\n  \"configuration\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\",\n    \"key_3\": \"string\",\n    \"key_4\": \"string\"\n  },\n  \"require_auth\": true,\n  \"created_at\": \"1953-06-09T01:36:25.437Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6ea15b62-10d7-424f-9329-ecea97f895ba",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxies",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the proxy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 9931,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "90bf6496-be53-475e-b1b6-157f82aa33b4",
+          "name": "Update a pre-configured proxy",
+          "request": {
+            "name": "Update a pre-configured proxy",
+            "description": {},
+            "url": {
+              "path": [
+                "proxies",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the proxy."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"destination_url\": \"<uri>\",\n  \"request_reactor_id\": \"<uuid>\",\n  \"response_reactor_id\": \"<uuid>\",\n  \"request_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"response_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"application\": {\n    \"id\": \"<uuid>\"\n  },\n  \"configuration\": {\n    \"key_0\": \"<string>\"\n  },\n  \"require_auth\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c82c1769-776a-405c-bd8f-299afed4ac00",
+              "name": "The updated proxy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxies",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the proxy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"destination_url\": \"<uri>\",\n  \"request_reactor_id\": \"<uuid>\",\n  \"response_reactor_id\": \"<uuid>\",\n  \"request_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"response_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"application\": {\n    \"id\": \"<uuid>\"\n  },\n  \"configuration\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\",\n    \"key_3\": \"<string>\"\n  },\n  \"require_auth\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"0086c028-8e9b-937d-8a90-d040f064228d\",\n  \"key\": \"string\",\n  \"tenant_id\": \"b193903a-a3d1-67d0-c8a0-eb5af88903c1\",\n  \"name\": \"string\",\n  \"destination_url\": \"https://yGuwbgtCY.tiutoEuqt,,ihU6x7TvPOb7dZodOxRIODoPVoO+JAjv4bV7jQpb9FLa89oiwOsq0y04zAx\",\n  \"request_reactor_id\": \"99d5228b-c24a-7043-972c-0a59379d546c\",\n  \"response_reactor_id\": \"3d8e28c6-3b38-5738-2a66-531950f014f8\",\n  \"request_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"response_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"application\": {\n    \"id\": \"d99bd055-6002-1211-c291-8699af5bdc2f\",\n    \"tenant_id\": \"64d895eb-fb88-b2ef-3315-ed8b19c9bcce\",\n    \"name\": \"string\",\n    \"key\": \"string\",\n    \"type\": \"private\",\n    \"permissions\": [\n      \"string\",\n      \"string\"\n    ],\n    \"rules\": [\n      {\n        \"description\": \"string\",\n        \"priority\": 8941,\n        \"container\": \"string\",\n        \"transform\": \"redact\",\n        \"permissions\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      {\n        \"description\": \"string\",\n        \"priority\": 9080,\n        \"container\": \"string\",\n        \"transform\": \"mask\",\n        \"permissions\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    ],\n    \"expires_at\": \"2002-03-24T18:54:31.252Z\",\n    \"created_at\": \"1965-12-07T13:59:29.341Z\"\n  },\n  \"configuration\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\",\n    \"key_3\": \"string\",\n    \"key_4\": \"string\"\n  },\n  \"require_auth\": true,\n  \"created_at\": \"1953-06-09T01:36:25.437Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c15fa1d2-67e0-486f-8f15-d9038a3a665d",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxies",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the proxy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"destination_url\": \"<uri>\",\n  \"request_reactor_id\": \"<uuid>\",\n  \"response_reactor_id\": \"<uuid>\",\n  \"request_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"response_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"application\": {\n    \"id\": \"<uuid>\"\n  },\n  \"configuration\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\",\n    \"key_3\": \"<string>\"\n  },\n  \"require_auth\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 9931,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9f0e9822-4600-433a-b678-dca3455ba759",
+          "name": "Patch a pre-configured proxy",
+          "request": {
+            "name": "Patch a pre-configured proxy",
+            "description": {},
+            "url": {
+              "path": [
+                "proxies",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the proxy."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/merge-patch+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"destination_url\": \"<uri>\",\n  \"request_reactor_id\": \"<uuid>\",\n  \"response_reactor_id\": \"<uuid>\",\n  \"request_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"response_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"application\": {\n    \"id\": \"<uuid>\"\n  },\n  \"configuration\": {\n    \"key_0\": \"<string>\"\n  },\n  \"require_auth\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "32881127-81fd-40d0-9007-f3adbd601df3",
+              "name": "The patched proxy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxies",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the proxy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"destination_url\": \"<uri>\",\n  \"request_reactor_id\": \"<uuid>\",\n  \"response_reactor_id\": \"<uuid>\",\n  \"request_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"response_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"application\": {\n    \"id\": \"<uuid>\"\n  },\n  \"configuration\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\",\n    \"key_3\": \"<string>\"\n  },\n  \"require_auth\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"0086c028-8e9b-937d-8a90-d040f064228d\",\n  \"key\": \"string\",\n  \"tenant_id\": \"b193903a-a3d1-67d0-c8a0-eb5af88903c1\",\n  \"name\": \"string\",\n  \"destination_url\": \"https://yGuwbgtCY.tiutoEuqt,,ihU6x7TvPOb7dZodOxRIODoPVoO+JAjv4bV7jQpb9FLa89oiwOsq0y04zAx\",\n  \"request_reactor_id\": \"99d5228b-c24a-7043-972c-0a59379d546c\",\n  \"response_reactor_id\": \"3d8e28c6-3b38-5738-2a66-531950f014f8\",\n  \"request_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"response_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"application\": {\n    \"id\": \"d99bd055-6002-1211-c291-8699af5bdc2f\",\n    \"tenant_id\": \"64d895eb-fb88-b2ef-3315-ed8b19c9bcce\",\n    \"name\": \"string\",\n    \"key\": \"string\",\n    \"type\": \"private\",\n    \"permissions\": [\n      \"string\",\n      \"string\"\n    ],\n    \"rules\": [\n      {\n        \"description\": \"string\",\n        \"priority\": 8941,\n        \"container\": \"string\",\n        \"transform\": \"redact\",\n        \"permissions\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      {\n        \"description\": \"string\",\n        \"priority\": 9080,\n        \"container\": \"string\",\n        \"transform\": \"mask\",\n        \"permissions\": [\n          \"string\",\n          \"string\"\n        ]\n      }\n    ],\n    \"expires_at\": \"2002-03-24T18:54:31.252Z\",\n    \"created_at\": \"1965-12-07T13:59:29.341Z\"\n  },\n  \"configuration\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": \"string\",\n    \"key_3\": \"string\",\n    \"key_4\": \"string\"\n  },\n  \"require_auth\": true,\n  \"created_at\": \"1953-06-09T01:36:25.437Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "db43f0e2-76ab-470b-bb2f-55602dfd77c1",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxies",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the proxy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"destination_url\": \"<uri>\",\n  \"request_reactor_id\": \"<uuid>\",\n  \"response_reactor_id\": \"<uuid>\",\n  \"request_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"response_transform\": {\n    \"type\": \"<string>\",\n    \"code\": \"<string>\",\n    \"matcher\": \"<string>\"\n  },\n  \"application\": {\n    \"id\": \"<uuid>\"\n  },\n  \"configuration\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\",\n    \"key_3\": \"<string>\"\n  },\n  \"require_auth\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 9931,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0e25e479-1d27-455f-b65a-23f7c5a295d8",
+          "name": "Delete a pre-configured proxy",
+          "request": {
+            "name": "Delete a pre-configured proxy",
+            "description": {},
+            "url": {
+              "path": [
+                "proxies",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the proxy."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "82d37704-0fa9-493d-93c1-740547f12be5",
+              "name": "The proxy was deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxies",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the proxy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2c3e4ac7-1169-4a22-a97c-d08e3cfa9bda",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxies",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the proxy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 9931,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a8619c2c-24b6-43a6-833d-0bb63fd4f6db",
+          "name": "Invoke the proxy (GET)",
+          "request": {
+            "name": "Invoke the proxy (GET)",
+            "description": {
+              "content": "Invokes the Proxy. For a pre-configured proxy supply the `BT-PROXY-KEY` header; for an ephemeral proxy supply the `BT-PROXY-URL` header with the destination base URL. The Proxy detokenizes any detokenization expressions in the request and forwards the result to the destination.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "proxy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "For ephemeral proxy requests, the destination base URL to proxy to.",
+                "key": "BT-PROXY-URL",
+                "value": "<uri>"
+              },
+              {
+                "disabled": false,
+                "description": "For pre-configured proxy requests, the short key identifying the proxy.",
+                "key": "BT-PROXY-KEY",
+                "value": "<string>"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dff2a9c9-d99e-4f95-9946-95ae54d52416",
+              "name": "The response forwarded from the destination.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "For ephemeral proxy requests, the destination base URL to proxy to.",
+                    "key": "BT-PROXY-URL",
+                    "value": "<uri>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "For pre-configured proxy requests, the short key identifying the proxy.",
+                    "key": "BT-PROXY-KEY",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "534d5399-57de-49cc-bcea-6bb0cacd63f2",
+              "name": "Bad proxy request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "For ephemeral proxy requests, the destination base URL to proxy to.",
+                    "key": "BT-PROXY-URL",
+                    "value": "<uri>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "For pre-configured proxy requests, the short key identifying the proxy.",
+                    "key": "BT-PROXY-KEY",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1df999b3-836b-4219-abf7-bc0747f1961b",
+          "name": "Invoke the proxy (POST)",
+          "request": {
+            "name": "Invoke the proxy (POST)",
+            "description": {},
+            "url": {
+              "path": [
+                "proxy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "For ephemeral proxy requests, the destination base URL to proxy to.",
+                "key": "BT-PROXY-URL",
+                "value": "<uri>"
+              },
+              {
+                "disabled": false,
+                "description": "For pre-configured proxy requests, the short key identifying the proxy.",
+                "key": "BT-PROXY-KEY",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key_0\": \"string\",\n  \"key_1\": true,\n  \"key_2\": 6414\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "923cd8c2-38e8-438d-abf8-3ffd4c879d3f",
+              "name": "The response forwarded from the destination.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "For ephemeral proxy requests, the destination base URL to proxy to.",
+                    "key": "BT-PROXY-URL",
+                    "value": "<uri>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "For pre-configured proxy requests, the short key identifying the proxy.",
+                    "key": "BT-PROXY-KEY",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key_0\": true,\n  \"key_1\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8f32233b-f309-4185-96a7-f74e7872a349",
+          "name": "Invoke the proxy (PUT)",
+          "request": {
+            "name": "Invoke the proxy (PUT)",
+            "description": {},
+            "url": {
+              "path": [
+                "proxy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "For ephemeral proxy requests, the destination base URL to proxy to.",
+                "key": "BT-PROXY-URL",
+                "value": "<uri>"
+              },
+              {
+                "disabled": false,
+                "description": "For pre-configured proxy requests, the short key identifying the proxy.",
+                "key": "BT-PROXY-KEY",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key_0\": \"string\",\n  \"key_1\": true,\n  \"key_2\": 6414\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2b64285e-5acd-407b-bd70-e5b634231fa1",
+              "name": "The response forwarded from the destination.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "For ephemeral proxy requests, the destination base URL to proxy to.",
+                    "key": "BT-PROXY-URL",
+                    "value": "<uri>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "For pre-configured proxy requests, the short key identifying the proxy.",
+                    "key": "BT-PROXY-KEY",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key_0\": true,\n  \"key_1\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ba38ba71-2d76-480b-b6e6-6d032e3e5abd",
+          "name": "Invoke the proxy (PATCH)",
+          "request": {
+            "name": "Invoke the proxy (PATCH)",
+            "description": {},
+            "url": {
+              "path": [
+                "proxy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "For ephemeral proxy requests, the destination base URL to proxy to.",
+                "key": "BT-PROXY-URL",
+                "value": "<uri>"
+              },
+              {
+                "disabled": false,
+                "description": "For pre-configured proxy requests, the short key identifying the proxy.",
+                "key": "BT-PROXY-KEY",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key_0\": \"string\",\n  \"key_1\": true,\n  \"key_2\": 6414\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "93b037fe-712a-4fbc-9710-64eaa63c9830",
+              "name": "The response forwarded from the destination.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "For ephemeral proxy requests, the destination base URL to proxy to.",
+                    "key": "BT-PROXY-URL",
+                    "value": "<uri>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "For pre-configured proxy requests, the short key identifying the proxy.",
+                    "key": "BT-PROXY-KEY",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key_0\": true,\n  \"key_1\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d6defc13-db6b-417a-b660-78bd53e0c0c8",
+          "name": "Invoke the proxy (DELETE)",
+          "request": {
+            "name": "Invoke the proxy (DELETE)",
+            "description": {},
+            "url": {
+              "path": [
+                "proxy"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "For ephemeral proxy requests, the destination base URL to proxy to.",
+                "key": "BT-PROXY-URL",
+                "value": "<uri>"
+              },
+              {
+                "disabled": false,
+                "description": "For pre-configured proxy requests, the short key identifying the proxy.",
+                "key": "BT-PROXY-KEY",
+                "value": "<string>"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "902a3673-dc5b-419c-8755-cc7a70a711a0",
+              "name": "The response forwarded from the destination.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "proxy"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "For ephemeral proxy requests, the destination base URL to proxy to.",
+                    "key": "BT-PROXY-URL",
+                    "value": "<uri>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "For pre-configured proxy requests, the short key identifying the proxy.",
+                    "key": "BT-PROXY-KEY",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.basistheory.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "BT-API-KEY"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "dfee62ce-da4c-4e52-b4ac-0057010ecc37",
+    "name": "Basis Theory 3D Secure Proxy API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.\n\nContact Support:\n Name: Basis Theory Support\n Email: support@basistheory.com",
+      "type": "text/plain"
+    }
+  }
+}

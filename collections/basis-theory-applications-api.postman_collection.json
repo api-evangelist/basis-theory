@@ -1,0 +1,1115 @@
+{
+  "item": [
+    {
+      "id": "7cfe0c61-29f3-4f42-b695-3fe46959eafc",
+      "name": "Applications",
+      "description": {
+        "content": "Manage API credentials, permissions, and access rules.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "453cfcef-7519-4e4f-a619-22ee9da33525",
+          "name": "Create an application",
+          "request": {
+            "name": "Create an application",
+            "description": {},
+            "url": {
+              "path": [
+                "applications"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"permissions\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"rules\": [\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"create_key\": true,\n  \"expires_at\": \"<dateTime>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d07a738f-55fc-4caa-82a2-940e40c87dd1",
+              "name": "The created application, including the generated key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"permissions\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"rules\": [\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"create_key\": true,\n  \"expires_at\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"79c2488f-aa4c-8fb8-623c-1adbfbe40858\",\n  \"tenant_id\": \"7d469e54-025d-5cf9-99fc-aa55c278b34e\",\n  \"name\": \"string\",\n  \"key\": \"string\",\n  \"type\": \"expiring\",\n  \"permissions\": [\n    \"string\",\n    \"string\"\n  ],\n  \"rules\": [\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"expires_at\": \"1994-10-21T13:06:49.661Z\",\n  \"created_at\": \"1976-11-28T10:50:39.464Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "10f88d1c-19a0-45d4-b347-28a5e3030366",
+              "name": "The BT-API-KEY header is missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"permissions\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"rules\": [\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"create_key\": true,\n  \"expires_at\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 9383,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f322db3d-cbce-45bd-bf39-7b322c7b9389",
+              "name": "The application lacks the required permission.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"permissions\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"rules\": [\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"create_key\": true,\n  \"expires_at\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 9383,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cff5950e-4881-49c1-92af-95bb6db4902a",
+              "name": "The request failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"permissions\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"rules\": [\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"create_key\": true,\n  \"expires_at\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 2863,\n  \"errors\": {\n    \"key_0\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0ece7640-925d-4500-8be4-7fae8bad8df1",
+          "name": "List applications",
+          "request": {
+            "name": "List applications",
+            "description": {},
+            "url": {
+              "path": [
+                "applications"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fa8b4811-44dc-4c07-923e-9eec97522447",
+              "name": "A paginated list of applications.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pagination\": {\n    \"total_items\": 9790,\n    \"page_number\": 6707,\n    \"page_size\": 8196,\n    \"total_pages\": 7851\n  },\n  \"data\": [\n    {\n      \"id\": \"a0e629bf-6a18-5eb9-7c66-eafc0525c8ac\",\n      \"tenant_id\": \"a1579f9f-fb55-bd61-a5da-2565e8c9683d\",\n      \"name\": \"string\",\n      \"key\": \"string\",\n      \"type\": \"expiring\",\n      \"permissions\": [\n        \"string\",\n        \"string\"\n      ],\n      \"rules\": [\n        {\n          \"description\": \"<string>\",\n          \"priority\": \"<integer>\",\n          \"container\": \"<string>\",\n          \"transform\": \"<string>\",\n          \"permissions\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"description\": \"<string>\",\n          \"priority\": \"<integer>\",\n          \"container\": \"<string>\",\n          \"transform\": \"<string>\",\n          \"permissions\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ],\n      \"expires_at\": \"2011-10-28T22:49:26.961Z\",\n      \"created_at\": \"2006-02-17T19:01:49.061Z\"\n    },\n    {\n      \"id\": \"61ba775c-9198-475a-af24-2bf25acb08b7\",\n      \"tenant_id\": \"a7c22d3f-b2ea-c7c7-3c64-51ff05d55451\",\n      \"name\": \"string\",\n      \"key\": \"string\",\n      \"type\": \"public\",\n      \"permissions\": [\n        \"string\",\n        \"string\"\n      ],\n      \"rules\": [\n        {\n          \"description\": \"<string>\",\n          \"priority\": \"<integer>\",\n          \"container\": \"<string>\",\n          \"transform\": \"<string>\",\n          \"permissions\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"description\": \"<string>\",\n          \"priority\": \"<integer>\",\n          \"container\": \"<string>\",\n          \"transform\": \"<string>\",\n          \"permissions\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ],\n      \"expires_at\": \"1976-07-21T03:20:38.751Z\",\n      \"created_at\": \"2024-04-11T07:20:44.959Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1515c624-d6e6-45be-80c0-670b4d948cfe",
+              "name": "The BT-API-KEY header is missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 9383,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f2ea263b-23f7-46f7-9b8a-0360270b96e2",
+          "name": "Get an application",
+          "request": {
+            "name": "Get an application",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the application."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6eb1ad09-21c2-4d40-bb5d-0691eb6c47d4",
+              "name": "The requested application.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the application."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"c7ce9db7-deee-10f8-66f9-8a2ad9587e39\",\n  \"tenant_id\": \"680d99bb-6c7e-8fd0-3e6c-fc97777ce6c9\",\n  \"name\": \"string\",\n  \"key\": \"string\",\n  \"type\": \"public\",\n  \"permissions\": [\n    \"string\",\n    \"string\"\n  ],\n  \"rules\": [\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"expires_at\": \"1950-09-08T09:45:00.521Z\",\n  \"created_at\": \"2000-05-28T21:28:20.120Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1f81a112-a3cb-4fe2-940e-42db1ce64e15",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the application."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 9383,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "41784615-accc-4eef-bb72-50ba373828ba",
+          "name": "Update an application",
+          "request": {
+            "name": "Update an application",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the application."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"permissions\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"rules\": [\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8023e13b-371c-4664-bf7a-b917d0ed6baf",
+              "name": "The updated application.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the application."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"permissions\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"rules\": [\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"c7ce9db7-deee-10f8-66f9-8a2ad9587e39\",\n  \"tenant_id\": \"680d99bb-6c7e-8fd0-3e6c-fc97777ce6c9\",\n  \"name\": \"string\",\n  \"key\": \"string\",\n  \"type\": \"public\",\n  \"permissions\": [\n    \"string\",\n    \"string\"\n  ],\n  \"rules\": [\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"expires_at\": \"1950-09-08T09:45:00.521Z\",\n  \"created_at\": \"2000-05-28T21:28:20.120Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e5828398-062e-4b64-86c7-0555edfa5b49",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the application."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"permissions\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"rules\": [\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 9383,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e9e589e8-d652-450d-8fa7-9b700e0f69e3",
+              "name": "The request failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the application."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"permissions\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"rules\": [\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 42,\n  \"errors\": {\n    \"key_0\": [\n      \"string\",\n      \"string\"\n    ],\n    \"key_1\": [\n      \"string\",\n      \"string\"\n    ],\n    \"key_2\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4db40683-931c-4d6c-b6e8-a66ea4e44a98",
+          "name": "Delete an application",
+          "request": {
+            "name": "Delete an application",
+            "description": {},
+            "url": {
+              "path": [
+                "applications",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the application."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7b65bfce-df50-410f-a591-60cea06a7d40",
+              "name": "The application was deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the application."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8f792914-b21f-4ab2-914e-fb767978e937",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the application."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 9383,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3065a10f-3735-43d9-84ce-38d6e9ef346e",
+          "name": "Get application by key",
+          "request": {
+            "name": "Get application by key",
+            "description": {
+              "content": "Returns the application associated with the BT-API-KEY used on the request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "applications",
+                "key"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4c31c427-6fa9-4b88-8df7-64f15973de6e",
+              "name": "The application for the supplied key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    "key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"c7ce9db7-deee-10f8-66f9-8a2ad9587e39\",\n  \"tenant_id\": \"680d99bb-6c7e-8fd0-3e6c-fc97777ce6c9\",\n  \"name\": \"string\",\n  \"key\": \"string\",\n  \"type\": \"public\",\n  \"permissions\": [\n    \"string\",\n    \"string\"\n  ],\n  \"rules\": [\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"description\": \"<string>\",\n      \"priority\": \"<integer>\",\n      \"container\": \"<string>\",\n      \"transform\": \"<string>\",\n      \"permissions\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"expires_at\": \"1950-09-08T09:45:00.521Z\",\n  \"created_at\": \"2000-05-28T21:28:20.120Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dfab2275-4722-4ece-9eac-3e47113f373e",
+              "name": "The BT-API-KEY header is missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    "key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 9383,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.basistheory.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "BT-API-KEY"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "46d540da-0a08-45a7-83fe-ea788fbf939a",
+    "name": "Basis Theory 3D Secure Applications API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.\n\nContact Support:\n Name: Basis Theory Support\n Email: support@basistheory.com",
+      "type": "text/plain"
+    }
+  }
+}

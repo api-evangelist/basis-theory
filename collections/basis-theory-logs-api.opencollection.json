@@ -1,0 +1,64 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Basis Theory 3D Secure Logs API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "BT-API-KEY",
+      "value": "{{BT-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Logs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.basistheory.com/logs",
+            "params": [
+              {
+                "name": "entity_type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List logs"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

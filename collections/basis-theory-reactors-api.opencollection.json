@@ -1,0 +1,159 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Basis Theory 3D Secure Reactors API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "BT-API-KEY",
+      "value": "{{BT-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Reactors",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List reactors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.basistheory.com/reactors"
+          },
+          "docs": "List reactors"
+        },
+        {
+          "info": {
+            "name": "Create a reactor",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/reactors",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a reactor"
+        },
+        {
+          "info": {
+            "name": "Get a reactor",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.basistheory.com/reactors/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the reactor."
+              }
+            ]
+          },
+          "docs": "Get a reactor"
+        },
+        {
+          "info": {
+            "name": "Update a reactor",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.basistheory.com/reactors/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the reactor."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a reactor"
+        },
+        {
+          "info": {
+            "name": "Patch a reactor",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.basistheory.com/reactors/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the reactor."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Patch a reactor"
+        },
+        {
+          "info": {
+            "name": "Delete a reactor",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.basistheory.com/reactors/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the reactor."
+              }
+            ]
+          },
+          "docs": "Delete a reactor"
+        },
+        {
+          "info": {
+            "name": "Invoke a reactor",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/reactors/:id/react",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the reactor."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invokes a reactor, detokenizing any tokens referenced in `args` and running the reactor's code. Requires an application with token:use permission."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

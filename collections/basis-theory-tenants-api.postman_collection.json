@@ -1,0 +1,468 @@
+{
+  "item": [
+    {
+      "id": "1d2f454a-467f-436e-a519-1af4a5152326",
+      "name": "Tenants",
+      "description": {
+        "content": "Manage the current tenant, usage reports, and security contact.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "213187bb-9cd3-4a1c-a7cd-8f15a48697ba",
+          "name": "Get the current tenant",
+          "request": {
+            "name": "Get the current tenant",
+            "description": {},
+            "url": {
+              "path": [
+                "tenants",
+                "self"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b4bf7a5e-f882-451e-9991-120f09baaded",
+              "name": "The current tenant.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenants",
+                    "self"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"a3b96f2d-e535-efc7-ae4c-14c7eea0b1cd\",\n  \"owner_id\": \"378cbffd-e9d7-8a89-d131-879b41223f16\",\n  \"type\": \"TEST\",\n  \"name\": \"string\",\n  \"settings\": {\n    \"fingerprint_tokens\": false,\n    \"deduplicate_tokens\": true,\n    \"disable_ephemeral_proxy\": true,\n    \"token_deduplication_behavior\": \"string\"\n  },\n  \"created_by\": \"a4e6a773-e509-4c75-2283-90ea5c156309\",\n  \"created_at\": \"1992-01-12T01:43:23.165Z\",\n  \"modified_at\": \"2006-08-04T09:37:01.323Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "42538100-bfbd-4222-bb77-c4790a057483",
+              "name": "The BT-API-KEY header is missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenants",
+                    "self"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 1945,\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "168c8034-1bba-4967-8fb9-75cea176c3b1",
+          "name": "Update the current tenant",
+          "request": {
+            "name": "Update the current tenant",
+            "description": {},
+            "url": {
+              "path": [
+                "tenants",
+                "self"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"settings\": {\n    \"fingerprint_tokens\": \"<boolean>\",\n    \"deduplicate_tokens\": \"<boolean>\",\n    \"disable_ephemeral_proxy\": \"<boolean>\",\n    \"token_deduplication_behavior\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a9bb16d9-d2c9-47ad-928f-27eeee92bf58",
+              "name": "The updated tenant.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenants",
+                    "self"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"settings\": {\n    \"fingerprint_tokens\": \"<boolean>\",\n    \"deduplicate_tokens\": \"<boolean>\",\n    \"disable_ephemeral_proxy\": \"<boolean>\",\n    \"token_deduplication_behavior\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"390e17d6-8d16-fff8-7b93-edcf728ed451\",\n  \"owner_id\": \"703ce371-7b14-5345-b6cc-c7d40f97f615\",\n  \"type\": \"TEST\",\n  \"name\": \"string\",\n  \"settings\": {\n    \"fingerprint_tokens\": \"<boolean>\",\n    \"deduplicate_tokens\": \"<boolean>\",\n    \"disable_ephemeral_proxy\": \"<boolean>\",\n    \"token_deduplication_behavior\": \"<string>\"\n  },\n  \"created_by\": \"165922f6-6553-c502-be3e-eb9027a1cd66\",\n  \"created_at\": \"1947-02-16T02:33:23.692Z\",\n  \"modified_at\": \"1985-05-18T06:29:25.487Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f276b469-3276-47b0-88a4-7cebe64373c2",
+              "name": "The request failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenants",
+                    "self"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"settings\": {\n    \"fingerprint_tokens\": \"<boolean>\",\n    \"deduplicate_tokens\": \"<boolean>\",\n    \"disable_ephemeral_proxy\": \"<boolean>\",\n    \"token_deduplication_behavior\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"status\": 2818,\n  \"errors\": {\n    \"key_0\": [\n      \"string\",\n      \"string\"\n    ],\n    \"key_1\": [\n      \"string\",\n      \"string\"\n    ],\n    \"key_2\": [\n      \"string\",\n      \"string\"\n    ],\n    \"key_3\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f658ecb7-41f5-4c97-96bd-ab5f6c94e573",
+          "name": "Delete the current tenant",
+          "request": {
+            "name": "Delete the current tenant",
+            "description": {},
+            "url": {
+              "path": [
+                "tenants",
+                "self"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7f160cd3-8619-466f-bcfa-e671b2be5fea",
+              "name": "The tenant was deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenants",
+                    "self"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e66bf88b-2ff3-4ef0-9aae-02025cdfff18",
+          "name": "Get the tenant usage report",
+          "request": {
+            "name": "Get the tenant usage report",
+            "description": {},
+            "url": {
+              "path": [
+                "tenants",
+                "self",
+                "reports",
+                "usage"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b1a86f2a-e4b4-430a-a9ec-869386bb80cd",
+              "name": "The tenant usage report.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenants",
+                    "self",
+                    "reports",
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "BT-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"token_report\": {\n    \"included_monthly_active_tokens\": 9217,\n    \"monthly_active_tokens\": 6970,\n    \"metrics_by_type\": {\n      \"key_0\": {\n        \"key_0\": 7866.770045303579\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.basistheory.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "BT-API-KEY"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "afd580f1-7418-48b2-80fa-c8662b2f557a",
+    "name": "Basis Theory 3D Secure Tenants API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.\n\nContact Support:\n Name: Basis Theory Support\n Email: support@basistheory.com",
+      "type": "text/plain"
+    }
+  }
+}

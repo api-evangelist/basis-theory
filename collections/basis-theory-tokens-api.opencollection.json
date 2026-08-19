@@ -1,0 +1,139 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Basis Theory 3D Secure Tokens API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "BT-API-KEY",
+      "value": "{{BT-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.basistheory.com/tokens",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Tokenizes a single piece of sensitive data and stores it in the vault."
+        },
+        {
+          "info": {
+            "name": "List tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.basistheory.com/v2/tokens",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by one or more token ids."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by one or more token types."
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for the next page of results."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ]
+          },
+          "docs": "Returns a cursor-paginated list of tokens for the tenant."
+        },
+        {
+          "info": {
+            "name": "Get a token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.basistheory.com/tokens/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the token."
+              }
+            ]
+          },
+          "docs": "Get a token"
+        },
+        {
+          "info": {
+            "name": "Update a token",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.basistheory.com/tokens/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the token."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Partially updates a token using JSON merge patch semantics."
+        },
+        {
+          "info": {
+            "name": "Delete a token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.basistheory.com/tokens/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the token."
+              }
+            ]
+          },
+          "docs": "Delete a token"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
