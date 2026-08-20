@@ -95,6 +95,8 @@ apis:
   humanURL: https://developers.basistheory.com/docs/api/tokens
   baseURL: https://api.basistheory.com
   tags:
+  - Application
+  tags_raw:
   - Applications
   properties:
   - type: OpenAPI
@@ -463,6 +465,8 @@ apis:
   humanURL: https://developers.basistheory.com/docs/api/tokens
   baseURL: https://api.basistheory.com
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
