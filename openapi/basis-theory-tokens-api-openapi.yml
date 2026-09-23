@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Basis Theory 3D Secure Tokens API
+  title: Basis Theory Tokens API
   description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
   termsOfService: https://basistheory.com/terms
   contact:
@@ -157,18 +157,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Forbidden:
-      description: The application lacks the required permission.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
     ValidationProblem:
       description: The request failed validation.
       content:
@@ -181,7 +169,34 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ProblemDetails'
+    Forbidden:
+      description: The application lacks the required permission.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   schemas:
+    UpdateTokenRequest:
+      type: object
+      properties:
+        data: {}
+        mask: {}
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        search_indexes:
+          type: array
+          items:
+            type: string
+        fingerprint_expression:
+          type: string
     Token:
       type: object
       properties:
@@ -225,6 +240,35 @@ components:
         modified_at:
           type: string
           format: date-time
+    CursorPagination:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
     CreateTokenRequest:
       type: object
       required:
@@ -258,50 +302,6 @@ components:
         expires_at:
           type: string
           format: date-time
-    ValidationProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-    UpdateTokenRequest:
-      type: object
-      properties:
-        data: {}
-        mask: {}
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-        search_indexes:
-          type: array
-          items:
-            type: string
-        fingerprint_expression:
-          type: string
-    CursorPagination:
-      type: object
-      properties:
-        next:
-          type: string
-        previous:
-          type: string
-    ProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
     TokenCursorPaginatedList:
       type: object
       properties:

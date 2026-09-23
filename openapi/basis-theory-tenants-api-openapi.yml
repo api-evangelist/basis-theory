@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Basis Theory 3D Secure Tenants API
+  title: Basis Theory Tenants API
   description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
   termsOfService: https://basistheory.com/terms
   contact:
@@ -77,15 +77,6 @@ paths:
                 $ref: '#/components/schemas/TenantUsageReport'
 components:
   schemas:
-    UpdateTenantRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        settings:
-          $ref: '#/components/schemas/TenantSettings'
     TenantSettings:
       type: object
       properties:
@@ -97,19 +88,21 @@ components:
           type: boolean
         token_deduplication_behavior:
           type: string
-    ValidationProblemDetails:
+    TenantUsageReport:
       type: object
       properties:
-        title:
-          type: string
-        status:
-          type: integer
-        errors:
+        token_report:
           type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
+          properties:
+            included_monthly_active_tokens:
+              type: integer
+            monthly_active_tokens:
+              type: integer
+            metrics_by_type:
+              type: object
+              additionalProperties:
+                type: object
+                additionalProperties: true
     Tenant:
       type: object
       properties:
@@ -137,21 +130,28 @@ components:
         modified_at:
           type: string
           format: date-time
-    TenantUsageReport:
+    UpdateTenantRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        settings:
+          $ref: '#/components/schemas/TenantSettings'
+    ValidationProblemDetails:
       type: object
       properties:
-        token_report:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
           type: object
-          properties:
-            included_monthly_active_tokens:
-              type: integer
-            monthly_active_tokens:
-              type: integer
-            metrics_by_type:
-              type: object
-              additionalProperties:
-                type: object
-                additionalProperties: true
+          additionalProperties:
+            type: array
+            items:
+              type: string
     ProblemDetails:
       type: object
       properties:
@@ -162,18 +162,18 @@ components:
         detail:
           type: string
   responses:
-    Unauthorized:
-      description: The BT-API-KEY header is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
     ValidationProblem:
       description: The request failed validation.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   securitySchemes:
     ApiKey:
       type: apiKey

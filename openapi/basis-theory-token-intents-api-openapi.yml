@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Basis Theory 3D Secure Token Intents API
+  title: Basis Theory Token Intents API
   description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
   termsOfService: https://basistheory.com/terms
   contact:
@@ -76,6 +76,18 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
     Forbidden:
       description: The application lacks the required permission.
       content:
@@ -88,32 +100,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ProblemDetails'
-    Unauthorized:
-      description: The BT-API-KEY header is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
   schemas:
-    ValidationProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
     TokenIntent:
       type: object
       properties:
@@ -136,6 +123,19 @@ components:
         created_at:
           type: string
           format: date-time
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
     ProblemDetails:
       type: object
       properties:

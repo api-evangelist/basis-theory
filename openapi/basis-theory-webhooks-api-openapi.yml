@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Basis Theory 3D Secure Webhooks API
+  title: Basis Theory Webhooks API
   description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
   termsOfService: https://basistheory.com/terms
   contact:
@@ -119,16 +119,44 @@ paths:
                 items:
                   type: string
 components:
+  responses:
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   schemas:
-    WebhookPaginatedList:
+    CreateWebhookRequest:
       type: object
+      required:
+      - name
+      - url
+      - events
       properties:
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        data:
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+        notify_email:
+          type: string
+          format: email
+        status:
+          type: string
+          enum:
+          - enabled
+          - disabled
+        events:
           type: array
           items:
-            $ref: '#/components/schemas/Webhook'
+            type: string
     Webhook:
       type: object
       properties:
@@ -164,6 +192,17 @@ components:
         modified_at:
           type: string
           format: date-time
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type: integer
+        page_number:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
     ValidationProblemDetails:
       type: object
       properties:
@@ -177,17 +216,6 @@ components:
             type: array
             items:
               type: string
-    Pagination:
-      type: object
-      properties:
-        total_items:
-          type: integer
-        page_number:
-          type: integer
-        page_size:
-          type: integer
-        total_pages:
-          type: integer
     ProblemDetails:
       type: object
       properties:
@@ -197,43 +225,15 @@ components:
           type: integer
         detail:
           type: string
-    CreateWebhookRequest:
+    WebhookPaginatedList:
       type: object
-      required:
-      - name
-      - url
-      - events
       properties:
-        name:
-          type: string
-        url:
-          type: string
-          format: uri
-        notify_email:
-          type: string
-          format: email
-        status:
-          type: string
-          enum:
-          - enabled
-          - disabled
-        events:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
           type: array
           items:
-            type: string
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
+            $ref: '#/components/schemas/Webhook'
   parameters:
     WebhookId:
       name: id

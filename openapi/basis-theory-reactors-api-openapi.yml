@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Basis Theory 3D Secure Reactors API
+  title: Basis Theory Reactors API
   description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
   termsOfService: https://basistheory.com/terms
   contact:
@@ -154,77 +154,49 @@ paths:
         '422':
           $ref: '#/components/responses/ValidationProblem'
 components:
+  responses:
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   schemas:
-    ReactResponse:
-      type: object
-      properties:
-        tokens:
-          type: object
-          additionalProperties: true
-        raw:
-          type: object
-          additionalProperties: true
-    ReactorPaginatedList:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Reactor'
-    ValidationProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-    ReactRequest:
+    CreateReactorRequest:
       type: object
       required:
-      - args
+      - name
+      - code
       properties:
-        args:
+        name:
+          type: string
+        code:
+          type: string
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+        application:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+        runtime:
           type: object
           additionalProperties: true
-          description: 'Arguments passed to the reactor. May contain detokenization expressions of the form {{ token: <tokenId> }}.'
-    Pagination:
-      type: object
-      properties:
-        total_items:
-          type: integer
-        page_number:
-          type: integer
-        page_size:
-          type: integer
-        total_pages:
-          type: integer
-    AccessRule:
-      type: object
-      properties:
-        description:
-          type: string
-        priority:
-          type: integer
-        container:
-          type: string
-        transform:
-          type: string
-          enum:
-          - redact
-          - mask
-          - reveal
-        permissions:
-          type: array
-          items:
-            type: string
     Application:
       type: object
       properties:
@@ -260,6 +232,15 @@ components:
         created_at:
           type: string
           format: date-time
+    ReactorPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reactor'
     ProblemDetails:
       type: object
       properties:
@@ -269,6 +250,39 @@ components:
           type: integer
         detail:
           type: string
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type: integer
+        page_number:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    ReactResponse:
+      type: object
+      properties:
+        tokens:
+          type: object
+          additionalProperties: true
+        raw:
+          type: object
+          additionalProperties: true
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
     Reactor:
       type: object
       properties:
@@ -294,48 +308,34 @@ components:
         created_at:
           type: string
           format: date-time
-    CreateReactorRequest:
+    AccessRule:
+      type: object
+      properties:
+        description:
+          type: string
+        priority:
+          type: integer
+        container:
+          type: string
+        transform:
+          type: string
+          enum:
+          - redact
+          - mask
+          - reveal
+        permissions:
+          type: array
+          items:
+            type: string
+    ReactRequest:
       type: object
       required:
-      - name
-      - code
+      - args
       properties:
-        name:
-          type: string
-        code:
-          type: string
-        configuration:
-          type: object
-          additionalProperties:
-            type: string
-        application:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-        runtime:
+        args:
           type: object
           additionalProperties: true
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    Unauthorized:
-      description: The BT-API-KEY header is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
+          description: 'Arguments passed to the reactor. May contain detokenization expressions of the form {{ token: <tokenId> }}.'
   parameters:
     ReactorId:
       name: id

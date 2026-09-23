@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Basis Theory 3D Secure Proxy API
+  title: Basis Theory Proxy API
   description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
   termsOfService: https://basistheory.com/terms
   contact:
@@ -209,49 +209,32 @@ paths:
         '200':
           description: The response forwarded from the destination.
 components:
-  parameters:
-    BtProxyUrl:
-      name: BT-PROXY-URL
-      in: header
-      required: false
-      description: For ephemeral proxy requests, the destination base URL to proxy to.
-      schema:
-        type: string
-        format: uri
-    ProxyId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the proxy.
-      schema:
-        type: string
-        format: uuid
-    BtProxyKey:
-      name: BT-PROXY-KEY
-      in: header
-      required: false
-      description: For pre-configured proxy requests, the short key identifying the proxy.
-      schema:
-        type: string
+  responses:
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Forbidden:
+      description: The application lacks the required permission.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   schemas:
-    ProxyPaginatedList:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Proxy'
-    ProxyTransform:
-      type: object
-      properties:
-        type:
-          type: string
-        code:
-          type: string
-        matcher:
-          type: string
     CreateProxyRequest:
       type: object
       required:
@@ -286,49 +269,15 @@ components:
         require_auth:
           type: boolean
           default: true
-    ValidationProblemDetails:
+    ProxyPaginatedList:
       type: object
       properties:
-        title:
-          type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-    Pagination:
-      type: object
-      properties:
-        total_items:
-          type: integer
-        page_number:
-          type: integer
-        page_size:
-          type: integer
-        total_pages:
-          type: integer
-    AccessRule:
-      type: object
-      properties:
-        description:
-          type: string
-        priority:
-          type: integer
-        container:
-          type: string
-        transform:
-          type: string
-          enum:
-          - redact
-          - mask
-          - reveal
-        permissions:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/Proxy'
     Application:
       type: object
       properties:
@@ -364,15 +313,6 @@ components:
         created_at:
           type: string
           format: date-time
-    ProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
     Proxy:
       type: object
       properties:
@@ -410,31 +350,91 @@ components:
         created_at:
           type: string
           format: date-time
-  responses:
-    Forbidden:
-      description: The application lacks the required permission.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    Unauthorized:
-      description: The BT-API-KEY header is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type: integer
+        page_number:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    ProxyTransform:
+      type: object
+      properties:
+        type:
+          type: string
+        code:
+          type: string
+        matcher:
+          type: string
+    AccessRule:
+      type: object
+      properties:
+        description:
+          type: string
+        priority:
+          type: integer
+        container:
+          type: string
+        transform:
+          type: string
+          enum:
+          - redact
+          - mask
+          - reveal
+        permissions:
+          type: array
+          items:
+            type: string
+  parameters:
+    BtProxyUrl:
+      name: BT-PROXY-URL
+      in: header
+      required: false
+      description: For ephemeral proxy requests, the destination base URL to proxy to.
+      schema:
+        type: string
+        format: uri
+    BtProxyKey:
+      name: BT-PROXY-KEY
+      in: header
+      required: false
+      description: For pre-configured proxy requests, the short key identifying the proxy.
+      schema:
+        type: string
+    ProxyId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the proxy.
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     ApiKey:
       type: apiKey

@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Basis Theory 3D Secure API
   description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
@@ -99,6 +99,35 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    Create3dsSessionRequest:
+      type: object
+      properties:
+        token_id:
+          type: string
+        token_intent_id:
+          type: string
+        type:
+          type: string
+          enum:
+          - customer
+          - merchant
+        device:
+          type: string
+          enum:
+          - browser
+          - app
+        device_info:
+          type: object
+          additionalProperties: true
+        pan:
+          type: object
+          properties:
+            number:
+              type: string
+            expiration_month:
+              type: string
+            expiration_year:
+              type: string
     ThreeDSSession:
       type: object
       properties:
@@ -140,35 +169,24 @@ components:
         created_at:
           type: string
           format: date-time
-    Create3dsSessionRequest:
+    Authenticate3dsRequest:
       type: object
       properties:
-        token_id:
+        authentication_category:
           type: string
-        token_intent_id:
+        authentication_type:
           type: string
-        type:
+        challenge_preference:
           type: string
-          enum:
-          - customer
-          - merchant
-        device:
-          type: string
-          enum:
-          - browser
-          - app
-        device_info:
+        merchant_info:
           type: object
           additionalProperties: true
-        pan:
+        cardholder_info:
           type: object
-          properties:
-            number:
-              type: string
-            expiration_month:
-              type: string
-            expiration_year:
-              type: string
+          additionalProperties: true
+        purchase_info:
+          type: object
+          additionalProperties: true
     ValidationProblemDetails:
       type: object
       properties:
@@ -191,37 +209,19 @@ components:
           type: integer
         detail:
           type: string
-    Authenticate3dsRequest:
-      type: object
-      properties:
-        authentication_category:
-          type: string
-        authentication_type:
-          type: string
-        challenge_preference:
-          type: string
-        merchant_info:
-          type: object
-          additionalProperties: true
-        cardholder_info:
-          type: object
-          additionalProperties: true
-        purchase_info:
-          type: object
-          additionalProperties: true
   responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
     ValidationProblem:
       description: The request failed validation.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationProblemDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   parameters:
     ThreeDSSessionId:
       name: id

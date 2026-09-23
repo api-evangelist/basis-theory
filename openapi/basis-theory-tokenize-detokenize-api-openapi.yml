@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Basis Theory 3D Secure Tokenize / Detokenize API
+  title: Basis Theory Tokenize / Detokenize API
   description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
   termsOfService: https://basistheory.com/terms
   contact:
@@ -76,25 +76,29 @@ paths:
           $ref: '#/components/responses/ValidationProblem'
 components:
   responses:
-    Forbidden:
-      description: The application lacks the required permission.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    Unauthorized:
-      description: The BT-API-KEY header is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
     ValidationProblem:
       description: The request failed validation.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Forbidden:
+      description: The application lacks the required permission.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   schemas:
+    TokenizeRequest:
+      type: object
+      additionalProperties: true
+      description: An arbitrary object graph where leaf nodes may be token requests of the form {type, data, ...}. The same shape is returned with each request replaced by its created token.
     ValidationProblemDetails:
       type: object
       properties:
@@ -117,10 +121,6 @@ components:
           type: integer
         detail:
           type: string
-    TokenizeRequest:
-      type: object
-      additionalProperties: true
-      description: An arbitrary object graph where leaf nodes may be token requests of the form {type, data, ...}. The same shape is returned with each request replaced by its created token.
   securitySchemes:
     ApiKey:
       type: apiKey
