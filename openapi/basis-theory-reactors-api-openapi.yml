@@ -154,49 +154,20 @@ paths:
         '422':
           $ref: '#/components/responses/ValidationProblem'
 components:
-  responses:
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
-    Unauthorized:
-      description: The BT-API-KEY header is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
   schemas:
-    CreateReactorRequest:
+    ValidationProblemDetails:
       type: object
-      required:
-      - name
-      - code
       properties:
-        name:
+        title:
           type: string
-        code:
-          type: string
-        configuration:
+        status:
+          type: integer
+        errors:
           type: object
           additionalProperties:
-            type: string
-        application:
-          type: object
-          properties:
-            id:
+            type: array
+            items:
               type: string
-              format: uuid
-        runtime:
-          type: object
-          additionalProperties: true
     Application:
       type: object
       properties:
@@ -241,48 +212,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Reactor'
-    ProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
-    Pagination:
-      type: object
-      properties:
-        total_items:
-          type: integer
-        page_number:
-          type: integer
-        page_size:
-          type: integer
-        total_pages:
-          type: integer
-    ReactResponse:
-      type: object
-      properties:
-        tokens:
-          type: object
-          additionalProperties: true
-        raw:
-          type: object
-          additionalProperties: true
-    ValidationProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
     Reactor:
       type: object
       properties:
@@ -308,6 +237,38 @@ components:
         created_at:
           type: string
           format: date-time
+    ReactResponse:
+      type: object
+      properties:
+        tokens:
+          type: object
+          additionalProperties: true
+        raw:
+          type: object
+          additionalProperties: true
+    CreateReactorRequest:
+      type: object
+      required:
+      - name
+      - code
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+        application:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+        runtime:
+          type: object
+          additionalProperties: true
     AccessRule:
       type: object
       properties:
@@ -327,6 +288,26 @@ components:
           type: array
           items:
             type: string
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type: integer
+        page_number:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
     ReactRequest:
       type: object
       required:
@@ -336,6 +317,25 @@ components:
           type: object
           additionalProperties: true
           description: 'Arguments passed to the reactor. May contain detokenization expressions of the form {{ token: <tokenId> }}.'
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   parameters:
     ReactorId:
       name: id

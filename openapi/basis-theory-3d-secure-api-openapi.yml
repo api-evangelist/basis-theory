@@ -99,6 +99,37 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    Authenticate3dsRequest:
+      type: object
+      properties:
+        authentication_category:
+          type: string
+        authentication_type:
+          type: string
+        challenge_preference:
+          type: string
+        merchant_info:
+          type: object
+          additionalProperties: true
+        cardholder_info:
+          type: object
+          additionalProperties: true
+        purchase_info:
+          type: object
+          additionalProperties: true
     Create3dsSessionRequest:
       type: object
       properties:
@@ -128,6 +159,15 @@ components:
               type: string
             expiration_year:
               type: string
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
     ThreeDSSession:
       type: object
       properties:
@@ -169,59 +209,19 @@ components:
         created_at:
           type: string
           format: date-time
-    Authenticate3dsRequest:
-      type: object
-      properties:
-        authentication_category:
-          type: string
-        authentication_type:
-          type: string
-        challenge_preference:
-          type: string
-        merchant_info:
-          type: object
-          additionalProperties: true
-        cardholder_info:
-          type: object
-          additionalProperties: true
-        purchase_info:
-          type: object
-          additionalProperties: true
-    ValidationProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-    ProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
   responses:
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
     NotFound:
       description: The requested resource was not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ProblemDetails'
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
   parameters:
     ThreeDSSessionId:
       name: id

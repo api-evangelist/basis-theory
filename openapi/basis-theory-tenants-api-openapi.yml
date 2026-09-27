@@ -77,17 +77,28 @@ paths:
                 $ref: '#/components/schemas/TenantUsageReport'
 components:
   schemas:
-    TenantSettings:
+    ValidationProblemDetails:
       type: object
       properties:
-        fingerprint_tokens:
-          type: boolean
-        deduplicate_tokens:
-          type: boolean
-        disable_ephemeral_proxy:
-          type: boolean
-        token_deduplication_behavior:
+        title:
           type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    UpdateTenantRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        settings:
+          $ref: '#/components/schemas/TenantSettings'
     TenantUsageReport:
       type: object
       properties:
@@ -130,28 +141,17 @@ components:
         modified_at:
           type: string
           format: date-time
-    UpdateTenantRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        settings:
-          $ref: '#/components/schemas/TenantSettings'
-    ValidationProblemDetails:
+    TenantSettings:
       type: object
       properties:
-        title:
+        fingerprint_tokens:
+          type: boolean
+        deduplicate_tokens:
+          type: boolean
+        disable_ephemeral_proxy:
+          type: boolean
+        token_deduplication_behavior:
           type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
     ProblemDetails:
       type: object
       properties:
