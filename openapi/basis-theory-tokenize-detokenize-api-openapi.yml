@@ -76,6 +76,10 @@ paths:
           $ref: '#/components/responses/ValidationProblem'
 components:
   schemas:
+    TokenizeRequest:
+      type: object
+      additionalProperties: true
+      description: An arbitrary object graph where leaf nodes may be token requests of the form {type, data, ...}. The same shape is returned with each request replaced by its created token.
     ValidationProblemDetails:
       type: object
       properties:
@@ -89,10 +93,6 @@ components:
             type: array
             items:
               type: string
-    TokenizeRequest:
-      type: object
-      additionalProperties: true
-      description: An arbitrary object graph where leaf nodes may be token requests of the form {type, data, ...}. The same shape is returned with each request replaced by its created token.
     ProblemDetails:
       type: object
       properties:
@@ -103,18 +103,18 @@ components:
         detail:
           type: string
   responses:
-    Forbidden:
-      description: The application lacks the required permission.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
     ValidationProblem:
       description: The request failed validation.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationProblemDetails'
+    Forbidden:
+      description: The application lacks the required permission.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
     Unauthorized:
       description: The BT-API-KEY header is missing or invalid.
       content:

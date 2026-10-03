@@ -142,19 +142,44 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    ValidationProblemDetails:
+    ApplicationPaginatedList:
       type: object
       properties:
-        title:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+    CreateApplicationRequest:
+      type: object
+      required:
+      - name
+      - type
+      properties:
+        name:
           type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
+        type:
+          type: string
+          enum:
+          - public
+          - private
+          - management
+          - expiring
+        permissions:
+          type: array
+          items:
+            type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessRule'
+        create_key:
+          type: boolean
+          default: true
+        expires_at:
+          type: string
+          format: date-time
     Application:
       type: object
       properties:
@@ -209,35 +234,28 @@ components:
           type: array
           items:
             type: string
-    CreateApplicationRequest:
+    ValidationProblemDetails:
       type: object
-      required:
-      - name
-      - type
       properties:
-        name:
+        title:
           type: string
-        type:
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    ProblemDetails:
+      type: object
+      properties:
+        title:
           type: string
-          enum:
-          - public
-          - private
-          - management
-          - expiring
-        permissions:
-          type: array
-          items:
-            type: string
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccessRule'
-        create_key:
-          type: boolean
-          default: true
-        expires_at:
+        status:
+          type: integer
+        detail:
           type: string
-          format: date-time
     Pagination:
       type: object
       properties:
@@ -249,24 +267,6 @@ components:
           type: integer
         total_pages:
           type: integer
-    ApplicationPaginatedList:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Application'
-    ProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
     UpdateApplicationRequest:
       type: object
       required:
@@ -289,18 +289,18 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ProblemDetails'
-    Forbidden:
-      description: The application lacks the required permission.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
     ValidationProblem:
       description: The request failed validation.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationProblemDetails'
+    Forbidden:
+      description: The application lacks the required permission.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
     Unauthorized:
       description: The BT-API-KEY header is missing or invalid.
       content:

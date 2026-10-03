@@ -156,20 +156,39 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+    Forbidden:
+      description: The application lacks the required permission.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   schemas:
-    ValidationProblemDetails:
+    CursorPagination:
       type: object
       properties:
-        title:
+        next:
           type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
+        previous:
+          type: string
     UpdateTokenRequest:
       type: object
       properties:
@@ -184,46 +203,6 @@ components:
           items:
             type: string
         fingerprint_expression:
-          type: string
-    CreateTokenRequest:
-      type: object
-      required:
-      - type
-      - data
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        data:
-          description: The sensitive value to tokenize. May be a primitive or an object.
-        mask:
-          description: A masking expression used to reveal a non-sensitive portion of the data.
-        containers:
-          type: array
-          items:
-            type: string
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-        search_indexes:
-          type: array
-          items:
-            type: string
-        fingerprint_expression:
-          type: string
-        deduplicate_token:
-          type: boolean
-        expires_at:
-          type: string
-          format: date-time
-    CursorPagination:
-      type: object
-      properties:
-        next:
-          type: string
-        previous:
           type: string
     Token:
       type: object
@@ -268,15 +247,6 @@ components:
         modified_at:
           type: string
           format: date-time
-    ProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
     TokenCursorPaginatedList:
       type: object
       properties:
@@ -286,31 +256,61 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Token'
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    Forbidden:
-      description: The application lacks the required permission.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
-    Unauthorized:
-      description: The BT-API-KEY header is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
+    CreateTokenRequest:
+      type: object
+      required:
+      - type
+      - data
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        data:
+          description: The sensitive value to tokenize. May be a primitive or an object.
+        mask:
+          description: A masking expression used to reveal a non-sensitive portion of the data.
+        containers:
+          type: array
+          items:
+            type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        search_indexes:
+          type: array
+          items:
+            type: string
+        fingerprint_expression:
+          type: string
+        deduplicate_token:
+          type: boolean
+        expires_at:
+          type: string
+          format: date-time
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
   parameters:
     TokenId:
       name: id

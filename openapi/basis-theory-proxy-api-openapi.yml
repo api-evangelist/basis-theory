@@ -209,7 +209,138 @@ paths:
         '200':
           description: The response forwarded from the destination.
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+    Forbidden:
+      description: The application lacks the required permission.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   schemas:
+    CreateProxyRequest:
+      type: object
+      required:
+      - name
+      - destination_url
+      properties:
+        name:
+          type: string
+        destination_url:
+          type: string
+          format: uri
+        request_reactor_id:
+          type: string
+          format: uuid
+        response_reactor_id:
+          type: string
+          format: uuid
+        request_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        response_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        application:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+        require_auth:
+          type: boolean
+          default: true
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        key:
+          type: string
+          description: The application key, returned only on creation when create_key is true.
+        type:
+          type: string
+          enum:
+          - public
+          - private
+          - management
+          - expiring
+        permissions:
+          type: array
+          items:
+            type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessRule'
+        expires_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+    ProxyPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Proxy'
+    ProxyTransform:
+      type: object
+      properties:
+        type:
+          type: string
+        code:
+          type: string
+        matcher:
+          type: string
+    AccessRule:
+      type: object
+      properties:
+        description:
+          type: string
+        priority:
+          type: integer
+        container:
+          type: string
+        transform:
+          type: string
+          enum:
+          - redact
+          - mask
+          - reveal
+        permissions:
+          type: array
+          items:
+            type: string
     ValidationProblemDetails:
       type: object
       properties:
@@ -223,6 +354,15 @@ components:
             type: array
             items:
               type: string
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
     Proxy:
       type: object
       properties:
@@ -260,112 +400,6 @@ components:
         created_at:
           type: string
           format: date-time
-    Application:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        tenant_id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        key:
-          type: string
-          description: The application key, returned only on creation when create_key is true.
-        type:
-          type: string
-          enum:
-          - public
-          - private
-          - management
-          - expiring
-        permissions:
-          type: array
-          items:
-            type: string
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccessRule'
-        expires_at:
-          type: string
-          format: date-time
-        created_at:
-          type: string
-          format: date-time
-    CreateProxyRequest:
-      type: object
-      required:
-      - name
-      - destination_url
-      properties:
-        name:
-          type: string
-        destination_url:
-          type: string
-          format: uri
-        request_reactor_id:
-          type: string
-          format: uuid
-        response_reactor_id:
-          type: string
-          format: uuid
-        request_transform:
-          $ref: '#/components/schemas/ProxyTransform'
-        response_transform:
-          $ref: '#/components/schemas/ProxyTransform'
-        application:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-        configuration:
-          type: object
-          additionalProperties:
-            type: string
-        require_auth:
-          type: boolean
-          default: true
-    ProxyPaginatedList:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Proxy'
-    AccessRule:
-      type: object
-      properties:
-        description:
-          type: string
-        priority:
-          type: integer
-        container:
-          type: string
-        transform:
-          type: string
-          enum:
-          - redact
-          - mask
-          - reveal
-        permissions:
-          type: array
-          items:
-            type: string
-    ProxyTransform:
-      type: object
-      properties:
-        type:
-          type: string
-        code:
-          type: string
-        matcher:
-          type: string
     Pagination:
       type: object
       properties:
@@ -377,15 +411,6 @@ components:
           type: integer
         total_pages:
           type: integer
-    ProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
   parameters:
     BtProxyKey:
       name: BT-PROXY-KEY
@@ -394,14 +419,6 @@ components:
       description: For pre-configured proxy requests, the short key identifying the proxy.
       schema:
         type: string
-    ProxyId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the proxy.
-      schema:
-        type: string
-        format: uuid
     BtProxyUrl:
       name: BT-PROXY-URL
       in: header
@@ -410,31 +427,14 @@ components:
       schema:
         type: string
         format: uri
-  responses:
-    Forbidden:
-      description: The application lacks the required permission.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
-    Unauthorized:
-      description: The BT-API-KEY header is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
+    ProxyId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the proxy.
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     ApiKey:
       type: apiKey

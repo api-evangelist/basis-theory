@@ -119,20 +119,20 @@ paths:
                 items:
                   type: string
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
   schemas:
-    ValidationProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
     WebhookPaginatedList:
       type: object
       properties:
@@ -142,30 +142,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Webhook'
-    CreateWebhookRequest:
-      type: object
-      required:
-      - name
-      - url
-      - events
-      properties:
-        name:
-          type: string
-        url:
-          type: string
-          format: uri
-        notify_email:
-          type: string
-          format: email
-        status:
-          type: string
-          enum:
-          - enabled
-          - disabled
-        events:
-          type: array
-          items:
-            type: string
     Webhook:
       type: object
       properties:
@@ -201,6 +177,52 @@ components:
         modified_at:
           type: string
           format: date-time
+    CreateWebhookRequest:
+      type: object
+      required:
+      - name
+      - url
+      - events
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+        notify_email:
+          type: string
+          format: email
+        status:
+          type: string
+          enum:
+          - enabled
+          - disabled
+        events:
+          type: array
+          items:
+            type: string
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
     Pagination:
       type: object
       properties:
@@ -212,28 +234,6 @@ components:
           type: integer
         total_pages:
           type: integer
-    ProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
   parameters:
     WebhookId:
       name: id

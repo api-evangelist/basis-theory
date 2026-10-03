@@ -77,19 +77,6 @@ paths:
                 $ref: '#/components/schemas/TenantUsageReport'
 components:
   schemas:
-    ValidationProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
     UpdateTenantRequest:
       type: object
       required:
@@ -99,21 +86,6 @@ components:
           type: string
         settings:
           $ref: '#/components/schemas/TenantSettings'
-    TenantUsageReport:
-      type: object
-      properties:
-        token_report:
-          type: object
-          properties:
-            included_monthly_active_tokens:
-              type: integer
-            monthly_active_tokens:
-              type: integer
-            metrics_by_type:
-              type: object
-              additionalProperties:
-                type: object
-                additionalProperties: true
     Tenant:
       type: object
       properties:
@@ -152,6 +124,19 @@ components:
           type: boolean
         token_deduplication_behavior:
           type: string
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
     ProblemDetails:
       type: object
       properties:
@@ -161,6 +146,21 @@ components:
           type: integer
         detail:
           type: string
+    TenantUsageReport:
+      type: object
+      properties:
+        token_report:
+          type: object
+          properties:
+            included_monthly_active_tokens:
+              type: integer
+            monthly_active_tokens:
+              type: integer
+            metrics_by_type:
+              type: object
+              additionalProperties:
+                type: object
+                additionalProperties: true
   responses:
     ValidationProblem:
       description: The request failed validation.
