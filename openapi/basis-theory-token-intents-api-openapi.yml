@@ -76,8 +76,8 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    NotFound:
-      description: The requested resource was not found.
+    Forbidden:
+      description: The application lacks the required permission.
       content:
         application/json:
           schema:
@@ -88,8 +88,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationProblemDetails'
-    Forbidden:
-      description: The application lacks the required permission.
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
@@ -101,6 +101,19 @@ components:
           schema:
             $ref: '#/components/schemas/ProblemDetails'
   schemas:
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
     TokenIntent:
       type: object
       properties:
@@ -123,6 +136,15 @@ components:
         created_at:
           type: string
           format: date-time
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
     CreateTokenIntentRequest:
       type: object
       required:
@@ -136,28 +158,6 @@ components:
           type: object
           additionalProperties:
             type: string
-    ValidationProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-    ProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
   parameters:
     TokenIntentId:
       name: id

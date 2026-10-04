@@ -210,8 +210,8 @@ paths:
           description: The response forwarded from the destination.
 components:
   responses:
-    NotFound:
-      description: The requested resource was not found.
+    Forbidden:
+      description: The application lacks the required permission.
       content:
         application/json:
           schema:
@@ -222,8 +222,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationProblemDetails'
-    Forbidden:
-      description: The application lacks the required permission.
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
@@ -235,6 +235,39 @@ components:
           schema:
             $ref: '#/components/schemas/ProblemDetails'
   schemas:
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    ProxyTransform:
+      type: object
+      properties:
+        type:
+          type: string
+        code:
+          type: string
+        matcher:
+          type: string
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type: integer
+        page_number:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
     CreateProxyRequest:
       type: object
       required:
@@ -269,41 +302,6 @@ components:
         require_auth:
           type: boolean
           default: true
-    Application:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        tenant_id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        key:
-          type: string
-          description: The application key, returned only on creation when create_key is true.
-        type:
-          type: string
-          enum:
-          - public
-          - private
-          - management
-          - expiring
-        permissions:
-          type: array
-          items:
-            type: string
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccessRule'
-        expires_at:
-          type: string
-          format: date-time
-        created_at:
-          type: string
-          format: date-time
     ProxyPaginatedList:
       type: object
       properties:
@@ -313,47 +311,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Proxy'
-    ProxyTransform:
-      type: object
-      properties:
-        type:
-          type: string
-        code:
-          type: string
-        matcher:
-          type: string
-    AccessRule:
-      type: object
-      properties:
-        description:
-          type: string
-        priority:
-          type: integer
-        container:
-          type: string
-        transform:
-          type: string
-          enum:
-          - redact
-          - mask
-          - reveal
-        permissions:
-          type: array
-          items:
-            type: string
-    ValidationProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
     ProblemDetails:
       type: object
       properties:
@@ -400,18 +357,69 @@ components:
         created_at:
           type: string
           format: date-time
-    Pagination:
+    Application:
       type: object
       properties:
-        total_items:
+        id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        key:
+          type: string
+          description: The application key, returned only on creation when create_key is true.
+        type:
+          type: string
+          enum:
+          - public
+          - private
+          - management
+          - expiring
+        permissions:
+          type: array
+          items:
+            type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessRule'
+        expires_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+    AccessRule:
+      type: object
+      properties:
+        description:
+          type: string
+        priority:
           type: integer
-        page_number:
-          type: integer
-        page_size:
-          type: integer
-        total_pages:
-          type: integer
+        container:
+          type: string
+        transform:
+          type: string
+          enum:
+          - redact
+          - mask
+          - reveal
+        permissions:
+          type: array
+          items:
+            type: string
   parameters:
+    ProxyId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the proxy.
+      schema:
+        type: string
+        format: uuid
     BtProxyKey:
       name: BT-PROXY-KEY
       in: header
@@ -427,14 +435,6 @@ components:
       schema:
         type: string
         format: uri
-    ProxyId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the proxy.
-      schema:
-        type: string
-        format: uuid
   securitySchemes:
     ApiKey:
       type: apiKey

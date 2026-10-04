@@ -113,17 +113,6 @@ components:
         modified_at:
           type: string
           format: date-time
-    TenantSettings:
-      type: object
-      properties:
-        fingerprint_tokens:
-          type: boolean
-        deduplicate_tokens:
-          type: boolean
-        disable_ephemeral_proxy:
-          type: boolean
-        token_deduplication_behavior:
-          type: string
     ValidationProblemDetails:
       type: object
       properties:
@@ -137,15 +126,6 @@ components:
             type: array
             items:
               type: string
-    ProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
     TenantUsageReport:
       type: object
       properties:
@@ -161,6 +141,26 @@ components:
               additionalProperties:
                 type: object
                 additionalProperties: true
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    TenantSettings:
+      type: object
+      properties:
+        fingerprint_tokens:
+          type: boolean
+        deduplicate_tokens:
+          type: boolean
+        disable_ephemeral_proxy:
+          type: boolean
+        token_deduplication_behavior:
+          type: string
   responses:
     ValidationProblem:
       description: The request failed validation.

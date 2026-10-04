@@ -154,26 +154,102 @@ paths:
         '422':
           $ref: '#/components/responses/ValidationProblem'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
-    Unauthorized:
-      description: The BT-API-KEY header is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
   schemas:
+    Reactor:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        code:
+          type: string
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+        application:
+          $ref: '#/components/schemas/Application'
+        state:
+          type: string
+          description: Provisioning state for asynchronous runtimes.
+        created_at:
+          type: string
+          format: date-time
+    ReactorPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reactor'
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type: integer
+        page_number:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    ReactRequest:
+      type: object
+      required:
+      - args
+      properties:
+        args:
+          type: object
+          additionalProperties: true
+          description: 'Arguments passed to the reactor. May contain detokenization expressions of the form {{ token: <tokenId> }}.'
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    AccessRule:
+      type: object
+      properties:
+        description:
+          type: string
+        priority:
+          type: integer
+        container:
+          type: string
+        transform:
+          type: string
+          enum:
+          - redact
+          - mask
+          - reveal
+        permissions:
+          type: array
+          items:
+            type: string
     ReactResponse:
       type: object
       properties:
@@ -181,6 +257,29 @@ components:
           type: object
           additionalProperties: true
         raw:
+          type: object
+          additionalProperties: true
+    CreateReactorRequest:
+      type: object
+      required:
+      - name
+      - code
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+        application:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+        runtime:
           type: object
           additionalProperties: true
     Application:
@@ -218,124 +317,25 @@ components:
         created_at:
           type: string
           format: date-time
-    CreateReactorRequest:
-      type: object
-      required:
-      - name
-      - code
-      properties:
-        name:
-          type: string
-        code:
-          type: string
-        configuration:
-          type: object
-          additionalProperties:
-            type: string
-        application:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-        runtime:
-          type: object
-          additionalProperties: true
-    ReactorPaginatedList:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Reactor'
-    Reactor:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        tenant_id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        code:
-          type: string
-        configuration:
-          type: object
-          additionalProperties:
-            type: string
-        application:
-          $ref: '#/components/schemas/Application'
-        state:
-          type: string
-          description: Provisioning state for asynchronous runtimes.
-        created_at:
-          type: string
-          format: date-time
-    AccessRule:
-      type: object
-      properties:
-        description:
-          type: string
-        priority:
-          type: integer
-        container:
-          type: string
-        transform:
-          type: string
-          enum:
-          - redact
-          - mask
-          - reveal
-        permissions:
-          type: array
-          items:
-            type: string
-    ValidationProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-    ProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
-    Pagination:
-      type: object
-      properties:
-        total_items:
-          type: integer
-        page_number:
-          type: integer
-        page_size:
-          type: integer
-        total_pages:
-          type: integer
-    ReactRequest:
-      type: object
-      required:
-      - args
-      properties:
-        args:
-          type: object
-          additionalProperties: true
-          description: 'Arguments passed to the reactor. May contain detokenization expressions of the form {{ token: <tokenId> }}.'
+  responses:
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   parameters:
     ReactorId:
       name: id

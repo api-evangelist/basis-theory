@@ -119,64 +119,7 @@ paths:
                 items:
                   type: string
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
   schemas:
-    WebhookPaginatedList:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Webhook'
-    Webhook:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        tenant_id:
-          type: string
-          format: uuid
-        status:
-          type: string
-          enum:
-          - enabled
-          - disabled
-        name:
-          type: string
-        url:
-          type: string
-          format: uri
-        notify_email:
-          type: string
-          format: email
-        events:
-          type: array
-          items:
-            type: string
-        created_by:
-          type: string
-          format: uuid
-        created_at:
-          type: string
-          format: date-time
-        modified_at:
-          type: string
-          format: date-time
     CreateWebhookRequest:
       type: object
       required:
@@ -214,15 +157,6 @@ components:
             type: array
             items:
               type: string
-    ProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
     Pagination:
       type: object
       properties:
@@ -234,6 +168,72 @@ components:
           type: integer
         total_pages:
           type: integer
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    Webhook:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tenant_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+          - enabled
+          - disabled
+        name:
+          type: string
+        url:
+          type: string
+          format: uri
+        notify_email:
+          type: string
+          format: email
+        events:
+          type: array
+          items:
+            type: string
+        created_by:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    WebhookPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Webhook'
+  responses:
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   parameters:
     WebhookId:
       name: id
