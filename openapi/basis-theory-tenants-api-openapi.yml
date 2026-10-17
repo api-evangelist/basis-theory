@@ -76,6 +76,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/TenantUsageReport'
 components:
+  responses:
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   schemas:
     UpdateTenantRequest:
       type: object
@@ -86,6 +99,30 @@ components:
           type: string
         settings:
           $ref: '#/components/schemas/TenantSettings'
+    TenantSettings:
+      type: object
+      properties:
+        fingerprint_tokens:
+          type: boolean
+        deduplicate_tokens:
+          type: boolean
+        disable_ephemeral_proxy:
+          type: boolean
+        token_deduplication_behavior:
+          type: string
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
     Tenant:
       type: object
       properties:
@@ -113,19 +150,15 @@ components:
         modified_at:
           type: string
           format: date-time
-    ValidationProblemDetails:
+    ProblemDetails:
       type: object
       properties:
         title:
           type: string
         status:
           type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
+        detail:
+          type: string
     TenantUsageReport:
       type: object
       properties:
@@ -141,39 +174,6 @@ components:
               additionalProperties:
                 type: object
                 additionalProperties: true
-    ProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
-    TenantSettings:
-      type: object
-      properties:
-        fingerprint_tokens:
-          type: boolean
-        deduplicate_tokens:
-          type: boolean
-        disable_ephemeral_proxy:
-          type: boolean
-        token_deduplication_behavior:
-          type: string
-  responses:
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
-    Unauthorized:
-      description: The BT-API-KEY header is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
   securitySchemes:
     ApiKey:
       type: apiKey

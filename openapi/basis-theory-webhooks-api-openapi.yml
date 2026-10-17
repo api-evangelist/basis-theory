@@ -120,6 +120,15 @@ paths:
                   type: string
 components:
   schemas:
+    WebhookPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Webhook'
     CreateWebhookRequest:
       type: object
       required:
@@ -144,6 +153,17 @@ components:
           type: array
           items:
             type: string
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type: integer
+        page_number:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
     ValidationProblemDetails:
       type: object
       properties:
@@ -157,26 +177,6 @@ components:
             type: array
             items:
               type: string
-    Pagination:
-      type: object
-      properties:
-        total_items:
-          type: integer
-        page_number:
-          type: integer
-        page_size:
-          type: integer
-        total_pages:
-          type: integer
-    ProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
     Webhook:
       type: object
       properties:
@@ -212,15 +212,15 @@ components:
         modified_at:
           type: string
           format: date-time
-    WebhookPaginatedList:
+    ProblemDetails:
       type: object
       properties:
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Webhook'
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
   responses:
     ValidationProblem:
       description: The request failed validation.

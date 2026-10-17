@@ -58,15 +58,6 @@ paths:
                 $ref: '#/components/schemas/LogPaginatedList'
 components:
   schemas:
-    LogPaginatedList:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Log'
     Pagination:
       type: object
       properties:
@@ -78,6 +69,15 @@ components:
           type: integer
         total_pages:
           type: integer
+    LogPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Log'
     Log:
       type: object
       properties:

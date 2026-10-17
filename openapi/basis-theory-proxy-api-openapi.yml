@@ -210,53 +210,55 @@ paths:
           description: The response forwarded from the destination.
 components:
   responses:
-    Forbidden:
-      description: The application lacks the required permission.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
     ValidationProblem:
       description: The request failed validation.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationProblemDetails'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
     Unauthorized:
       description: The BT-API-KEY header is missing or invalid.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Forbidden:
+      description: The application lacks the required permission.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+  parameters:
+    BtProxyKey:
+      name: BT-PROXY-KEY
+      in: header
+      required: false
+      description: For pre-configured proxy requests, the short key identifying the proxy.
+      schema:
+        type: string
+    BtProxyUrl:
+      name: BT-PROXY-URL
+      in: header
+      required: false
+      description: For ephemeral proxy requests, the destination base URL to proxy to.
+      schema:
+        type: string
+        format: uri
+    ProxyId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the proxy.
+      schema:
+        type: string
+        format: uuid
   schemas:
-    ValidationProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-    ProxyTransform:
-      type: object
-      properties:
-        type:
-          type: string
-        code:
-          type: string
-        matcher:
-          type: string
     Pagination:
       type: object
       properties:
@@ -268,95 +270,6 @@ components:
           type: integer
         total_pages:
           type: integer
-    CreateProxyRequest:
-      type: object
-      required:
-      - name
-      - destination_url
-      properties:
-        name:
-          type: string
-        destination_url:
-          type: string
-          format: uri
-        request_reactor_id:
-          type: string
-          format: uuid
-        response_reactor_id:
-          type: string
-          format: uuid
-        request_transform:
-          $ref: '#/components/schemas/ProxyTransform'
-        response_transform:
-          $ref: '#/components/schemas/ProxyTransform'
-        application:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-        configuration:
-          type: object
-          additionalProperties:
-            type: string
-        require_auth:
-          type: boolean
-          default: true
-    ProxyPaginatedList:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Proxy'
-    ProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
-    Proxy:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        key:
-          type: string
-        tenant_id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        destination_url:
-          type: string
-          format: uri
-        request_reactor_id:
-          type: string
-          format: uuid
-        response_reactor_id:
-          type: string
-          format: uuid
-        request_transform:
-          $ref: '#/components/schemas/ProxyTransform'
-        response_transform:
-          $ref: '#/components/schemas/ProxyTransform'
-        application:
-          $ref: '#/components/schemas/Application'
-        configuration:
-          type: object
-          additionalProperties:
-            type: string
-        require_auth:
-          type: boolean
-        created_at:
-          type: string
-          format: date-time
     Application:
       type: object
       properties:
@@ -411,30 +324,117 @@ components:
           type: array
           items:
             type: string
-  parameters:
-    ProxyId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the proxy.
-      schema:
-        type: string
-        format: uuid
-    BtProxyKey:
-      name: BT-PROXY-KEY
-      in: header
-      required: false
-      description: For pre-configured proxy requests, the short key identifying the proxy.
-      schema:
-        type: string
-    BtProxyUrl:
-      name: BT-PROXY-URL
-      in: header
-      required: false
-      description: For ephemeral proxy requests, the destination base URL to proxy to.
-      schema:
-        type: string
-        format: uri
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    ProxyTransform:
+      type: object
+      properties:
+        type:
+          type: string
+        code:
+          type: string
+        matcher:
+          type: string
+    Proxy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        key:
+          type: string
+        tenant_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        destination_url:
+          type: string
+          format: uri
+        request_reactor_id:
+          type: string
+          format: uuid
+        response_reactor_id:
+          type: string
+          format: uuid
+        request_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        response_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        application:
+          $ref: '#/components/schemas/Application'
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+        require_auth:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+    ProxyPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Proxy'
+    CreateProxyRequest:
+      type: object
+      required:
+      - name
+      - destination_url
+      properties:
+        name:
+          type: string
+        destination_url:
+          type: string
+          format: uri
+        request_reactor_id:
+          type: string
+          format: uuid
+        response_reactor_id:
+          type: string
+          format: uuid
+        request_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        response_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        application:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+        require_auth:
+          type: boolean
+          default: true
   securitySchemes:
     ApiKey:
       type: apiKey

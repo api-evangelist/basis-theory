@@ -156,14 +156,32 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Forbidden:
+      description: The application lacks the required permission.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   schemas:
-    CursorPagination:
-      type: object
-      properties:
-        next:
-          type: string
-        previous:
-          type: string
     CreateTokenRequest:
       type: object
       required:
@@ -197,19 +215,6 @@ components:
         expires_at:
           type: string
           format: date-time
-    ValidationProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
     UpdateTokenRequest:
       type: object
       properties:
@@ -268,6 +273,26 @@ components:
         modified_at:
           type: string
           format: date-time
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    CursorPagination:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
     ProblemDetails:
       type: object
       properties:
@@ -286,31 +311,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Token'
-  responses:
-    Forbidden:
-      description: The application lacks the required permission.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    Unauthorized:
-      description: The BT-API-KEY header is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
   parameters:
     TokenId:
       name: id

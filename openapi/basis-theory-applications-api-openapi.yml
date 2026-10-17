@@ -141,99 +141,16 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Forbidden:
-      description: The application lacks the required permission.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    Unauthorized:
-      description: The BT-API-KEY header is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
   schemas:
-    ValidationProblemDetails:
+    ApplicationPaginatedList:
       type: object
       properties:
-        title:
-          type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-    UpdateApplicationRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        permissions:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
           type: array
           items:
-            type: string
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccessRule'
-    Pagination:
-      type: object
-      properties:
-        total_items:
-          type: integer
-        page_number:
-          type: integer
-        page_size:
-          type: integer
-        total_pages:
-          type: integer
-    AccessRule:
-      type: object
-      properties:
-        description:
-          type: string
-        priority:
-          type: integer
-        container:
-          type: string
-        transform:
-          type: string
-          enum:
-          - redact
-          - mask
-          - reveal
-        permissions:
-          type: array
-          items:
-            type: string
-    ProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        detail:
-          type: string
+            $ref: '#/components/schemas/Application'
     CreateApplicationRequest:
       type: object
       required:
@@ -263,6 +180,17 @@ components:
         expires_at:
           type: string
           format: date-time
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type: integer
+        page_number:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
     Application:
       type: object
       properties:
@@ -298,15 +226,87 @@ components:
         created_at:
           type: string
           format: date-time
-    ApplicationPaginatedList:
+    AccessRule:
       type: object
       properties:
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        data:
+        description:
+          type: string
+        priority:
+          type: integer
+        container:
+          type: string
+        transform:
+          type: string
+          enum:
+          - redact
+          - mask
+          - reveal
+        permissions:
           type: array
           items:
-            $ref: '#/components/schemas/Application'
+            type: string
+    ValidationProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    ProblemDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+    UpdateApplicationRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessRule'
+  responses:
+    ValidationProblem:
+      description: The request failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationProblemDetails'
+    Unauthorized:
+      description: The BT-API-KEY header is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    Forbidden:
+      description: The application lacks the required permission.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
   parameters:
     ApplicationId:
       name: id
