@@ -1,327 +1,1081 @@
 openapi: 3.2.0
 info:
   title: Basis Theory Tokens API
-  description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
-  termsOfService: https://basistheory.com/terms
-  contact:
-    name: Basis Theory Support
-    email: support@basistheory.com
-    url: https://developers.basistheory.com
-  version: '1.0'
+  description: '## Getting Started
+
+    * Sign-in to Basis Theory and go to Applications
+
+    * Create a Basis Theory Private Application
+
+    * All permissions should be selected
+
+    * Paste the API Key into the `BT-API-KEY` variable'
+  version: v1
 servers:
 - url: https://api.basistheory.com
-  description: Production environment (PRODUCTION tenants)
+  description: Default
+  x-fern-server-name: default
+- url: https://api.us.basistheory.com
+  description: US
+  x-fern-server-name: us
+- url: https://api.eu.basistheory.com
+  description: EU
+  x-fern-server-name: eu
 - url: https://api.test.basistheory.com
-  description: Test environment (TEST tenants)
+  description: Test
+  x-fern-server-name: test
 security:
 - ApiKey: []
 tags:
 - name: Tokens
-  description: Create, retrieve, search, update, and delete tokens.
 paths:
-  /tokens:
-    post:
-      operationId: createToken
+  /tokens/{id}:
+    get:
       tags:
       - Tokens
-      summary: Create a token
-      description: Tokenizes a single piece of sensitive data and stores it in the vault.
-      requestBody:
+      operationId: Tokens_GetById
+      parameters:
+      - name: id
+        in: path
         required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateTokenRequest'
+        schema:
+          maxLength: 250
+          pattern: ^.+$
+          type: string
       responses:
-        '201':
-          description: The created token.
+        '200':
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Token'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
         '403':
-          $ref: '#/components/responses/Forbidden'
-        '422':
-          $ref: '#/components/responses/ValidationProblem'
-  /v2/tokens:
-    get:
-      operationId: listTokens
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tokens
+      x-fern-sdk-method-name: get
+      summary: Tokens get by id
+      x-summary-source: derived
+    patch:
       tags:
       - Tokens
-      summary: List tokens
-      description: Returns a cursor-paginated list of tokens for the tenant.
+      operationId: Tokens_Update
       parameters:
       - name: id
-        in: query
-        description: Filter by one or more token ids.
+        in: path
+        required: true
         schema:
-          type: array
-          items:
-            type: string
+          maxLength: 200
+          pattern: ^.+$
+          type: string
+      requestBody:
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/UpdateTokenRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tokens
+      x-fern-sdk-method-name: update
+      x-fern-idempotent: true
+      summary: Tokens update
+      x-summary-source: derived
+    delete:
+      tags:
+      - Tokens
+      operationId: Tokens_Delete
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 200
+          pattern: ^.+$
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tokens
+      x-fern-sdk-method-name: delete
+      summary: Tokens delete
+      x-summary-source: derived
+  /tokens:
+    post:
+      tags:
+      - Tokens
+      operationId: Tokens_Create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTokenRequest'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tokens
+      x-fern-sdk-method-name: create
+      x-fern-idempotent: true
+      summary: Tokens create
+      x-summary-source: derived
+  /v2/tokens:
+    get:
+      tags:
+      - Tokens
+      operationId: Tokens_Get_V2
+      parameters:
       - name: type
         in: query
-        description: Filter by one or more token types.
         schema:
-          type: array
-          items:
+          type:
+          - string
+          - 'null'
+      - name: container
+        in: query
+        schema:
+          maxLength: 400
+          type:
+          - string
+          - 'null'
+      - name: fingerprint
+        in: query
+        schema:
+          maxLength: 100
+          type:
+          - string
+          - 'null'
+      - name: metadata
+        in: query
+        style: deepObject
+        schema:
+          maxLength: 1
+          type:
+          - object
+          - 'null'
+          additionalProperties:
             type: string
       - name: start
         in: query
-        description: Cursor for the next page of results.
         schema:
-          type: string
+          maxLength: 5000
+          type:
+          - string
+          - 'null'
       - name: size
         in: query
-        description: Number of results to return per page.
         schema:
-          type: integer
-          default: 20
+          maximum: 100
+          type:
+          - integer
+          - 'null'
+          format: int32
+          exclusiveMinimum: 0
       responses:
         '200':
-          description: A paginated list of tokens.
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenCursorPaginatedList'
         '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-  /tokens/{id}:
-    get:
-      operationId: getToken
-      tags:
-      - Tokens
-      summary: Get a token
-      parameters:
-      - $ref: '#/components/parameters/TokenId'
-      responses:
-        '200':
-          description: The requested token.
+          description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Token'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                $ref: '#/components/schemas/ProblemDetails'
         '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    patch:
-      operationId: updateToken
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tokens
+      x-fern-sdk-method-name: listV2
+      x-fern-pagination:
+        cursor: $request.start
+        next_cursor: $response.pagination.next
+        results: $response.data
+      summary: Tokens get V2
+      x-summary-source: derived
+  /v2/tokens/search:
+    post:
       tags:
       - Tokens
-      summary: Update a token
-      description: Partially updates a token using JSON merge patch semantics.
-      parameters:
-      - $ref: '#/components/parameters/TokenId'
+      operationId: Tokens_Search_V2
       requestBody:
-        required: true
         content:
-          application/merge-patch+json:
+          application/json:
             schema:
-              $ref: '#/components/schemas/UpdateTokenRequest'
+              $ref: '#/components/schemas/SearchTokensRequestV2'
+        required: true
       responses:
         '200':
-          description: The updated token.
+          description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Token'
+                $ref: '#/components/schemas/TokenCursorPaginatedList'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
         '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/ValidationProblem'
-    delete:
-      operationId: deleteToken
-      tags:
-      - Tokens
-      summary: Delete a token
-      parameters:
-      - $ref: '#/components/parameters/TokenId'
-      responses:
-        '204':
-          description: The token was deleted.
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tokens
+      x-fern-sdk-method-name: searchV2
+      x-fern-idempotent: true
+      x-fern-pagination:
+        cursor: $request.start
+        next_cursor: $response.pagination.next
+        results: $response.data
+      summary: Tokens search V2
+      x-summary-source: derived
 components:
-  responses:
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
-    Unauthorized:
-      description: The BT-API-KEY header is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    Forbidden:
-      description: The application lacks the required permission.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
   schemas:
-    CreateTokenRequest:
-      type: object
-      required:
-      - type
-      - data
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        data:
-          description: The sensitive value to tokenize. May be a primitive or an object.
-        mask:
-          description: A masking expression used to reveal a non-sensitive portion of the data.
-        containers:
-          type: array
-          items:
-            type: string
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-        search_indexes:
-          type: array
-          items:
-            type: string
-        fingerprint_expression:
-          type: string
-        deduplicate_token:
-          type: boolean
-        expires_at:
-          type: string
-          format: date-time
-    UpdateTokenRequest:
+    CardIssuer:
       type: object
       properties:
-        data: {}
-        mask: {}
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-        search_indexes:
-          type: array
-          items:
-            type: string
-        fingerprint_expression:
-          type: string
+        country:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    TokenEnrichments:
+      type: object
+      properties:
+        bin_details:
+          $ref: '#/components/schemas/BinDetails'
+        card_details:
+          $ref: '#/components/schemas/TokenEnrichmentsCardDetails'
+      additionalProperties: false
     Token:
       type: object
       properties:
         id:
+          maxLength: 400
+          pattern: ^.+$
+          type: string
+        type:
+          maxLength: 50
+          pattern: ^[A-z_]*$
           type: string
         tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
           type: string
           format: uuid
-        type:
-          type: string
-          description: The token type, e.g. token, card, bank, social_security_number.
-        data:
-          description: The token data (masked unless detokenized).
-        mask:
-          description: The masking expression applied to the data.
-        fingerprint:
-          type: string
-        fingerprint_expression:
-          type: string
-        containers:
-          type: array
-          items:
-            type: string
+        data: {}
         metadata:
-          type: object
+          type:
+          - object
+          - 'null'
           additionalProperties:
-            type: string
+            type:
+            - string
+            - 'null'
+        enrichments:
+          $ref: '#/components/schemas/TokenEnrichments'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        card:
+          $ref: '#/components/schemas/CardDetails'
+        bank:
+          $ref: '#/components/schemas/BankDetails'
+        network_token:
+          $ref: '#/components/schemas/CardDetails'
+        modified_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modified_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        fingerprint:
+          maxLength: 100
+          pattern: ^[A-z0-9]*$
+          type:
+          - string
+          - 'null'
+        fingerprint_expression:
+          maxLength: 400
+          pattern: ^.*$
+          type:
+          - string
+          - 'null'
+        mask: {}
+        privacy:
+          $ref: '#/components/schemas/Privacy'
         search_indexes:
-          type: array
+          maxItems: 10
+          type:
+          - array
+          - 'null'
           items:
             type: string
         expires_at:
-          type: string
+          maxLength: 40
+          type:
+          - string
+          - 'null'
           format: date-time
-        created_by:
-          type: string
+        containers:
+          pattern: ^(?!.*\/\/)(?=.*\/$)\/[A-z0-9_\-\/]*$
+          maxItems: 1
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        aliases:
+          maxItems: 1
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        authentication: {}
+        _extras:
+          $ref: '#/components/schemas/TokenExtras'
+      additionalProperties: false
+    BankDetails:
+      type: object
+      properties:
+        routing_number:
+          type:
+          - string
+          - 'null'
+        account_number_last4:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    CursorPagination:
+      type: object
+      properties:
+        page_size:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        next:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    CreateTokenRequest:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+        type:
+          type:
+          - string
+          - 'null'
+        data: {}
+        encrypted:
+          type:
+          - string
+          - 'null'
+        privacy:
+          $ref: '#/components/schemas/Privacy'
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        search_indexes:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        fingerprint_expression:
+          type:
+          - string
+          - 'null'
+        mask: {}
+        deduplicate_token:
+          type:
+          - boolean
+          - 'null'
+        expires_at:
+          type:
+          - string
+          - 'null'
+        containers:
+          maxItems: 1
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        token_intent_id:
+          type:
+          - string
+          - 'null'
+        owner_merchant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
           format: uuid
-        created_at:
-          type: string
-          format: date-time
-        modified_at:
-          type: string
-          format: date-time
+      additionalProperties: false
+    TokenExtras:
+      type: object
+      properties:
+        deduplicated:
+          type:
+          - boolean
+          - 'null'
+        tsp_details:
+          $ref: '#/components/schemas/TokenServiceProviderDetails'
+        deduplication_behavior:
+          type:
+          - string
+          - 'null'
+        network_token_ids:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        decrypted_payload:
+          type:
+          - boolean
+          - 'null'
+      additionalProperties: false
+    TokenEnrichmentsCardDetails:
+      type: object
+      properties:
+        bin:
+          type:
+          - string
+          - 'null'
+        last4:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    CardDetails:
+      type: object
+      properties:
+        bin:
+          type:
+          - string
+          - 'null'
+        last4:
+          type:
+          - string
+          - 'null'
+        expiration_month:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        expiration_year:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        brand:
+          type:
+          - string
+          - 'null'
+        funding:
+          type:
+          - string
+          - 'null'
+        authentication:
+          type:
+          - string
+          - 'null'
+        issuer:
+          $ref: '#/components/schemas/CardIssuer'
+        issuer_country:
+          $ref: '#/components/schemas/CardIssuerCountry'
+        segment:
+          type:
+          - string
+          - 'null'
+        product:
+          $ref: '#/components/schemas/CardProduct'
+        additional:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AdditionalCardDetails'
+      additionalProperties: false
+    UpdateTokenRequest:
+      type: object
+      properties:
+        data: {}
+        privacy:
+          $ref: '#/components/schemas/UpdatePrivacy'
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        search_indexes:
+          maxItems: 5
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        fingerprint_expression:
+          maxLength: 400
+          pattern: ^.*$
+          type:
+          - string
+          - 'null'
+        mask: {}
+        expires_at:
+          type:
+          - string
+          - 'null'
+        deduplicate_token:
+          type:
+          - boolean
+          - 'null'
+        containers:
+          maxItems: 1
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      additionalProperties: false
+    SearchTokensRequestV2:
+      type: object
+      properties:
+        query:
+          maxLength: 200
+          pattern: ^.*$
+          type:
+          - string
+          - 'null'
+        start:
+          maxLength: 5000
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
+        size:
+          maximum: 100
+          type:
+          - integer
+          - 'null'
+          format: int32
+          exclusiveMinimum: 0
+      additionalProperties: false
+    AuthenticationResponse:
+      type: object
+      properties:
+        merchant_identifier:
+          type:
+          - string
+          - 'null'
+        authentication_data:
+          type:
+          - string
+          - 'null'
+        transaction_amount:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    BinDetailsCountry:
+      type: object
+      properties:
+        alpha2:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        numeric:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    AssuranceDetails:
+      type: object
+      properties:
+        account_verified:
+          type: boolean
+        card_holder_authenticated:
+          type: boolean
+      additionalProperties: false
+    CardIssuerCountry:
+      type: object
+      properties:
+        alpha2:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        numeric:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     ValidationProblemDetails:
       type: object
       properties:
-        title:
-          type: string
-        status:
-          type: integer
         errors:
-          type: object
+          type:
+          - object
+          - 'null'
           additionalProperties:
             type: array
             items:
               type: string
-    CursorPagination:
-      type: object
-      properties:
-        next:
-          type: string
-        previous:
-          type: string
-    ProblemDetails:
-      type: object
-      properties:
+        type:
+          type:
+          - string
+          - 'null'
         title:
-          type: string
+          type:
+          - string
+          - 'null'
         status:
-          type: integer
+          type:
+          - integer
+          - 'null'
+          format: int32
         detail:
-          type: string
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    BinDetailsProduct:
+      type: object
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    BinDetails:
+      type: object
+      properties:
+        card_brand:
+          type:
+          - string
+          - 'null'
+        type:
+          type:
+          - string
+          - 'null'
+        prepaid:
+          type:
+          - boolean
+          - 'null'
+        card_segment_type:
+          type:
+          - string
+          - 'null'
+        bank:
+          $ref: '#/components/schemas/BinDetailsBank'
+        product:
+          $ref: '#/components/schemas/BinDetailsProduct'
+        country:
+          $ref: '#/components/schemas/BinDetailsCountry'
+        reloadable:
+          type:
+          - boolean
+          - 'null'
+        pan_or_token:
+          type:
+          - string
+          - 'null'
+        account_updater:
+          type:
+          - boolean
+          - 'null'
+        alm:
+          type:
+          - boolean
+          - 'null'
+        domestic_only:
+          type:
+          - boolean
+          - 'null'
+        gambling_blocked:
+          type:
+          - boolean
+          - 'null'
+        level2:
+          type:
+          - boolean
+          - 'null'
+        level3:
+          type:
+          - boolean
+          - 'null'
+        issuer_currency:
+          type:
+          - string
+          - 'null'
+        combo_card:
+          type:
+          - string
+          - 'null'
+        bin_length:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        authentication: {}
+        cost: {}
+      additionalProperties: false
+    AdditionalCardDetails:
+      type: object
+      properties:
+        brand:
+          type:
+          - string
+          - 'null'
+        funding:
+          type:
+          - string
+          - 'null'
+        authentication:
+          type:
+          - string
+          - 'null'
+        issuer:
+          $ref: '#/components/schemas/CardIssuer'
+      additionalProperties: false
+    TokenServiceProviderDetails:
+      type: object
+      properties:
+        tsp:
+          type:
+          - string
+          - 'null'
+        auth_method:
+          type:
+          - string
+          - 'null'
+        message_id:
+          type:
+          - string
+          - 'null'
+        eci_indicator:
+          type:
+          - string
+          - 'null'
+        assurance_details:
+          $ref: '#/components/schemas/AssuranceDetails'
+        transaction_id:
+          type:
+          - string
+          - 'null'
+        currency_code:
+          type:
+          - string
+          - 'null'
+        transaction_amount:
+          type:
+          - integer
+          - 'null'
+          format: int64
+        cardholder_name:
+          type:
+          - string
+          - 'null'
+        device_manufacturer_identifier:
+          type:
+          - string
+          - 'null'
+        payment_data_type:
+          type:
+          - string
+          - 'null'
+        merchant_token_identifier:
+          type:
+          - string
+          - 'null'
+        authentication_responses:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AuthenticationResponse'
+        status:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    UpdatePrivacy:
+      type: object
+      properties:
+        impact_level:
+          type:
+          - string
+          - 'null'
+        restriction_policy:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    CardProduct:
+      type: object
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     TokenCursorPaginatedList:
       type: object
       properties:
         pagination:
           $ref: '#/components/schemas/CursorPagination'
         data:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             $ref: '#/components/schemas/Token'
-  parameters:
-    TokenId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the token.
-      schema:
-        type: string
+      additionalProperties: false
+    BinDetailsBank:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        phone:
+          type:
+          - string
+          - 'null'
+        url:
+          type:
+          - string
+          - 'null'
+        clean_name:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    Privacy:
+      type: object
+      properties:
+        classification:
+          maxLength: 25
+          pattern: ^[A-z]*$
+          type:
+          - string
+          - 'null'
+        impact_level:
+          maxLength: 10
+          pattern: ^(?:low|moderate|high)$
+          type:
+          - string
+          - 'null'
+        restriction_policy:
+          maxLength: 10
+          pattern: ^(?:mask|redact)$
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
   securitySchemes:
     ApiKey:
       type: apiKey
-      in: header
+      description: Authorization by API Key inside request's BT-API-KEY header
       name: BT-API-KEY
-      description: Authenticate every request with a Basis Theory Application key supplied in the BT-API-KEY request header.
+      in: header

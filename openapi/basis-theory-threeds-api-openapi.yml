@@ -1,0 +1,1172 @@
+openapi: 3.2.0
+info:
+  title: Basis Theory Three DS API
+  description: '## Getting Started
+
+    * Sign-in to Basis Theory and go to Applications
+
+    * Create a Basis Theory Private Application
+
+    * All permissions should be selected
+
+    * Paste the API Key into the `BT-API-KEY` variable'
+  version: v1
+servers:
+- url: https://api.basistheory.com
+  description: Default
+  x-fern-server-name: default
+- url: https://api.us.basistheory.com
+  description: US
+  x-fern-server-name: us
+- url: https://api.eu.basistheory.com
+  description: EU
+  x-fern-server-name: eu
+- url: https://api.test.basistheory.com
+  description: Test
+  x-fern-server-name: test
+security:
+- ApiKey: []
+tags:
+- name: ThreeDS
+paths:
+  /3ds/sessions:
+    post:
+      tags:
+      - ThreeDS
+      operationId: ThreeDS.CreateSession
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateThreeDSSessionRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateThreeDSSessionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - threeds
+      - sessions
+      x-fern-sdk-method-name: create
+      summary: Three DS create session
+      x-summary-source: derived
+  /3ds/sessions/{sessionId}/authenticate:
+    post:
+      tags:
+      - ThreeDS
+      operationId: ThreeDS.AuthenticateSession
+      parameters:
+      - name: sessionId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticateThreeDSSessionRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreeDSAuthentication'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - threeds
+      - sessions
+      x-fern-sdk-method-name: authenticate
+      x-fern-idempotent: true
+      summary: Three DS authenticate session
+      x-summary-source: derived
+  /3ds/sessions/{sessionId}/challenge-result:
+    get:
+      tags:
+      - ThreeDS
+      operationId: ThreeDS.GetChallengeResult
+      parameters:
+      - name: sessionId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreeDSAuthentication'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - threeds
+      - sessions
+      x-fern-sdk-method-name: get_challenge_result
+      summary: Three DS get challenge result
+      x-summary-source: derived
+  /3ds/sessions/{id}:
+    get:
+      tags:
+      - ThreeDS
+      operationId: ThreeDS.GetSessionById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreeDSSession'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - threeds
+      - sessions
+      x-fern-sdk-method-name: get
+      summary: Three DS get session by id
+      x-summary-source: derived
+components:
+  schemas:
+    ThreeDSCardholderAuthenticationInfo:
+      type: object
+      properties:
+        method:
+          type:
+          - string
+          - 'null'
+        timestamp:
+          type:
+          - string
+          - 'null'
+        data:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ThreeDSAddress:
+      type: object
+      properties:
+        line1:
+          type:
+          - string
+          - 'null'
+        line2:
+          type:
+          - string
+          - 'null'
+        line3:
+          type:
+          - string
+          - 'null'
+        postal_code:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state_code:
+          type:
+          - string
+          - 'null'
+        country_code:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ThreeDSAuthentication:
+      type: object
+      properties:
+        pan_token_id:
+          type:
+          - string
+          - 'null'
+          deprecated: true
+        token_id:
+          type:
+          - string
+          - 'null'
+        token_intent_id:
+          type:
+          - string
+          - 'null'
+        session_id:
+          type:
+          - string
+          - 'null'
+        threeds_version:
+          type:
+          - string
+          - 'null'
+        acs_transaction_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        acs_operator_id:
+          type:
+          - string
+          - 'null'
+        ds_transaction_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        sdk_transaction_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        acs_reference_number:
+          type:
+          - string
+          - 'null'
+        ds_reference_number:
+          type:
+          - string
+          - 'null'
+        liability_shifted:
+          type:
+          - boolean
+          - 'null'
+        authentication_value:
+          type:
+          - string
+          - 'null'
+        authentication_status:
+          type:
+          - string
+          - 'null'
+        authentication_status_code:
+          type:
+          - string
+          - 'null'
+        directory_status_code:
+          type:
+          - string
+          - 'null'
+        authentication_status_reason:
+          type:
+          - string
+          - 'null'
+        authentication_status_reason_code:
+          type:
+          - string
+          - 'null'
+        eci:
+          type:
+          - string
+          - 'null'
+        acs_challenge_mandated:
+          type:
+          - string
+          - 'null'
+        acs_decoupled_authentication:
+          type:
+          - string
+          - 'null'
+        authentication_challenge_type:
+          type:
+          - string
+          - 'null'
+        acs_rendering_type:
+          $ref: '#/components/schemas/ThreeDSAcsRenderingType'
+        acs_signed_content:
+          type:
+          - string
+          - 'null'
+        acs_challenge_url:
+          type:
+          - string
+          - 'null'
+        challenge_preference:
+          type:
+          - string
+          - 'null'
+        challenge_preference_code:
+          type:
+          - string
+          - 'null'
+        challenge_attempts:
+          type:
+          - string
+          - 'null'
+        challenge_cancel_reason:
+          type:
+          - string
+          - 'null'
+        challenge_cancel_reason_code:
+          type:
+          - string
+          - 'null'
+        cardholder_info:
+          type:
+          - string
+          - 'null'
+        whitelist_status:
+          type:
+          - string
+          - 'null'
+        whitelist_status_source:
+          type:
+          - string
+          - 'null'
+        message_extensions:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ThreeDSMessageExtension'
+      additionalProperties: false
+    CreateThreeDSSessionResponse:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        type:
+          type:
+          - string
+          - 'null'
+        cardBrand:
+          type:
+          - string
+          - 'null'
+        additional_card_brands:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        method_url:
+          type:
+          - string
+          - 'null'
+        method_notification_url:
+          type:
+          - string
+          - 'null'
+        directory_server_id:
+          type:
+          - string
+          - 'null'
+        recommended_version:
+          type:
+          - string
+          - 'null'
+        redirect_url:
+          type:
+          - string
+          - 'null'
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    ThreeDSRequestorInfo:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          deprecated: true
+        name:
+          type:
+          - string
+          - 'null'
+          deprecated: true
+        url:
+          type:
+          - string
+          - 'null'
+          deprecated: true
+        discover_client_id:
+          type:
+          - string
+          - 'null'
+        discover_requestor_id:
+          type:
+          - string
+          - 'null'
+        amex_requestor_type:
+          type:
+          - string
+          - 'null'
+        cb_siret_number:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ThreeDSMerchantRiskInfo:
+      type: object
+      properties:
+        delivery_email:
+          type:
+          - string
+          - 'null'
+        delivery_time_frame:
+          type:
+          - string
+          - 'null'
+        gift_card_amount:
+          type:
+          - string
+          - 'null'
+        gift_card_count:
+          type:
+          - string
+          - 'null'
+        gift_card_currency:
+          type:
+          - string
+          - 'null'
+        pre_order_purchase:
+          type:
+          - boolean
+          - 'null'
+        pre_order_date:
+          type:
+          - string
+          - 'null'
+        reordered_purchase:
+          type:
+          - boolean
+          - 'null'
+        shipping_method:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ThreeDSDeviceInfo:
+      type: object
+      properties:
+        browser_accept_header:
+          type:
+          - string
+          - 'null'
+        browser_ip:
+          type:
+          - string
+          - 'null'
+        browser_javascript_enabled:
+          type:
+          - boolean
+          - 'null'
+        browser_java_enabled:
+          type:
+          - boolean
+          - 'null'
+        browser_language:
+          type:
+          - string
+          - 'null'
+        browser_color_depth:
+          type:
+          - string
+          - 'null'
+        browser_screen_height:
+          type:
+          - string
+          - 'null'
+        browser_screen_width:
+          type:
+          - string
+          - 'null'
+        browser_tz:
+          type:
+          - string
+          - 'null'
+        browser_user_agent:
+          type:
+          - string
+          - 'null'
+        sdk_transaction_id:
+          type:
+          - string
+          - 'null'
+        sdk_application_id:
+          type:
+          - string
+          - 'null'
+        sdk_encryption_data:
+          type:
+          - string
+          - 'null'
+        sdk_ephemeral_public_key:
+          type:
+          - string
+          - 'null'
+        sdk_max_timeout:
+          type:
+          - string
+          - 'null'
+        sdk_reference_number:
+          type:
+          - string
+          - 'null'
+        sdk_render_options:
+          $ref: '#/components/schemas/ThreeDSMobileSdkRenderOptions'
+      additionalProperties: false
+    ThreeDSMobileSdkRenderOptions:
+      type: object
+      properties:
+        sdk_interface:
+          type:
+          - string
+          - 'null'
+        sdk_ui_type:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      additionalProperties: false
+    ThreeDSMessageExtension:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        critical:
+          type:
+          - boolean
+          - 'null'
+        data: {}
+      additionalProperties: false
+    ThreeDSAcsRenderingType:
+      type: object
+      properties:
+        acsInterface:
+          type:
+          - string
+          - 'null'
+        acsUiTemplate:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ThreeDSBrandingOptions:
+      type: object
+      properties:
+        hide_basis_theory_branding:
+          type: boolean
+      additionalProperties: false
+    ThreeDSCallbackUrls:
+      type: object
+      properties:
+        success:
+          type:
+          - string
+          - 'null'
+        failure:
+          type:
+          - string
+          - 'null'
+        branding:
+          $ref: '#/components/schemas/ThreeDSBrandingOptions'
+      additionalProperties: false
+    ThreeDSPurchaseInfo:
+      type: object
+      properties:
+        amount:
+          type:
+          - string
+          - 'null'
+        currency:
+          type:
+          - string
+          - 'null'
+        exponent:
+          type:
+          - string
+          - 'null'
+        date:
+          type:
+          - string
+          - 'null'
+        transaction_type:
+          type:
+          - string
+          - 'null'
+        installment_count:
+          type:
+          - string
+          - 'null'
+        recurring_expiration:
+          type:
+          - string
+          - 'null'
+        recurring_frequency:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ValidationProblemDetails:
+      type: object
+      properties:
+        errors:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    ThreeDSCardholderAccountInfo:
+      type: object
+      properties:
+        account_age:
+          type:
+          - string
+          - 'null'
+        account_last_changed:
+          type:
+          - string
+          - 'null'
+        account_change_date:
+          type:
+          - string
+          - 'null'
+        account_created_date:
+          type:
+          - string
+          - 'null'
+        account_pwd_last_changed:
+          type:
+          - string
+          - 'null'
+        account_pwd_change_date:
+          type:
+          - string
+          - 'null'
+        purchase_count_half_year:
+          type:
+          - string
+          - 'null'
+        transaction_count_day:
+          type:
+          - string
+          - 'null'
+        payment_account_age:
+          type:
+          - string
+          - 'null'
+        transaction_count_year:
+          type:
+          - string
+          - 'null'
+        payment_account_created:
+          type:
+          - string
+          - 'null'
+        shipping_address_first_used:
+          type:
+          - string
+          - 'null'
+        shipping_address_usage_date:
+          type:
+          - string
+          - 'null'
+        shipping_account_name_match:
+          type:
+          - boolean
+          - 'null'
+        suspicious_activity_observed:
+          type:
+          - boolean
+          - 'null'
+      additionalProperties: false
+    ThreeDSCardholderInfo:
+      type: object
+      properties:
+        account_id:
+          type:
+          - string
+          - 'null'
+        account_type:
+          type:
+          - string
+          - 'null'
+        account_info:
+          $ref: '#/components/schemas/ThreeDSCardholderAccountInfo'
+        authentication_info:
+          $ref: '#/components/schemas/ThreeDSCardholderAuthenticationInfo'
+        prior_authentication_info:
+          $ref: '#/components/schemas/ThreeDSPriorAuthenticationInfo'
+        name:
+          type:
+          - string
+          - 'null'
+        email:
+          type:
+          - string
+          - 'null'
+        phone_number:
+          $ref: '#/components/schemas/ThreeDSCardholderPhoneNumber'
+        mobile_phone_number:
+          $ref: '#/components/schemas/ThreeDSCardholderPhoneNumber'
+        work_phone_number:
+          $ref: '#/components/schemas/ThreeDSCardholderPhoneNumber'
+        billing_shipping_address_match:
+          type:
+          - string
+          - 'null'
+        billing_address:
+          $ref: '#/components/schemas/ThreeDSAddress'
+        shipping_address:
+          $ref: '#/components/schemas/ThreeDSAddress'
+      additionalProperties: false
+    ThreeDSPriorAuthenticationInfo:
+      type: object
+      properties:
+        method:
+          type:
+          - string
+          - 'null'
+        timestamp:
+          type:
+          - string
+          - 'null'
+        reference_id:
+          type:
+          - string
+          - 'null'
+        data:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ThreeDSSession:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        type:
+          type:
+          - string
+          - 'null'
+        tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        pan_token_id:
+          type:
+          - string
+          - 'null'
+          deprecated: true
+        token_id:
+          type:
+          - string
+          - 'null'
+        token_intent_id:
+          type:
+          - string
+          - 'null'
+        card_brand:
+          type:
+          - string
+          - 'null'
+        additional_card_brands:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        expiration_date:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        created_date:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modified_date:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        modified_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        device:
+          type:
+          - string
+          - 'null'
+        device_info:
+          $ref: '#/components/schemas/ThreeDSDeviceInfo'
+        web_challenge_mode:
+          type:
+          - string
+          - 'null'
+        version:
+          $ref: '#/components/schemas/ThreeDSVersion'
+        method:
+          $ref: '#/components/schemas/ThreeDSMethod'
+        authentication:
+          $ref: '#/components/schemas/ThreeDSAuthentication'
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+      additionalProperties: false
+    CreateThreeDSSessionRequest:
+      type: object
+      properties:
+        pan:
+          maxLength: 36
+          type:
+          - string
+          - 'null'
+          deprecated: true
+        token_id:
+          maxLength: 100
+          type:
+          - string
+          - 'null'
+        token_intent_id:
+          maxLength: 36
+          type:
+          - string
+          - 'null'
+        type:
+          type:
+          - string
+          - 'null'
+        device:
+          type:
+          - string
+          - 'null'
+        web_challenge_mode:
+          type:
+          - string
+          - 'null'
+        device_info:
+          $ref: '#/components/schemas/ThreeDSDeviceInfo'
+        authentication_request:
+          $ref: '#/components/schemas/AuthenticateThreeDSSessionRequest'
+        callback_urls:
+          $ref: '#/components/schemas/ThreeDSCallbackUrls'
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+      additionalProperties: false
+    ThreeDSVersion:
+      type: object
+      properties:
+        recommended_version:
+          type:
+          - string
+          - 'null'
+        available_versions:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        earliest_acs_supported_version:
+          type:
+          - string
+          - 'null'
+        earliest_ds_supported_version:
+          type:
+          - string
+          - 'null'
+        latest_acs_supported_version:
+          type:
+          - string
+          - 'null'
+        latest_ds_supported_version:
+          type:
+          - string
+          - 'null'
+        acs_information:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      additionalProperties: false
+    ThreeDSCardholderPhoneNumber:
+      type: object
+      properties:
+        country_code:
+          type:
+          - string
+          - 'null'
+        number:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ThreeDSMethod:
+      type: object
+      properties:
+        method_url:
+          type:
+          - string
+          - 'null'
+        method_completion_indicator:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    AuthenticateThreeDSSessionRequest:
+      required:
+      - authentication_category
+      - authentication_type
+      type: object
+      properties:
+        authentication_category:
+          minLength: 1
+          type: string
+        authentication_type:
+          minLength: 1
+          type: string
+        card_brand:
+          type:
+          - string
+          - 'null'
+        challenge_preference:
+          type:
+          - string
+          - 'null'
+        request_decoupled_challenge:
+          type: boolean
+        decoupled_challenge_max_time:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        purchase_info:
+          $ref: '#/components/schemas/ThreeDSPurchaseInfo'
+        merchant_info:
+          $ref: '#/components/schemas/ThreeDSMerchantInfo'
+        requestor_info:
+          $ref: '#/components/schemas/ThreeDSRequestorInfo'
+        cardholder_info:
+          $ref: '#/components/schemas/ThreeDSCardholderInfo'
+        broadcast_info: {}
+        message_extensions:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ThreeDSMessageExtension'
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+      additionalProperties: false
+    ThreeDSMerchantInfo:
+      type: object
+      properties:
+        mid:
+          type:
+          - string
+          - 'null'
+        acquirer_bin:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        country_code:
+          type:
+          - string
+          - 'null'
+        category_code:
+          type:
+          - string
+          - 'null'
+        url:
+          type:
+          - string
+          - 'null'
+        risk_info:
+          $ref: '#/components/schemas/ThreeDSMerchantRiskInfo'
+      additionalProperties: false
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      description: Authorization by API Key inside request's BT-API-KEY header
+      name: BT-API-KEY
+      in: header

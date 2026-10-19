@@ -1,107 +1,339 @@
 openapi: 3.2.0
 info:
   title: Basis Theory Logs API
-  description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
-  termsOfService: https://basistheory.com/terms
-  contact:
-    name: Basis Theory Support
-    email: support@basistheory.com
-    url: https://developers.basistheory.com
-  version: '1.0'
+  description: '## Getting Started
+
+    * Sign-in to Basis Theory and go to Applications
+
+    * Create a Basis Theory Private Application
+
+    * All permissions should be selected
+
+    * Paste the API Key into the `BT-API-KEY` variable'
+  version: v1
 servers:
 - url: https://api.basistheory.com
-  description: Production environment (PRODUCTION tenants)
+  description: Default
+  x-fern-server-name: default
+- url: https://api.us.basistheory.com
+  description: US
+  x-fern-server-name: us
+- url: https://api.eu.basistheory.com
+  description: EU
+  x-fern-server-name: eu
 - url: https://api.test.basistheory.com
-  description: Test environment (TEST tenants)
+  description: Test
+  x-fern-server-name: test
 security:
 - ApiKey: []
 tags:
 - name: Logs
-  description: List audit logs of platform activity.
 paths:
   /logs:
     get:
-      operationId: listLogs
       tags:
       - Logs
-      summary: List logs
+      operationId: Logs_Get
       parameters:
       - name: entity_type
         in: query
         schema:
-          type: string
+          maxLength: 50
+          pattern: ^[A-z]+$
+          type:
+          - string
+          - 'null'
       - name: entity_id
         in: query
         schema:
-          type: string
+          maxLength: 200
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
       - name: start_date
         in: query
         schema:
-          type: string
+          maxLength: 40
+          type:
+          - string
+          - 'null'
           format: date-time
       - name: end_date
         in: query
         schema:
-          type: string
+          maxLength: 40
+          type:
+          - string
+          - 'null'
           format: date-time
+      - name: page
+        in: query
+        schema:
+          type:
+          - integer
+          - 'null'
+          format: int32
+      - name: start
+        in: query
+        schema:
+          maxLength: 500
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
       - name: size
         in: query
         schema:
-          type: integer
-          default: 20
+          maximum: 5000
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+          format: int32
       responses:
         '200':
-          description: A paginated list of log entries.
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LogPaginatedList'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - logs
+      x-fern-sdk-method-name: list
+      x-fern-pagination: true
+      summary: Logs get
+      x-summary-source: derived
+  /logs/entity-types:
+    get:
+      tags:
+      - Logs
+      operationId: Logs_GetEntityTypes
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LogEntityType'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - logs
+      x-fern-sdk-method-name: get_entity_types
+      summary: Logs get entity types
+      x-summary-source: derived
 components:
   schemas:
-    Pagination:
+    ValidationProblemDetails:
       type: object
       properties:
-        total_items:
-          type: integer
-        page_number:
-          type: integer
-        page_size:
-          type: integer
-        total_pages:
-          type: integer
+        errors:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
     LogPaginatedList:
       type: object
       properties:
         pagination:
           $ref: '#/components/schemas/Pagination'
         data:
-          type: array
+          maxItems: 5000
+          type:
+          - array
+          - 'null'
           items:
             $ref: '#/components/schemas/Log'
+      additionalProperties: false
     Log:
       type: object
       properties:
+        id:
+          type:
+          - string
+          - 'null'
         tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
           type: string
           format: uuid
         actor_id:
-          type: string
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
         actor_type:
-          type: string
+          maxLength: 50
+          pattern: ^[A-z]+$
+          type:
+          - string
+          - 'null'
         entity_type:
-          type: string
+          maxLength: 50
+          pattern: ^[A-z]+$
+          type:
+          - string
+          - 'null'
         entity_id:
-          type: string
+          maxLength: 200
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
         operation:
-          type: string
+          maxLength: 50
+          pattern: ^[A-z]+$
+          type:
+          - string
+          - 'null'
         message:
-          type: string
+          maxLength: 250
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
         created_at:
-          type: string
+          maxLength: 40
+          type:
+          - string
+          - 'null'
           format: date-time
+      additionalProperties: false
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        page_number:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        page_size:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        total_pages:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        after:
+          type:
+          - string
+          - 'null'
+          deprecated: true
+        next:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    LogEntityType:
+      type: object
+      properties:
+        display_name:
+          maxLength: 50
+          pattern: ^[A-z]+$
+          type:
+          - string
+          - 'null'
+        value:
+          maxLength: 50
+          pattern: ^[A-z]+$
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
   securitySchemes:
     ApiKey:
       type: apiKey
-      in: header
+      description: Authorization by API Key inside request's BT-API-KEY header
       name: BT-API-KEY
-      description: Authenticate every request with a Basis Theory Application key supplied in the BT-API-KEY request header.
+      in: header

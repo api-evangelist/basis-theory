@@ -1,324 +1,701 @@
 openapi: 3.2.0
 info:
   title: Basis Theory Applications API
-  description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
-  termsOfService: https://basistheory.com/terms
-  contact:
-    name: Basis Theory Support
-    email: support@basistheory.com
-    url: https://developers.basistheory.com
-  version: '1.0'
+  description: '## Getting Started
+
+    * Sign-in to Basis Theory and go to Applications
+
+    * Create a Basis Theory Private Application
+
+    * All permissions should be selected
+
+    * Paste the API Key into the `BT-API-KEY` variable'
+  version: v1
 servers:
 - url: https://api.basistheory.com
-  description: Production environment (PRODUCTION tenants)
+  description: Default
+  x-fern-server-name: default
+- url: https://api.us.basistheory.com
+  description: US
+  x-fern-server-name: us
+- url: https://api.eu.basistheory.com
+  description: EU
+  x-fern-server-name: eu
 - url: https://api.test.basistheory.com
-  description: Test environment (TEST tenants)
+  description: Test
+  x-fern-server-name: test
 security:
 - ApiKey: []
 tags:
 - name: Applications
-  description: Manage API credentials, permissions, and access rules.
 paths:
   /applications:
-    post:
-      operationId: createApplication
-      tags:
-      - Applications
-      summary: Create an application
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateApplicationRequest'
-      responses:
-        '201':
-          description: The created application, including the generated key.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Application'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '422':
-          $ref: '#/components/responses/ValidationProblem'
     get:
-      operationId: listApplications
       tags:
       - Applications
-      summary: List applications
+      operationId: Applications_Get
       parameters:
       - name: id
         in: query
         schema:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
+            maxLength: 36
+            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
             type: string
+            format: uuid
       - name: type
         in: query
         schema:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
+      - name: page
+        in: query
+        schema:
+          maximum: 2147483647
+          type:
+          - integer
+          - 'null'
+          format: int32
+          exclusiveMinimum: 0
+      - name: start
+        in: query
+        schema:
+          type:
+          - string
+          - 'null'
+      - name: size
+        in: query
+        schema:
+          maximum: 100
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+          format: int32
       responses:
         '200':
-          description: A paginated list of applications.
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApplicationPaginatedList'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
         '401':
-          $ref: '#/components/responses/Unauthorized'
-  /applications/{id}:
-    get:
-      operationId: getApplication
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - applications
+      x-fern-sdk-method-name: list
+      x-fern-pagination: true
+      summary: Applications get
+      x-summary-source: derived
+    post:
       tags:
       - Applications
-      summary: Get an application
+      operationId: Applications_Create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApplicationRequest'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - applications
+      x-fern-sdk-method-name: create
+      x-fern-idempotent: true
+      summary: Applications create
+      x-summary-source: derived
+  /applications/{id}:
+    get:
+      tags:
+      - Applications
+      operationId: Applications_GetById
       parameters:
-      - $ref: '#/components/parameters/ApplicationId'
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
       responses:
         '200':
-          description: The requested application.
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Application'
         '404':
-          $ref: '#/components/responses/NotFound'
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - applications
+      x-fern-sdk-method-name: get
+      summary: Applications get by id
+      x-summary-source: derived
     put:
-      operationId: updateApplication
       tags:
       - Applications
-      summary: Update an application
+      operationId: Applications_Update
       parameters:
-      - $ref: '#/components/parameters/ApplicationId'
-      requestBody:
+      - name: id
+        in: path
         required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateApplicationRequest'
+        required: true
       responses:
         '200':
-          description: The updated application.
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Application'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
         '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/ValidationProblem'
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - applications
+      x-fern-sdk-method-name: update
+      x-fern-idempotent: true
+      summary: Applications update
+      x-summary-source: derived
     delete:
-      operationId: deleteApplication
       tags:
       - Applications
-      summary: Delete an application
+      operationId: Applications_Delete
       parameters:
-      - $ref: '#/components/parameters/ApplicationId'
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
       responses:
         '204':
-          description: The application was deleted.
+          description: No Content
         '404':
-          $ref: '#/components/responses/NotFound'
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - applications
+      x-fern-sdk-method-name: delete
+      summary: Applications delete
+      x-summary-source: derived
   /applications/key:
     get:
-      operationId: getApplicationByKey
       tags:
       - Applications
-      summary: Get application by key
-      description: Returns the application associated with the BT-API-KEY used on the request.
+      operationId: Applications_GetByKey
       responses:
         '200':
-          description: The application for the supplied key.
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Application'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - applications
+      x-fern-sdk-method-name: get_by_key
+      summary: Applications get by key
+      x-summary-source: derived
+  /applications/{id}/regenerate:
+    post:
+      tags:
+      - Applications
+      operationId: Applications_RegenerateKey
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '422':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      deprecated: true
+      x-fern-sdk-group-name:
+      - applications
+      x-fern-sdk-method-name: regenerate_key
+      x-fern-idempotent: true
+      x-fern-ignore: true
+      summary: Applications regenerate key
+      x-summary-source: derived
 components:
   schemas:
+    AccessRule:
+      type: object
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        priority:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        container:
+          type:
+          - string
+          - 'null'
+        transform:
+          type:
+          - string
+          - 'null'
+        conditions:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Condition'
+        permissions:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      additionalProperties: false
+    UpdateApplicationRequest:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          maxLength: 200
+          minLength: 1
+          pattern: ^.+$
+          type: string
+        permissions:
+          maxItems: 75
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        rules:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AccessRule'
+      additionalProperties: false
+    ValidationProblemDetails:
+      type: object
+      properties:
+        errors:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    CreateApplicationRequest:
+      required:
+      - name
+      - type
+      type: object
+      properties:
+        name:
+          maxLength: 200
+          minLength: 1
+          pattern: ^.+$
+          type: string
+        type:
+          maxLength: 25
+          minLength: 1
+          pattern: ^[A-z_]+$
+          type: string
+        permissions:
+          maxItems: 75
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        rules:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AccessRule'
+        create_key:
+          type:
+          - boolean
+          - 'null'
+      additionalProperties: false
+    Application:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        name:
+          maxLength: 200
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
+        key:
+          maxLength: 100
+          pattern: '[A-z0-9_.]+'
+          type:
+          - string
+          - 'null'
+          deprecated: true
+        keys:
+          maxItems: 3
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ApplicationKey'
+        type:
+          maxLength: 50
+          pattern: ^[A-z_]+$
+          type:
+          - string
+          - 'null'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        modified_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modified_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        permissions:
+          maxItems: 50
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        rules:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AccessRule'
+      additionalProperties: false
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        page_number:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        page_size:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        total_pages:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        after:
+          type:
+          - string
+          - 'null'
+          deprecated: true
+        next:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     ApplicationPaginatedList:
       type: object
       properties:
         pagination:
           $ref: '#/components/schemas/Pagination'
         data:
-          type: array
+          maxItems: 100
+          type:
+          - array
+          - 'null'
           items:
             $ref: '#/components/schemas/Application'
-    CreateApplicationRequest:
-      type: object
-      required:
-      - name
-      - type
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - public
-          - private
-          - management
-          - expiring
-        permissions:
-          type: array
-          items:
-            type: string
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccessRule'
-        create_key:
-          type: boolean
-          default: true
-        expires_at:
-          type: string
-          format: date-time
-    Pagination:
-      type: object
-      properties:
-        total_items:
-          type: integer
-        page_number:
-          type: integer
-        page_size:
-          type: integer
-        total_pages:
-          type: integer
-    Application:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        tenant_id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        key:
-          type: string
-          description: The application key, returned only on creation when create_key is true.
-        type:
-          type: string
-          enum:
-          - public
-          - private
-          - management
-          - expiring
-        permissions:
-          type: array
-          items:
-            type: string
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccessRule'
-        expires_at:
-          type: string
-          format: date-time
-        created_at:
-          type: string
-          format: date-time
-    AccessRule:
-      type: object
-      properties:
-        description:
-          type: string
-        priority:
-          type: integer
-        container:
-          type: string
-        transform:
-          type: string
-          enum:
-          - redact
-          - mask
-          - reveal
-        permissions:
-          type: array
-          items:
-            type: string
-    ValidationProblemDetails:
-      type: object
-      properties:
-        title:
-          type: string
-        status:
-          type: integer
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
+      additionalProperties: false
     ProblemDetails:
       type: object
       properties:
+        type:
+          type:
+          - string
+          - 'null'
         title:
-          type: string
+          type:
+          - string
+          - 'null'
         status:
-          type: integer
+          type:
+          - integer
+          - 'null'
+          format: int32
         detail:
-          type: string
-    UpdateApplicationRequest:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    Condition:
       type: object
-      required:
-      - name
       properties:
-        name:
+        attribute:
+          type:
+          - string
+          - 'null'
+        operator:
+          type:
+          - string
+          - 'null'
+        value:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ApplicationKey:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
           type: string
-        permissions:
-          type: array
-          items:
-            type: string
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccessRule'
-  responses:
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
-    Unauthorized:
-      description: The BT-API-KEY header is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    Forbidden:
-      description: The application lacks the required permission.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-  parameters:
-    ApplicationId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the application.
-      schema:
-        type: string
-        format: uuid
+          format: uuid
+        key:
+          type:
+          - string
+          - 'null'
+        version:
+          type:
+          - string
+          - 'null'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
   securitySchemes:
     ApiKey:
       type: apiKey
-      in: header
+      description: Authorization by API Key inside request's BT-API-KEY header
       name: BT-API-KEY
-      description: Authenticate every request with a Basis Theory Application key supplied in the BT-API-KEY request header.
+      in: header

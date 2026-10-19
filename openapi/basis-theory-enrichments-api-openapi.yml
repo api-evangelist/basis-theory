@@ -1,0 +1,278 @@
+openapi: 3.2.0
+info:
+  title: Basis Theory Enrichments API
+  description: '## Getting Started
+
+    * Sign-in to Basis Theory and go to Applications
+
+    * Create a Basis Theory Private Application
+
+    * All permissions should be selected
+
+    * Paste the API Key into the `BT-API-KEY` variable'
+  version: v1
+servers:
+- url: https://api.basistheory.com
+  description: Default
+  x-fern-server-name: default
+- url: https://api.us.basistheory.com
+  description: US
+  x-fern-server-name: us
+- url: https://api.eu.basistheory.com
+  description: EU
+  x-fern-server-name: eu
+- url: https://api.test.basistheory.com
+  description: Test
+  x-fern-server-name: test
+security:
+- ApiKey: []
+tags:
+- name: Enrichments
+paths:
+  /enrichments/bank-account-verify:
+    post:
+      tags:
+      - Enrichments
+      operationId: Enrichments_BankAccountVerify
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankVerificationRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankVerificationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - enrichments
+      x-fern-sdk-method-name: bankAccountVerify
+      summary: Enrichments bank account verify
+      x-summary-source: derived
+  /enrichments/card-details:
+    get:
+      tags:
+      - Enrichments
+      operationId: Enrichments_GetCardDetails
+      parameters:
+      - name: bin
+        in: query
+        required: true
+        schema:
+          pattern: ^\d{6,}$
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardDetailsResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - enrichments
+      x-fern-sdk-method-name: cardDetails
+      summary: Enrichments get card details
+      x-summary-source: derived
+components:
+  schemas:
+    CardIssuerDetails:
+      type: object
+      properties:
+        country:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    AdditionalCardDetail:
+      type: object
+      properties:
+        brand:
+          type:
+          - string
+          - 'null'
+        funding:
+          type:
+          - string
+          - 'null'
+        segment:
+          type:
+          - string
+          - 'null'
+        issuer:
+          $ref: '#/components/schemas/CardIssuerDetails'
+        binRange:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/CardBinRange'
+      additionalProperties: false
+    ValidationProblemDetails:
+      type: object
+      properties:
+        errors:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    BankVerificationResponse:
+      type: object
+      properties:
+        status:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    CardDetailsResponse:
+      type: object
+      properties:
+        brand:
+          type:
+          - string
+          - 'null'
+        funding:
+          type:
+          - string
+          - 'null'
+        segment:
+          type:
+          - string
+          - 'null'
+        issuer:
+          $ref: '#/components/schemas/CardIssuerDetails'
+        binRange:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/CardBinRange'
+        additional:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AdditionalCardDetail'
+      additionalProperties: false
+    CardBinRange:
+      type: object
+      properties:
+        binMin:
+          type:
+          - string
+          - 'null'
+        binMax:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    BankVerificationRequest:
+      required:
+      - token_id
+      type: object
+      properties:
+        token_id:
+          maxLength: 100
+          minLength: 1
+          type: string
+        country_code:
+          type:
+          - string
+          - 'null'
+        routing_number:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      description: Authorization by API Key inside request's BT-API-KEY header
+      name: BT-API-KEY
+      in: header

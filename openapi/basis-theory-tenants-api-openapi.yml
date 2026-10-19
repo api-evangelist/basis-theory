@@ -1,182 +1,1928 @@
 openapi: 3.2.0
 info:
   title: Basis Theory Tenants API
-  description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
-  termsOfService: https://basistheory.com/terms
-  contact:
-    name: Basis Theory Support
-    email: support@basistheory.com
-    url: https://developers.basistheory.com
-  version: '1.0'
+  description: '## Getting Started
+
+    * Sign-in to Basis Theory and go to Applications
+
+    * Create a Basis Theory Private Application
+
+    * All permissions should be selected
+
+    * Paste the API Key into the `BT-API-KEY` variable'
+  version: v1
 servers:
 - url: https://api.basistheory.com
-  description: Production environment (PRODUCTION tenants)
+  description: Default
+  x-fern-server-name: default
+- url: https://api.us.basistheory.com
+  description: US
+  x-fern-server-name: us
+- url: https://api.eu.basistheory.com
+  description: EU
+  x-fern-server-name: eu
 - url: https://api.test.basistheory.com
-  description: Test environment (TEST tenants)
+  description: Test
+  x-fern-server-name: test
 security:
 - ApiKey: []
 tags:
 - name: Tenants
-  description: Manage the current tenant, usage reports, and security contact.
 paths:
-  /tenants/self:
+  /tenants/self/security-contact:
     get:
-      operationId: getTenant
       tags:
       - Tenants
-      summary: Get the current tenant
+      operationId: Tenants_GetSecurityContact
       responses:
         '200':
-          description: The current tenant.
+          description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Tenant'
+                $ref: '#/components/schemas/SecurityContactEmailResponse'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '503':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - security-contact
+      x-fern-sdk-method-name: get
+      summary: Tenants get security contact
+      x-summary-source: derived
     put:
-      operationId: updateTenant
       tags:
       - Tenants
-      summary: Update the current tenant
+      operationId: Tenants_UpdateSecurityContact
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateTenantRequest'
+              $ref: '#/components/schemas/SecurityContactEmailRequest'
+        required: true
       responses:
         '200':
-          description: The updated tenant.
+          description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Tenant'
-        '422':
-          $ref: '#/components/responses/ValidationProblem'
-    delete:
-      operationId: deleteTenant
+                $ref: '#/components/schemas/SecurityContactEmailResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - security-contact
+      x-fern-sdk-method-name: update
+      summary: Tenants update security contact
+      x-summary-source: derived
+  /tenants/self/connections:
+    post:
       tags:
       - Tenants
-      summary: Delete the current tenant
+      operationId: TenantConnections_CreateConnection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTenantConnectionRequest'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTenantConnectionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - connections
+      x-fern-sdk-method-name: create
+      x-fern-idempotent: true
+      summary: Tenant connections create connection
+      x-summary-source: derived
+    delete:
+      tags:
+      - Tenants
+      operationId: TenantConnections_DeleteConnection
       responses:
         '204':
-          description: The tenant was deleted.
-  /tenants/self/reports/usage:
-    get:
-      operationId: getTenantUsageReport
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - connections
+      x-fern-sdk-method-name: delete
+      summary: Tenant connections delete connection
+      x-summary-source: derived
+  /tenants/self/invitations:
+    post:
       tags:
       - Tenants
-      summary: Get the tenant usage report
+      operationId: TenantInvitations_CreateInvitation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTenantInvitationRequest'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantInvitationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - invitations
+      x-fern-sdk-method-name: create
+      x-fern-idempotent: true
+      summary: Tenant invitations create invitation
+      x-summary-source: derived
+    get:
+      tags:
+      - Tenants
+      operationId: TenantInvitations_GetInvitations
+      parameters:
+      - name: status
+        in: query
+        schema:
+          $ref: '#/components/schemas/TenantInvitationStatus'
+      - name: page
+        in: query
+        schema:
+          maximum: 2147483647
+          type:
+          - integer
+          - 'null'
+          format: int32
+          exclusiveMinimum: 0
+      - name: start
+        in: query
+        schema:
+          type:
+          - string
+          - 'null'
+      - name: size
+        in: query
+        schema:
+          maximum: 100
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+          format: int32
       responses:
         '200':
-          description: The tenant usage report.
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantInvitationResponsePaginatedList'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - invitations
+      x-fern-sdk-method-name: list
+      x-fern-pagination: true
+      summary: Tenant invitations get invitations
+      x-summary-source: derived
+  /tenants/self/invitations/{invitationId}/resend:
+    post:
+      tags:
+      - Tenants
+      operationId: TenantInvitations_ResendInvitation
+      parameters:
+      - name: invitationId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantInvitationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - invitations
+      x-fern-sdk-method-name: resend
+      x-fern-idempotent: true
+      summary: Tenant invitations resend invitation
+      x-summary-source: derived
+  /tenants/self/invitations/{invitationId}:
+    get:
+      tags:
+      - Tenants
+      operationId: TenantInvitations_GetById
+      parameters:
+      - name: invitationId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantInvitationResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - invitations
+      x-fern-sdk-method-name: get
+      summary: Tenant invitations get by id
+      x-summary-source: derived
+    delete:
+      tags:
+      - Tenants
+      operationId: TenantInvitations_DeleteInvitation
+      parameters:
+      - name: invitationId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - invitations
+      x-fern-sdk-method-name: delete
+      summary: Tenant invitations delete invitation
+      x-summary-source: derived
+  /tenants/self/members:
+    get:
+      tags:
+      - Tenants
+      operationId: TenantMembers_GetMembers
+      parameters:
+      - name: user_id
+        in: query
+        schema:
+          type:
+          - array
+          - 'null'
+          items:
+            maxLength: 36
+            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+            type: string
+            format: uuid
+      - name: page
+        in: query
+        schema:
+          maximum: 2147483647
+          type:
+          - integer
+          - 'null'
+          format: int32
+          exclusiveMinimum: 0
+      - name: start
+        in: query
+        schema:
+          type:
+          - string
+          - 'null'
+      - name: size
+        in: query
+        schema:
+          maximum: 50
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantMemberResponsePaginatedList'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - members
+      x-fern-sdk-method-name: list
+      x-fern-pagination: true
+      summary: Tenant members get members
+      x-summary-source: derived
+  /tenants/self/members/{memberId}:
+    put:
+      tags:
+      - Tenants
+      operationId: TenantMembers_UpdateMember
+      parameters:
+      - name: memberId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantMemberRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantMemberRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantMemberRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantMemberRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantMemberRequest'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantMemberRequest'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantMemberRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantMemberResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - members
+      x-fern-sdk-method-name: update
+      x-fern-idempotent: true
+      summary: Tenant members update member
+      x-summary-source: derived
+    delete:
+      tags:
+      - Tenants
+      operationId: TenantMembers_DeleteMember
+      parameters:
+      - name: memberId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '422':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - members
+      x-fern-sdk-method-name: delete
+      summary: Tenant members delete member
+      x-summary-source: derived
+  /tenants/{tenantId}/merchants:
+    post:
+      tags:
+      - Tenants
+      operationId: TenantMerchants_Create
+      parameters:
+      - name: tenantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantMerchantRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantMerchant'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - merchants
+      x-fern-sdk-method-name: create
+      summary: Tenant merchants create
+      x-summary-source: derived
+    get:
+      tags:
+      - Tenants
+      operationId: TenantMerchants_GetAll
+      parameters:
+      - name: tenantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: start
+        in: query
+        schema:
+          type: string
+      - name: size
+        in: query
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantMerchantPaginatedList'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - merchants
+      x-fern-sdk-method-name: list
+      x-fern-pagination: true
+      summary: Tenant merchants get all
+      x-summary-source: derived
+  /tenants/{tenantId}/merchants/{merchantId}:
+    get:
+      tags:
+      - Tenants
+      operationId: TenantMerchants_GetById
+      parameters:
+      - name: tenantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      - name: merchantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantMerchant'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - merchants
+      x-fern-sdk-method-name: get
+      summary: Tenant merchants get by id
+      x-summary-source: derived
+    patch:
+      tags:
+      - Tenants
+      operationId: TenantMerchants_Update
+      parameters:
+      - name: tenantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      - name: merchantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantMerchantRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantMerchant'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - merchants
+      x-fern-sdk-method-name: update
+      summary: Tenant merchants update
+      x-summary-source: derived
+    delete:
+      tags:
+      - Tenants
+      operationId: TenantMerchants_Delete
+      parameters:
+      - name: tenantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      - name: merchantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantMerchant'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - merchants
+      x-fern-sdk-method-name: delete
+      summary: Tenant merchants delete
+      x-summary-source: derived
+  /tenants/{tenantId}/merchants/{merchantId}/services:
+    post:
+      tags:
+      - Tenants
+      operationId: TenantMerchants_RequestServiceOnboarding
+      parameters:
+      - name: tenantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      - name: merchantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceOnboardingRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantMerchant'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - merchants
+      x-fern-sdk-method-name: requestOnboarding
+      summary: Tenant merchants request service onboarding
+      x-summary-source: derived
+  /tenants/self/owner:
+    get:
+      tags:
+      - Tenants
+      operationId: Tenants_Owner_Get
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantMemberResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - owner
+      x-fern-sdk-method-name: get
+      summary: Tenants owner get
+      x-summary-source: derived
+    put:
+      tags:
+      - Tenants
+      operationId: Tenants_Owner_Transfer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferTenantOwnerRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantMemberResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '422':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - owner
+      x-fern-sdk-method-name: transfer
+      x-fern-idempotent: true
+      summary: Tenants owner transfer
+      x-summary-source: derived
+  /tenants/self/reports/usage:
+    get:
+      tags:
+      - Tenants
+      operationId: TenantReports_GetTenantUsageReport
+      responses:
+        '200':
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TenantUsageReport'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - self
+      x-fern-sdk-method-name: getUsageReports
+      summary: Tenant reports get tenant usage report
+      x-summary-source: derived
+  /tenants/self:
+    get:
+      tags:
+      - Tenants
+      operationId: Tenants_Get
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - self
+      x-fern-sdk-method-name: get
+      summary: Tenants get
+      x-summary-source: derived
+    put:
+      tags:
+      - Tenants
+      operationId: Tenants_Update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - self
+      x-fern-sdk-method-name: update
+      x-fern-idempotent: true
+      summary: Tenants update
+      x-summary-source: derived
+    delete:
+      tags:
+      - Tenants
+      operationId: Tenants_Delete
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - tenants
+      - self
+      x-fern-sdk-method-name: delete
+      summary: Tenants delete
+      x-summary-source: derived
 components:
-  responses:
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
-    Unauthorized:
-      description: The BT-API-KEY header is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
   schemas:
-    UpdateTenantRequest:
+    MerchantDetails:
       type: object
+      properties:
+        merchant:
+          $ref: '#/components/schemas/MerchantInfo'
+        card_network_info:
+          $ref: '#/components/schemas/CardNetworkInfo'
+      additionalProperties: false
+    CardNetworkStatus:
+      type: object
+      properties:
+        visa:
+          $ref: '#/components/schemas/NetworkStatusDetail'
+        mastercard:
+          $ref: '#/components/schemas/NetworkStatusDetail'
+        amex:
+          $ref: '#/components/schemas/NetworkStatusDetail'
+        discover:
+          $ref: '#/components/schemas/NetworkStatusDetail'
+      additionalProperties: false
+    TenantMerchantPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          maxItems: 100
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/TenantMerchant'
+      additionalProperties: false
+    CreateTenantConnectionResponse:
+      type: object
+      properties:
+        connection_id:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ServiceOnboardingRequest:
+      type: object
+      properties:
+        account_updater:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        network_token:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        agentic_commerce:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        card_network_info:
+          $ref: '#/components/schemas/CardNetworkInfo'
+      additionalProperties: false
+    TenantMerchant:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        details:
+          $ref: '#/components/schemas/MerchantDetails'
+        services:
+          $ref: '#/components/schemas/MerchantServices'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        modified_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modified_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    CardNetworkInfo:
+      type: object
+      properties:
+        visa:
+          $ref: '#/components/schemas/VisaConfig'
+        mastercard:
+          $ref: '#/components/schemas/MastercardConfig'
+        amex:
+          $ref: '#/components/schemas/AmexConfig'
+        discover:
+          $ref: '#/components/schemas/DiscoverConfig'
+      additionalProperties: false
+    CreateTenantConnectionRequest:
+      required:
+      - options
+      - strategy
+      type: object
+      properties:
+        strategy:
+          minLength: 1
+          type: string
+        options:
+          $ref: '#/components/schemas/TenantConnectionOptions'
+      additionalProperties: false
+    TransferTenantOwnerRequest:
+      required:
+      - member_id
+      type: object
+      properties:
+        member_id:
+          maxLength: 36
+          minLength: 1
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      additionalProperties: false
+    VisaConfig:
+      type: object
+      properties:
+        acquirer_bin:
+          type:
+          - string
+          - 'null'
+        card_acceptor_id_caid:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    TenantMemberResponsePaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          maxItems: 50
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/TenantMemberResponse'
+      additionalProperties: false
+    CreateTenantInvitationRequest:
+      required:
+      - email
+      type: object
+      properties:
+        email:
+          maxLength: 330
+          minLength: 1
+          type: string
+          format: email
+        role:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    MerchantInfo:
+      type: object
+      properties:
+        full_legal_name:
+          type:
+          - string
+          - 'null'
+        doing_business_as:
+          type:
+          - string
+          - 'null'
+        parent_company_name:
+          type:
+          - string
+          - 'null'
+        website_url:
+          type:
+          - string
+          - 'null'
+        category_code_mcc:
+          type:
+          - string
+          - 'null'
+        descriptor:
+          type:
+          - string
+          - 'null'
+        business_description:
+          type:
+          - string
+          - 'null'
+        registration:
+          $ref: '#/components/schemas/MerchantRegistration'
+        contact:
+          $ref: '#/components/schemas/MerchantContact'
+        address:
+          $ref: '#/components/schemas/MerchantAddress'
+      additionalProperties: false
+    MerchantServices:
+      type: object
+      properties:
+        account_updater:
+          $ref: '#/components/schemas/ServiceStatus'
+        network_token:
+          $ref: '#/components/schemas/ServiceStatus'
+        agentic_commerce:
+          $ref: '#/components/schemas/ServiceStatus'
+      additionalProperties: false
+    TenantMerchantRequest:
       required:
       - name
-      properties:
-        name:
-          type: string
-        settings:
-          $ref: '#/components/schemas/TenantSettings'
-    TenantSettings:
       type: object
       properties:
-        fingerprint_tokens:
-          type: boolean
-        deduplicate_tokens:
-          type: boolean
-        disable_ephemeral_proxy:
-          type: boolean
-        token_deduplication_behavior:
+        name:
+          minLength: 1
           type: string
+        details:
+          $ref: '#/components/schemas/MerchantDetails'
+      additionalProperties: false
+    UpdateTenantMemberRequest:
+      required:
+      - role
+      type: object
+      properties:
+        role:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    AmexConfig:
+      type: object
+      properties:
+        se_number:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ServiceStatus:
+      type: object
+      properties:
+        status:
+          type:
+          - string
+          - 'null'
+        providers:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        card_network_status:
+          $ref: '#/components/schemas/CardNetworkStatus'
+      additionalProperties: false
+    MerchantRegistration:
+      type: object
+      properties:
+        registration_type:
+          type:
+          - string
+          - 'null'
+        registration_id:
+          type:
+          - string
+          - 'null'
+        vat_id:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     ValidationProblemDetails:
       type: object
       properties:
-        title:
-          type: string
-        status:
-          type: integer
         errors:
-          type: object
+          type:
+          - object
+          - 'null'
           additionalProperties:
             type: array
             items:
               type: string
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
     Tenant:
       type: object
       properties:
         id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
           type: string
           format: uuid
         owner_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
           type: string
           format: uuid
-        type:
-          type: string
-          enum:
-          - TEST
-          - PRODUCTION
         name:
-          type: string
-        settings:
-          $ref: '#/components/schemas/TenantSettings'
+          maxLength: 200
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
+        type:
+          maxLength: 50
+          pattern: ^(?:test|production)$
+          type:
+          - string
+          - 'null'
         created_by:
-          type: string
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
           format: uuid
         created_at:
-          type: string
+          maxLength: 40
+          type:
+          - string
+          - 'null'
           format: date-time
+        modified_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
         modified_at:
-          type: string
+          maxLength: 40
+          type:
+          - string
+          - 'null'
           format: date-time
-    ProblemDetails:
+        settings:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+      additionalProperties: false
+    MastercardConfig:
       type: object
       properties:
-        title:
-          type: string
+        merchant_id_mid:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        page_number:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        page_size:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        total_pages:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        after:
+          type:
+          - string
+          - 'null'
+          deprecated: true
+        next:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    NetworkStatusDetail:
+      type: object
+      properties:
         status:
-          type: integer
-        detail:
+          type:
+          - string
+          - 'null'
+        status_reason_code:
+          type:
+          - string
+          - 'null'
+        status_reason:
+          type:
+          - string
+          - 'null'
+        status_reason_label:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    TenantInvitationResponsePaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          maxItems: 100
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/TenantInvitationResponse'
+      additionalProperties: false
+    TenantConnectionOptions:
+      type: object
+      properties:
+        domain_aliases:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      additionalProperties: false
+    TenantMemberResponse:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
           type: string
+          format: uuid
+        tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        user:
+          $ref: '#/components/schemas/User'
+        role:
+          maxLength: 25
+          pattern: ^A-z+$
+          type:
+          - string
+          - 'null'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_date:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        modified_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modified_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+    UpdateTenantRequest:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          maxLength: 200
+          minLength: 1
+          pattern: ^.+$
+          type: string
+        settings:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+      additionalProperties: false
     TenantUsageReport:
       type: object
       properties:
-        token_report:
-          type: object
-          properties:
-            included_monthly_active_tokens:
-              type: integer
-            monthly_active_tokens:
-              type: integer
-            metrics_by_type:
-              type: object
-              additionalProperties:
-                type: object
-                additionalProperties: true
+        total_tokens:
+          type: integer
+          format: int64
+      additionalProperties: false
+    TenantInvitationResponse:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        email:
+          maxLength: 200
+          type:
+          - string
+          - 'null'
+          format: email
+        role:
+          type:
+          - string
+          - 'null'
+        status:
+          $ref: '#/components/schemas/TenantInvitationStatus'
+        expires_at:
+          maxLength: 40
+          type: string
+          format: date-time
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        modified_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modified_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+    MerchantContact:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        phone_number:
+          type:
+          - string
+          - 'null'
+        email:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    DiscoverConfig:
+      type: object
+      properties:
+        merchant_id_mid:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    TenantInvitationStatus:
+      enum:
+      - PENDING
+      - EXPIRED
+      type: string
+    SecurityContactEmailResponse:
+      type: object
+      properties:
+        email:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    SecurityContactEmailRequest:
+      required:
+      - email
+      type: object
+      properties:
+        email:
+          maxLength: 200
+          minLength: 1
+          type: string
+          format: email
+      additionalProperties: false
+    MerchantAddress:
+      type: object
+      properties:
+        street_1:
+          type:
+          - string
+          - 'null'
+        street_2:
+          type:
+          - string
+          - 'null'
+        city:
+          type:
+          - string
+          - 'null'
+        state_province:
+          type:
+          - string
+          - 'null'
+        postal_code:
+          type:
+          - string
+          - 'null'
+        country:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    User:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        email:
+          maxLength: 200
+          type:
+          - string
+          - 'null'
+          format: email
+        provider:
+          type:
+          - string
+          - 'null'
+        mfa_enrolled:
+          type: boolean
+        first_name:
+          maxLength: 200
+          pattern: ^.*$
+          type:
+          - string
+          - 'null'
+        last_name:
+          maxLength: 200
+          pattern: ^.*$
+          type:
+          - string
+          - 'null'
+        picture:
+          maxLength: 400
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
   securitySchemes:
     ApiKey:
       type: apiKey
-      in: header
+      description: Authorization by API Key inside request's BT-API-KEY header
       name: BT-API-KEY
-      description: Authenticate every request with a Basis Theory Application key supplied in the BT-API-KEY request header.
+      in: header

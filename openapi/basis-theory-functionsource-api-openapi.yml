@@ -1,0 +1,185 @@
+openapi: 3.2.0
+info:
+  title: Basis Theory Function Source API
+  description: '## Getting Started
+
+    * Sign-in to Basis Theory and go to Applications
+
+    * Create a Basis Theory Private Application
+
+    * All permissions should be selected
+
+    * Paste the API Key into the `BT-API-KEY` variable'
+  version: v1
+servers:
+- url: https://api.basistheory.com
+  description: Default
+  x-fern-server-name: default
+- url: https://api.us.basistheory.com
+  description: US
+  x-fern-server-name: us
+- url: https://api.eu.basistheory.com
+  description: EU
+  x-fern-server-name: eu
+- url: https://api.test.basistheory.com
+  description: Test
+  x-fern-server-name: test
+security:
+- ApiKey: []
+tags:
+- name: FunctionSource
+paths:
+  /function-source/validate:
+    post:
+      tags:
+      - FunctionSource
+      operationId: FunctionSource_Validate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateFunctionSourceRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FunctionSourceValidation'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - function-source
+      x-fern-sdk-method-name: validate
+      x-fern-ignore: true
+      summary: Function source validate
+      x-summary-source: derived
+components:
+  schemas:
+    FunctionSourceValidation:
+      type: object
+      properties:
+        detected:
+          type: boolean
+        categories:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        detections:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/FunctionSourceDetection'
+        redacted_code:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ValidationProblemDetails:
+      type: object
+      properties:
+        errors:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    FunctionSourceDetection:
+      type: object
+      properties:
+        category:
+          type:
+          - string
+          - 'null'
+        start:
+          type: integer
+          format: int32
+        length:
+          type: integer
+          format: int32
+      additionalProperties: false
+    ValidateFunctionSourceRequest:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          maxLength: 50000
+          minLength: 1
+          type: string
+      additionalProperties: false
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      description: Authorization by API Key inside request's BT-API-KEY header
+      name: BT-API-KEY
+      in: header

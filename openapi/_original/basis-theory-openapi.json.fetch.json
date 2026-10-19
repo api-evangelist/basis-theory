@@ -1,0 +1,12 @@
+{
+ "url": "https://api.basistheory.com/swagger/v1/swagger.json",
+ "final": "https://api.basistheory.com/swagger/v1/swagger.json",
+ "status": 200,
+ "content_type": "application/json;charset=utf-8",
+ "bytes": 411331,
+ "sha256": "3f242912aa75010079d346464f830d17a04162b1f4b8aca7af214b6fada1c9a7",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
+}

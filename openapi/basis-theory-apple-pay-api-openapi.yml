@@ -1,0 +1,1376 @@
+openapi: 3.2.0
+info:
+  title: Basis Theory Apple Pay API
+  description: '## Getting Started
+
+    * Sign-in to Basis Theory and go to Applications
+
+    * Create a Basis Theory Private Application
+
+    * All permissions should be selected
+
+    * Paste the API Key into the `BT-API-KEY` variable'
+  version: v1
+servers:
+- url: https://api.basistheory.com
+  description: Default
+  x-fern-server-name: default
+- url: https://api.us.basistheory.com
+  description: US
+  x-fern-server-name: us
+- url: https://api.eu.basistheory.com
+  description: EU
+  x-fern-server-name: eu
+- url: https://api.test.basistheory.com
+  description: Test
+  x-fern-server-name: test
+security:
+- ApiKey: []
+tags:
+- name: Apple Pay
+paths:
+  /apple-pay:
+    post:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplePayCreateRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplePayCreateResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '422':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - apple-pay
+      x-fern-sdk-method-name: create
+      summary: Apple pay create
+      x-summary-source: derived
+  /apple-pay/{id}:
+    delete:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Delete
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - apple-pay
+      x-fern-sdk-method-name: delete
+      summary: Apple pay delete
+      x-summary-source: derived
+    get:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Get
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplePayToken'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - apple-pay
+      x-fern-sdk-method-name: get
+      summary: Apple pay get
+      x-summary-source: derived
+  /apple-pay/merchant-registration/{id}:
+    delete:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Merchant_Delete
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - apple-pay
+      - merchant
+      x-fern-sdk-method-name: delete
+      summary: Apple pay merchant delete
+      x-summary-source: derived
+    get:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Merchant_Get
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplePayMerchant'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - apple-pay
+      - merchant
+      x-fern-sdk-method-name: get
+      summary: Apple pay merchant get
+      x-summary-source: derived
+  /apple-pay/merchant-registration/{merchantId}/certificates/{id}:
+    delete:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Merchant_Certificates_Delete
+      parameters:
+      - name: merchantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - apple-pay
+      - merchant
+      - certificates
+      x-fern-sdk-method-name: delete
+      summary: Apple pay merchant certificates delete
+      x-summary-source: derived
+    get:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Merchant_Certificates_Get
+      parameters:
+      - name: merchantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplePayMerchantCertificates'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - apple-pay
+      - merchant
+      - certificates
+      x-fern-sdk-method-name: get
+      summary: Apple pay merchant certificates get
+      x-summary-source: derived
+  /apple-pay/domain-deregistration:
+    post:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Domain_Deregistration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplePayDomainDeregistrationRequest'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - apple-pay
+      - domain
+      x-fern-sdk-method-name: deregister
+      summary: Apple pay domain deregistration
+      x-summary-source: derived
+  /apple-pay/domain-registration:
+    post:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Domain_Registration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplePayDomainRegistrationRequest'
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplePayDomainRegistrationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '422':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '503':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - apple-pay
+      - domain
+      x-fern-sdk-method-name: register
+      summary: Apple pay domain registration
+      x-summary-source: derived
+    put:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Domain_Registration_All
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplePayDomainRegistrationListRequest'
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplePayDomainRegistrationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '422':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '503':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - apple-pay
+      - domain
+      x-fern-sdk-method-name: registerAll
+      summary: Apple pay domain registration all
+      x-summary-source: derived
+    get:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Get_Domain_Registration
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplePayDomainRegistrationResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - apple-pay
+      - domain
+      x-fern-sdk-method-name: get
+      summary: Apple pay get domain registration
+      x-summary-source: derived
+  /apple-pay/merchant-registration:
+    get:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Merchant_List
+      parameters:
+      - name: start
+        in: query
+        schema:
+          type: string
+      - name: size
+        in: query
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplePayMerchantApplePayMerchantListResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - apple-pay
+      - merchant
+      x-fern-sdk-method-name: list
+      x-fern-pagination:
+        cursor: $request.start
+        next_cursor: $response.pagination.next
+        results: $response.data
+      summary: Apple pay merchant list
+      x-summary-source: derived
+    post:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Merchant_Register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplePayMerchantRegisterRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplePayMerchant'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - apple-pay
+      - merchant
+      x-fern-sdk-method-name: create
+      summary: Apple pay merchant register
+      x-summary-source: derived
+  /apple-pay/merchant-registration/{merchantId}/certificates:
+    get:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Merchant_Certificates_List
+      parameters:
+      - name: merchantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      - name: start
+        in: query
+        schema:
+          type: string
+      - name: size
+        in: query
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplePayMerchantCertificatesApplePayMerchantListResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - apple-pay
+      - merchant
+      - certificates
+      x-fern-sdk-method-name: list
+      x-fern-pagination:
+        cursor: $request.start
+        next_cursor: $response.pagination.next
+        results: $response.data
+      summary: Apple pay merchant certificates list
+      x-summary-source: derived
+    post:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Merchant_Certificates_Create
+      parameters:
+      - name: merchantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplePayMerchantCertificatesRegisterRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplePayMerchantCertificates'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - apple-pay
+      - merchant
+      - certificates
+      x-fern-sdk-method-name: create
+      summary: Apple pay merchant certificates create
+      x-summary-source: derived
+  /apple-pay/session:
+    post:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplePaySessionRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '422':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - apple-pay
+      - session
+      x-fern-sdk-method-name: create
+      summary: Apple pay session
+      x-summary-source: derived
+  /apple-pay/{id}/unlink:
+    post:
+      tags:
+      - Apple Pay
+      operationId: Apple_Pay_Unlink
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '422':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      deprecated: true
+      x-fern-sdk-group-name:
+      - apple-pay
+      x-fern-sdk-method-name: unlink
+      x-fern-ignore: true
+      summary: Apple pay unlink
+      x-summary-source: derived
+components:
+  schemas:
+    CardIssuer:
+      type: object
+      properties:
+        country:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ApplePayDomainDeregistrationRequest:
+      required:
+      - domain
+      type: object
+      properties:
+        domain:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    ApplePayMerchantRegisterRequest:
+      type: object
+      properties:
+        merchant_identifier:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ApplePayCreateRequest:
+      type: object
+      properties:
+        expires_at:
+          type:
+          - string
+          - 'null'
+        apple_payment_data:
+          $ref: '#/components/schemas/ApplePayMethodToken'
+        merchant_registration_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+      additionalProperties: false
+    ApplePaySessionRequest:
+      type: object
+      properties:
+        validation_url:
+          type:
+          - string
+          - 'null'
+        display_name:
+          type:
+          - string
+          - 'null'
+        domain:
+          type:
+          - string
+          - 'null'
+        merchant_registration_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+      additionalProperties: false
+    CardDetails:
+      type: object
+      properties:
+        bin:
+          type:
+          - string
+          - 'null'
+        last4:
+          type:
+          - string
+          - 'null'
+        expiration_month:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        expiration_year:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        brand:
+          type:
+          - string
+          - 'null'
+        funding:
+          type:
+          - string
+          - 'null'
+        authentication:
+          type:
+          - string
+          - 'null'
+        issuer:
+          $ref: '#/components/schemas/CardIssuer'
+        issuer_country:
+          $ref: '#/components/schemas/CardIssuerCountry'
+        segment:
+          type:
+          - string
+          - 'null'
+        product:
+          $ref: '#/components/schemas/CardProduct'
+        additional:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AdditionalCardDetails'
+      additionalProperties: false
+    ApplePayMerchantCertificates:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        domain:
+          type:
+          - string
+          - 'null'
+        merchant_certificate_expiration_date:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        merchant_certificate_fingerprint:
+          type:
+          - string
+          - 'null'
+        payment_processor_certificate_expiration_date:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        payment_processor_certificate_fingerprint:
+          type:
+          - string
+          - 'null'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+    ApplePayDomainRegistrationListRequest:
+      type: object
+      properties:
+        domains:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      additionalProperties: false
+    ApplePayCreateResponse:
+      type: object
+      properties:
+        apple_pay:
+          $ref: '#/components/schemas/ApplePayToken'
+      additionalProperties: false
+    ApplePayMethodToken:
+      type: object
+      properties:
+        paymentData:
+          $ref: '#/components/schemas/PaymentData'
+        transactionIdentifier:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ApplePayMerchantCertificatesApplePayMerchantListResponse:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/ApplePayMerchantListPagination'
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ApplePayMerchantCertificates'
+      additionalProperties: false
+    Header:
+      type: object
+      properties:
+        publicKeyHash:
+          type:
+          - string
+          - 'null'
+        ephemeralPublicKey:
+          type:
+          - string
+          - 'null'
+        transactionId:
+          type:
+          - string
+          - 'null'
+        applicationData:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ApplePayMerchantListPagination:
+      type: object
+      properties:
+        page_size:
+          type: integer
+          format: int32
+        next:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    CardIssuerCountry:
+      type: object
+      properties:
+        alpha2:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        numeric:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ValidationProblemDetails:
+      type: object
+      properties:
+        errors:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    DomainRegistrationResponse:
+      type: object
+      properties:
+        domain:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ApplePayMerchantCertificatesRegisterRequest:
+      required:
+      - payment_processor_certificate_data
+      - payment_processor_certificate_password
+      type: object
+      properties:
+        merchant_certificate_data:
+          type:
+          - string
+          - 'null'
+        merchant_certificate_password:
+          type:
+          - string
+          - 'null'
+        payment_processor_certificate_data:
+          minLength: 1
+          type: string
+        payment_processor_certificate_password:
+          minLength: 1
+          type: string
+        domain:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ApplePayToken:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        type:
+          type:
+          - string
+          - 'null'
+        tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        status:
+          type:
+          - string
+          - 'null'
+        expires_at:
+          maxLength: 40
+          type: string
+          format: date-time
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        modified_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modified_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        transaction_id:
+          type:
+          - string
+          - 'null'
+        payment_data_type:
+          type:
+          - string
+          - 'null'
+        device_manufacturer_identifier:
+          type:
+          - string
+          - 'null'
+        card:
+          $ref: '#/components/schemas/CardDetails'
+        data: {}
+        authentication:
+          $ref: '#/components/schemas/Authentication'
+        fingerprint:
+          maxLength: 100
+          pattern: ^[A-z0-9]*$
+          type:
+          - string
+          - 'null'
+        ingest_source:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    Authentication:
+      type: object
+      properties:
+        threeds_cryptogram:
+          type:
+          - string
+          - 'null'
+        eci_indicator:
+          type:
+          - string
+          - 'null'
+        authentication_responses:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/SubmerchantAuthenticationResponse'
+      additionalProperties: false
+    ApplePayMerchantApplePayMerchantListResponse:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/ApplePayMerchantListPagination'
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ApplePayMerchant'
+      additionalProperties: false
+    AdditionalCardDetails:
+      type: object
+      properties:
+        brand:
+          type:
+          - string
+          - 'null'
+        funding:
+          type:
+          - string
+          - 'null'
+        authentication:
+          type:
+          - string
+          - 'null'
+        issuer:
+          $ref: '#/components/schemas/CardIssuer'
+      additionalProperties: false
+    SubmerchantAuthenticationResponse:
+      type: object
+      properties:
+        merchant_identifier:
+          type:
+          - string
+          - 'null'
+        authentication_data:
+          type:
+          - string
+          - 'null'
+        transaction_amount:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ApplePayDomainRegistrationRequest:
+      required:
+      - domain
+      type: object
+      properties:
+        domain:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    ApplePayMerchant:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        merchant_identifier:
+          type:
+          - string
+          - 'null'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+    PaymentData:
+      type: object
+      properties:
+        data:
+          type:
+          - string
+          - 'null'
+        signature:
+          type:
+          - string
+          - 'null'
+        header:
+          $ref: '#/components/schemas/Header'
+        version:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    CardProduct:
+      type: object
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ApplePayDomainRegistrationResponse:
+      type: object
+      properties:
+        domains:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/DomainRegistrationResponse'
+      additionalProperties: false
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      description: Authorization by API Key inside request's BT-API-KEY header
+      name: BT-API-KEY
+      in: header

@@ -1,0 +1,633 @@
+openapi: 3.2.0
+info:
+  title: Basis Theory Reactor Formulas API
+  description: '## Getting Started
+
+    * Sign-in to Basis Theory and go to Applications
+
+    * Create a Basis Theory Private Application
+
+    * All permissions should be selected
+
+    * Paste the API Key into the `BT-API-KEY` variable'
+  version: v1
+servers:
+- url: https://api.basistheory.com
+  description: Default
+  x-fern-server-name: default
+- url: https://api.us.basistheory.com
+  description: US
+  x-fern-server-name: us
+- url: https://api.eu.basistheory.com
+  description: EU
+  x-fern-server-name: eu
+- url: https://api.test.basistheory.com
+  description: Test
+  x-fern-server-name: test
+security:
+- ApiKey: []
+tags:
+- name: ReactorFormulas
+paths:
+  /reactor-formulas:
+    get:
+      tags:
+      - ReactorFormulas
+      operationId: ReactorFormulas_Get
+      parameters:
+      - name: name
+        in: query
+        schema:
+          maxLength: 200
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
+      - name: page
+        in: query
+        schema:
+          maximum: 2147483647
+          type:
+          - integer
+          - 'null'
+          format: int32
+          exclusiveMinimum: 0
+      - name: start
+        in: query
+        schema:
+          type:
+          - string
+          - 'null'
+      - name: size
+        in: query
+        schema:
+          maximum: 100
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReactorFormulaPaginatedList'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - reactorformulas
+      x-fern-sdk-method-name: list
+      x-fern-pagination: true
+      x-fern-ignore: true
+      summary: Reactor formulas get
+      x-summary-source: derived
+    post:
+      tags:
+      - ReactorFormulas
+      operationId: ReactorFormulas_Create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReactorFormulaRequest'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReactorFormula'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - reactorformulas
+      x-fern-sdk-method-name: create
+      x-fern-idempotent: true
+      x-fern-ignore: true
+      summary: Reactor formulas create
+      x-summary-source: derived
+  /reactor-formulas/{id}:
+    get:
+      tags:
+      - ReactorFormulas
+      operationId: ReactorFormulas_GetById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReactorFormula'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - reactorformulas
+      x-fern-sdk-method-name: get
+      x-fern-ignore: true
+      summary: Reactor formulas get by id
+      x-summary-source: derived
+    put:
+      tags:
+      - ReactorFormulas
+      operationId: ReactorFormulas_Update
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateReactorFormulaRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReactorFormula'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - reactorformulas
+      x-fern-sdk-method-name: update
+      x-fern-idempotent: true
+      x-fern-ignore: true
+      summary: Reactor formulas update
+      x-summary-source: derived
+    delete:
+      tags:
+      - ReactorFormulas
+      operationId: ReactorFormulas_Delete
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - reactorformulas
+      x-fern-sdk-method-name: delete
+      x-fern-ignore: true
+      summary: Reactor formulas delete
+      x-summary-source: derived
+components:
+  schemas:
+    ReactorFormulaConfiguration:
+      required:
+      - name
+      - type
+      type: object
+      properties:
+        name:
+          maxLength: 200
+          minLength: 1
+          pattern: ^[\w-]+$
+          type: string
+        description:
+          maxLength: 400
+          pattern: ^.*$
+          type:
+          - string
+          - 'null'
+        type:
+          maxLength: 25
+          minLength: 1
+          pattern: ^(?:string|boolean|number)$
+          type: string
+      additionalProperties: false
+    ReactorFormulaPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          maxItems: 100
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ReactorFormula'
+      additionalProperties: false
+    ValidationProblemDetails:
+      type: object
+      properties:
+        errors:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    CreateReactorFormulaRequest:
+      required:
+      - name
+      - type
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        type:
+          maxLength: 25
+          minLength: 1
+          pattern: ^(?:private|official)$
+          type: string
+        name:
+          maxLength: 200
+          minLength: 1
+          pattern: ^.+$
+          type: string
+        description:
+          maxLength: 1000
+          pattern: ^[\S\s]*$
+          type:
+          - string
+          - 'null'
+        icon:
+          type:
+          - string
+          - 'null'
+        code:
+          maxLength: 50000
+          type:
+          - string
+          - 'null'
+        configuration:
+          maxItems: 25
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ReactorFormulaConfiguration'
+        request_parameters:
+          maxItems: 25
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ReactorFormulaRequestParameter'
+      additionalProperties: false
+      deprecated: true
+    ReactorFormulaRequestParameter:
+      required:
+      - name
+      - type
+      type: object
+      properties:
+        name:
+          maxLength: 200
+          minLength: 1
+          pattern: ^[A-z0-9][A-z0-9.\-_]*[A-z0-9]$
+          type: string
+        description:
+          maxLength: 400
+          pattern: ^.*$
+          type:
+          - string
+          - 'null'
+        type:
+          maxLength: 25
+          minLength: 1
+          pattern: ^(?:string|boolean|number)$
+          type: string
+        optional:
+          type: boolean
+      additionalProperties: false
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        page_number:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        page_size:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        total_pages:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        after:
+          type:
+          - string
+          - 'null'
+          deprecated: true
+        next:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ReactorFormula:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        type:
+          maxLength: 25
+          pattern: ^(?:private|official)$
+          type:
+          - string
+          - 'null'
+        status:
+          maxLength: 25
+          pattern: ^(?:verified|coming_soon)$
+          type:
+          - string
+          - 'null'
+        name:
+          maxLength: 200
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
+        description:
+          maxLength: 1000
+          pattern: ^[\S\s]*$
+          type:
+          - string
+          - 'null'
+        icon:
+          maxLength: 50000
+          pattern: (^data:(image\/png|image\/jpg|image\/jpeg|image\/svg\+xml);\s*base64,\s*(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{4})$)|(^data:(image\/png|image\/jpg|image\/jpeg);\s*base64,\s*(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{4})$)
+          type:
+          - string
+          - 'null'
+        code:
+          maxLength: 4000
+          pattern: ^[\S\s]*$
+          type:
+          - string
+          - 'null'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        modified_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modified_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        configuration:
+          maxItems: 25
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ReactorFormulaConfiguration'
+        request_parameters:
+          maxItems: 25
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ReactorFormulaRequestParameter'
+      additionalProperties: false
+      deprecated: true
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    UpdateReactorFormulaRequest:
+      required:
+      - name
+      - type
+      type: object
+      properties:
+        type:
+          maxLength: 25
+          minLength: 1
+          pattern: ^(?:private|official)$
+          type: string
+        name:
+          maxLength: 200
+          minLength: 1
+          pattern: ^.+$
+          type: string
+        description:
+          maxLength: 1000
+          pattern: ^[\S\s]*$
+          type:
+          - string
+          - 'null'
+        icon:
+          type:
+          - string
+          - 'null'
+        code:
+          maxLength: 50000
+          pattern: ^[\S\s]*$
+          type:
+          - string
+          - 'null'
+        configuration:
+          maxItems: 25
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ReactorFormulaConfiguration'
+        request_parameters:
+          maxItems: 25
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ReactorFormulaRequestParameter'
+      additionalProperties: false
+      deprecated: true
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      description: Authorization by API Key inside request's BT-API-KEY header
+      name: BT-API-KEY
+      in: header

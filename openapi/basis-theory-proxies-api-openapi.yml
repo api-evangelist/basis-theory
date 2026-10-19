@@ -1,0 +1,1229 @@
+openapi: 3.2.0
+info:
+  title: Basis Theory Proxies API
+  description: '## Getting Started
+
+    * Sign-in to Basis Theory and go to Applications
+
+    * Create a Basis Theory Private Application
+
+    * All permissions should be selected
+
+    * Paste the API Key into the `BT-API-KEY` variable'
+  version: v1
+servers:
+- url: https://api.basistheory.com
+  description: Default
+  x-fern-server-name: default
+- url: https://api.us.basistheory.com
+  description: US
+  x-fern-server-name: us
+- url: https://api.eu.basistheory.com
+  description: EU
+  x-fern-server-name: eu
+- url: https://api.test.basistheory.com
+  description: Test
+  x-fern-server-name: test
+security:
+- ApiKey: []
+tags:
+- name: Proxies
+paths:
+  /proxies:
+    get:
+      tags:
+      - Proxies
+      operationId: Proxies_Get
+      parameters:
+      - name: id
+        in: query
+        schema:
+          type:
+          - array
+          - 'null'
+          items:
+            maxLength: 36
+            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+            type: string
+            format: uuid
+      - name: name
+        in: query
+        schema:
+          maxLength: 200
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
+      - name: page
+        in: query
+        schema:
+          maximum: 2147483647
+          type:
+          - integer
+          - 'null'
+          format: int32
+          exclusiveMinimum: 0
+      - name: start
+        in: query
+        schema:
+          type:
+          - string
+          - 'null'
+      - name: size
+        in: query
+        schema:
+          maximum: 100
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+          format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProxyPaginatedList'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - proxies
+      x-fern-sdk-method-name: list
+      x-fern-pagination: true
+      summary: Proxies get
+      x-summary-source: derived
+    post:
+      tags:
+      - Proxies
+      operationId: Proxies_Create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProxyRequest'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proxy'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - proxies
+      x-fern-sdk-method-name: create
+      x-fern-idempotent: true
+      summary: Proxies create
+      x-summary-source: derived
+  /proxies/{id}:
+    get:
+      tags:
+      - Proxies
+      operationId: Proxies_GetById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proxy'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - proxies
+      x-fern-sdk-method-name: get
+      summary: Proxies get by id
+      x-summary-source: derived
+    put:
+      tags:
+      - Proxies
+      operationId: Proxies_Update
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProxyRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proxy'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - proxies
+      x-fern-sdk-method-name: update
+      x-fern-idempotent: true
+      summary: Proxies update
+      x-summary-source: derived
+    patch:
+      tags:
+      - Proxies
+      operationId: Proxies_Patch
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/PatchProxyRequest'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - proxies
+      x-fern-sdk-method-name: patch
+      x-fern-idempotent: true
+      summary: Proxies patch
+      x-summary-source: derived
+    delete:
+      tags:
+      - Proxies
+      operationId: Proxies_Delete
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - proxies
+      x-fern-sdk-method-name: delete
+      summary: Proxies delete
+      x-summary-source: derived
+  /proxies/{id}/hostname:
+    put:
+      tags:
+      - Proxies
+      operationId: Proxies_TransferHostname
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferProxyHostnameRequest'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - proxies
+      x-fern-sdk-method-name: transferHostname
+      x-fern-idempotent: true
+      summary: Proxies transfer hostname
+      x-summary-source: derived
+components:
+  schemas:
+    AccessRule:
+      type: object
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        priority:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        container:
+          type:
+          - string
+          - 'null'
+        transform:
+          type:
+          - string
+          - 'null'
+        conditions:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Condition'
+        permissions:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      additionalProperties: false
+    Application:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        name:
+          maxLength: 200
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
+        key:
+          maxLength: 100
+          pattern: '[A-z0-9_.]+'
+          type:
+          - string
+          - 'null'
+          deprecated: true
+        keys:
+          maxItems: 3
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ApplicationKey'
+        type:
+          maxLength: 50
+          pattern: ^[A-z_]+$
+          type:
+          - string
+          - 'null'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        modified_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modified_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        permissions:
+          maxItems: 50
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        rules:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AccessRule'
+      additionalProperties: false
+    CreateProxyRequest:
+      required:
+      - destination_url
+      - name
+      type: object
+      properties:
+        name:
+          maxLength: 200
+          minLength: 1
+          pattern: ^.+$
+          type: string
+        destination_url:
+          maxLength: 400
+          minLength: 1
+          pattern: ^https://.+$
+          type: string
+        request_reactor_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        response_reactor_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        request_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        response_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        request_transforms:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ProxyTransform'
+        response_transforms:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ProxyTransform'
+        application:
+          $ref: '#/components/schemas/Application'
+        configuration:
+          maxLength: 25
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        require_auth:
+          type:
+          - boolean
+          - 'null'
+        disable_detokenization:
+          type:
+          - boolean
+          - 'null'
+      additionalProperties: false
+    ProxyTransform:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        code:
+          maxLength: 50000
+          type:
+          - string
+          - 'null'
+        matcher:
+          type:
+          - string
+          - 'null'
+        expression:
+          type:
+          - string
+          - 'null'
+        replacement:
+          type:
+          - string
+          - 'null'
+        options:
+          $ref: '#/components/schemas/ProxyTransformOptions'
+      additionalProperties: false
+    Runtime:
+      type: object
+      properties:
+        image:
+          type:
+          - string
+          - 'null'
+        dependencies:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        resolutions:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        warm_concurrency:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        timeout:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        resources:
+          type:
+          - string
+          - 'null'
+        permissions:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        logs:
+          $ref: '#/components/schemas/RuntimeLogOptions'
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    CreateTokenRequest:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+        type:
+          type:
+          - string
+          - 'null'
+        data: {}
+        encrypted:
+          type:
+          - string
+          - 'null'
+        privacy:
+          $ref: '#/components/schemas/Privacy'
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        search_indexes:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        fingerprint_expression:
+          type:
+          - string
+          - 'null'
+        mask: {}
+        deduplicate_token:
+          type:
+          - boolean
+          - 'null'
+        expires_at:
+          type:
+          - string
+          - 'null'
+        containers:
+          maxItems: 1
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        token_intent_id:
+          type:
+          - string
+          - 'null'
+        owner_merchant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+      additionalProperties: false
+    RuntimeLogOptions:
+      type: object
+      properties:
+        enabled:
+          type:
+          - boolean
+          - 'null'
+        level:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ProxyPaginatedList:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          maxItems: 100
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Proxy'
+      additionalProperties: false
+    TransferProxyHostnameRequest:
+      required:
+      - proxy_host
+      type: object
+      properties:
+        proxy_host:
+          maxLength: 450
+          minLength: 1
+          type: string
+      additionalProperties: false
+    ApplicationKey:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        key:
+          type:
+          - string
+          - 'null'
+        version:
+          type:
+          - string
+          - 'null'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+    ValidationProblemDetails:
+      type: object
+      properties:
+        errors:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        page_number:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        page_size:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        total_pages:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        after:
+          type:
+          - string
+          - 'null'
+          deprecated: true
+        next:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    UpdateProxyRequest:
+      required:
+      - destination_url
+      - name
+      type: object
+      properties:
+        name:
+          maxLength: 200
+          minLength: 1
+          pattern: ^.+$
+          type: string
+        destination_url:
+          maxLength: 400
+          minLength: 1
+          pattern: ^https://.+$
+          type: string
+        request_reactor_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        response_reactor_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        request_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        response_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        request_transforms:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ProxyTransform'
+        response_transforms:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ProxyTransform'
+        application:
+          $ref: '#/components/schemas/Application'
+        configuration:
+          maxLength: 25
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        require_auth:
+          type:
+          - boolean
+          - 'null'
+        disable_detokenization:
+          type:
+          - boolean
+          - 'null'
+      additionalProperties: false
+    Condition:
+      type: object
+      properties:
+        attribute:
+          type:
+          - string
+          - 'null'
+        operator:
+          type:
+          - string
+          - 'null'
+        value:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    PatchProxyRequest:
+      type: object
+      properties:
+        name:
+          maxLength: 200
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
+        destination_url:
+          type:
+          - string
+          - 'null'
+        request_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        response_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        request_transforms:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ProxyTransform'
+        response_transforms:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ProxyTransform'
+        application:
+          $ref: '#/components/schemas/Application'
+        configuration:
+          maxLength: 25
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        require_auth:
+          type:
+          - boolean
+          - 'null'
+        disable_detokenization:
+          type:
+          - boolean
+          - 'null'
+      additionalProperties: false
+    ProxyTransformOptions:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/CreateTokenRequest'
+        identifier:
+          type:
+          - string
+          - 'null'
+        value:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        remove:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        runtime:
+          $ref: '#/components/schemas/Runtime'
+      additionalProperties: false
+    PendingProxy:
+      type: object
+      properties:
+        destination_url:
+          type:
+          - string
+          - 'null'
+        configuration:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        require_auth:
+          type: boolean
+        request_transforms:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ProxyTransform'
+        response_transforms:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ProxyTransform'
+      additionalProperties: false
+    Proxy:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        key:
+          maxLength: 100
+          pattern: ^[A-z0-9]+$
+          type:
+          - string
+          - 'null'
+        tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        name:
+          maxLength: 200
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
+        destination_url:
+          maxLength: 400
+          pattern: ^https://.+$
+          type:
+          - string
+          - 'null'
+        state:
+          type:
+          - string
+          - 'null'
+        request_reactor_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        response_reactor_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        require_auth:
+          type: boolean
+        request_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        response_transform:
+          $ref: '#/components/schemas/ProxyTransform'
+        request_transforms:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ProxyTransform'
+        response_transforms:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ProxyTransform'
+        application_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        configuration:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        proxy_host:
+          type:
+          - string
+          - 'null'
+        timeout:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        disable_detokenization:
+          type: boolean
+        client_certificate:
+          type:
+          - string
+          - 'null'
+        requested:
+          $ref: '#/components/schemas/RequestedProxy'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        modified_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modified_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+    RequestedProxy:
+      type: object
+      properties:
+        proxy:
+          $ref: '#/components/schemas/PendingProxy'
+        error_code:
+          type:
+          - string
+          - 'null'
+        error_message:
+          type:
+          - string
+          - 'null'
+        error_details:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+      additionalProperties: false
+    Privacy:
+      type: object
+      properties:
+        classification:
+          maxLength: 25
+          pattern: ^[A-z]*$
+          type:
+          - string
+          - 'null'
+        impact_level:
+          maxLength: 10
+          pattern: ^(?:low|moderate|high)$
+          type:
+          - string
+          - 'null'
+        restriction_policy:
+          maxLength: 10
+          pattern: ^(?:mask|redact)$
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      description: Authorization by API Key inside request's BT-API-KEY header
+      name: BT-API-KEY
+      in: header

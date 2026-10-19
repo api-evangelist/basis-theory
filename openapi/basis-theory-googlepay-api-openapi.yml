@@ -1,0 +1,991 @@
+openapi: 3.2.0
+info:
+  title: Basis Theory Google Pay API
+  description: '## Getting Started
+
+    * Sign-in to Basis Theory and go to Applications
+
+    * Create a Basis Theory Private Application
+
+    * All permissions should be selected
+
+    * Paste the API Key into the `BT-API-KEY` variable'
+  version: v1
+servers:
+- url: https://api.basistheory.com
+  description: Default
+  x-fern-server-name: default
+- url: https://api.us.basistheory.com
+  description: US
+  x-fern-server-name: us
+- url: https://api.eu.basistheory.com
+  description: EU
+  x-fern-server-name: eu
+- url: https://api.test.basistheory.com
+  description: Test
+  x-fern-server-name: test
+security:
+- ApiKey: []
+tags:
+- name: GooglePay
+paths:
+  /google-pay:
+    post:
+      tags:
+      - GooglePay
+      operationId: Google_Pay_Create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GooglePayCreateRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GooglePayCreateResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '422':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - google-pay
+      x-fern-sdk-method-name: create
+      summary: Google pay create
+      x-summary-source: derived
+  /google-pay/{id}:
+    delete:
+      tags:
+      - GooglePay
+      operationId: Google_Pay_Delete
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - google-pay
+      x-fern-sdk-method-name: delete
+      summary: Google pay delete
+      x-summary-source: derived
+    get:
+      tags:
+      - GooglePay
+      operationId: Google_Pay_Get
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GooglePayToken'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - google-pay
+      x-fern-sdk-method-name: get
+      summary: Google pay get
+      x-summary-source: derived
+  /google-pay/merchant-registration/{id}:
+    delete:
+      tags:
+      - GooglePay
+      operationId: Google_Pay_Merchant_Delete
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - google-pay
+      - merchant
+      x-fern-sdk-method-name: delete
+      summary: Google pay merchant delete
+      x-summary-source: derived
+    get:
+      tags:
+      - GooglePay
+      operationId: Google_Pay_Merchant_Get
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GooglePayMerchant'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - google-pay
+      - merchant
+      x-fern-sdk-method-name: get
+      summary: Google pay merchant get
+      x-summary-source: derived
+  /google-pay/merchant-registration/{merchantId}/certificates/{id}:
+    delete:
+      tags:
+      - GooglePay
+      operationId: Google_Pay_Merchant_Certificates_Delete
+      parameters:
+      - name: merchantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - google-pay
+      - merchant
+      - certificates
+      x-fern-sdk-method-name: delete
+      summary: Google pay merchant certificates delete
+      x-summary-source: derived
+    get:
+      tags:
+      - GooglePay
+      operationId: Google_Pay_Merchant_Certificates_Get
+      parameters:
+      - name: merchantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GooglePayMerchantCertificates'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - google-pay
+      - merchant
+      - certificates
+      x-fern-sdk-method-name: get
+      summary: Google pay merchant certificates get
+      x-summary-source: derived
+  /google-pay/merchant-registration:
+    post:
+      tags:
+      - GooglePay
+      operationId: Google_Pay_Merchant_Register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GooglePayMerchantRegisterRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GooglePayMerchant'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - google-pay
+      - merchant
+      x-fern-sdk-method-name: create
+      summary: Google pay merchant register
+      x-summary-source: derived
+  /google-pay/merchant-registration/{merchantId}/certificates:
+    post:
+      tags:
+      - GooglePay
+      operationId: Google_Pay_Merchant_Certificates_Create
+      parameters:
+      - name: merchantId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GooglePayMerchantCertificatesRegisterRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GooglePayMerchantCertificates'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - google-pay
+      - merchant
+      - certificates
+      x-fern-sdk-method-name: create
+      summary: Google pay merchant certificates create
+      x-summary-source: derived
+components:
+  schemas:
+    CardIssuer:
+      type: object
+      properties:
+        country:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    TokenAuthentication:
+      type: object
+      properties:
+        threeds_cryptogram:
+          type:
+          - string
+          - 'null'
+        eci_indicator:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    TokenIntentExtras:
+      type: object
+      properties:
+        tsp_details:
+          $ref: '#/components/schemas/TokenServiceProviderDetails'
+        network_token_ids:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      additionalProperties: false
+    GooglePayMerchantCertificates:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        merchant_certificate_expiration_date:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        merchant_certificate_fingerprint:
+          type:
+          - string
+          - 'null'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+    BankDetails:
+      type: object
+      properties:
+        routing_number:
+          type:
+          - string
+          - 'null'
+        account_number_last4:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    GooglePayMerchantRegisterRequest:
+      type: object
+      properties:
+        merchant_identifier:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    GooglePayMerchant:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        merchant_identifier:
+          type:
+          - string
+          - 'null'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+    CardDetails:
+      type: object
+      properties:
+        bin:
+          type:
+          - string
+          - 'null'
+        last4:
+          type:
+          - string
+          - 'null'
+        expiration_month:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        expiration_year:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        brand:
+          type:
+          - string
+          - 'null'
+        funding:
+          type:
+          - string
+          - 'null'
+        authentication:
+          type:
+          - string
+          - 'null'
+        issuer:
+          $ref: '#/components/schemas/CardIssuer'
+        issuer_country:
+          $ref: '#/components/schemas/CardIssuerCountry'
+        segment:
+          type:
+          - string
+          - 'null'
+        product:
+          $ref: '#/components/schemas/CardProduct'
+        additional:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AdditionalCardDetails'
+      additionalProperties: false
+    GooglePayMerchantCertificatesRegisterRequest:
+      type: object
+      properties:
+        merchant_certificate_data:
+          type:
+          - string
+          - 'null'
+        merchant_certificate_password:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    AuthenticationResponse:
+      type: object
+      properties:
+        merchant_identifier:
+          type:
+          - string
+          - 'null'
+        authentication_data:
+          type:
+          - string
+          - 'null'
+        transaction_amount:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    AssuranceDetails:
+      type: object
+      properties:
+        account_verified:
+          type: boolean
+        card_holder_authenticated:
+          type: boolean
+      additionalProperties: false
+    CardIssuerCountry:
+      type: object
+      properties:
+        alpha2:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        numeric:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    ValidationProblemDetails:
+      type: object
+      properties:
+        errors:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    IntermediateSigningKey:
+      type: object
+      properties:
+        signedKey:
+          type:
+          - string
+          - 'null'
+        signatures:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      additionalProperties: false
+    GooglePayMethodToken:
+      type: object
+      properties:
+        protocolVersion:
+          type:
+          - string
+          - 'null'
+        signature:
+          type:
+          - string
+          - 'null'
+        intermediateSigningKey:
+          $ref: '#/components/schemas/IntermediateSigningKey'
+        signedMessage:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    GooglePayToken:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        status:
+          type:
+          - string
+          - 'null'
+        expires_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        modified_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modified_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        card:
+          $ref: '#/components/schemas/CardDetails'
+        data: {}
+        authentication:
+          $ref: '#/components/schemas/TokenAuthentication'
+        details:
+          $ref: '#/components/schemas/TokenServiceProviderDetails'
+        fingerprint:
+          maxLength: 100
+          pattern: ^[A-z0-9]*$
+          type:
+          - string
+          - 'null'
+        type:
+          type:
+          - string
+          - 'null'
+        ingest_source:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    GooglePayCreateRequest:
+      type: object
+      properties:
+        expires_at:
+          type:
+          - string
+          - 'null'
+        google_payment_data:
+          $ref: '#/components/schemas/GooglePayMethodToken'
+        merchant_registration_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+      additionalProperties: false
+    CreateTokenIntentResponse:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+        type:
+          type:
+          - string
+          - 'null'
+        tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        fingerprint:
+          type:
+          - string
+          - 'null'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        created_at:
+          maxLength: 40
+          type: string
+          format: date-time
+        expires_at:
+          maxLength: 40
+          type: string
+          format: date-time
+        data: {}
+        card:
+          $ref: '#/components/schemas/CardDetails'
+        bank:
+          $ref: '#/components/schemas/BankDetails'
+        network_token:
+          $ref: '#/components/schemas/CardDetails'
+        authentication: {}
+        _extras:
+          $ref: '#/components/schemas/TokenIntentExtras'
+      additionalProperties: false
+    AdditionalCardDetails:
+      type: object
+      properties:
+        brand:
+          type:
+          - string
+          - 'null'
+        funding:
+          type:
+          - string
+          - 'null'
+        authentication:
+          type:
+          - string
+          - 'null'
+        issuer:
+          $ref: '#/components/schemas/CardIssuer'
+      additionalProperties: false
+    TokenServiceProviderDetails:
+      type: object
+      properties:
+        tsp:
+          type:
+          - string
+          - 'null'
+        auth_method:
+          type:
+          - string
+          - 'null'
+        message_id:
+          type:
+          - string
+          - 'null'
+        eci_indicator:
+          type:
+          - string
+          - 'null'
+        assurance_details:
+          $ref: '#/components/schemas/AssuranceDetails'
+        transaction_id:
+          type:
+          - string
+          - 'null'
+        currency_code:
+          type:
+          - string
+          - 'null'
+        transaction_amount:
+          type:
+          - integer
+          - 'null'
+          format: int64
+        cardholder_name:
+          type:
+          - string
+          - 'null'
+        device_manufacturer_identifier:
+          type:
+          - string
+          - 'null'
+        payment_data_type:
+          type:
+          - string
+          - 'null'
+        merchant_token_identifier:
+          type:
+          - string
+          - 'null'
+        authentication_responses:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AuthenticationResponse'
+        status:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    CardProduct:
+      type: object
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    GooglePayCreateResponse:
+      type: object
+      properties:
+        google_pay:
+          $ref: '#/components/schemas/GooglePayToken'
+        token_intent:
+          $ref: '#/components/schemas/CreateTokenIntentResponse'
+      additionalProperties: false
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      description: Authorization by API Key inside request's BT-API-KEY header
+      name: BT-API-KEY
+      in: header

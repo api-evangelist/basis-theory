@@ -1,353 +1,1241 @@
 openapi: 3.2.0
 info:
   title: Basis Theory Reactors API
-  description: The Basis Theory API is a PCI Level 1 compliant tokenization and data vault platform. It lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data touching their own systems. The API exposes Tokens, batch Tokenize / Detokenize, Applications, the detokenizing Proxy (pre-configured and ephemeral), serverless Reactors, 3D Secure, Tenants, Logs, and Webhooks. All requests are authenticated with a `BT-API-KEY` request header.
-  termsOfService: https://basistheory.com/terms
-  contact:
-    name: Basis Theory Support
-    email: support@basistheory.com
-    url: https://developers.basistheory.com
-  version: '1.0'
+  description: '## Getting Started
+
+    * Sign-in to Basis Theory and go to Applications
+
+    * Create a Basis Theory Private Application
+
+    * All permissions should be selected
+
+    * Paste the API Key into the `BT-API-KEY` variable'
+  version: v1
 servers:
 - url: https://api.basistheory.com
-  description: Production environment (PRODUCTION tenants)
+  description: Default
+  x-fern-server-name: default
+- url: https://api.us.basistheory.com
+  description: US
+  x-fern-server-name: us
+- url: https://api.eu.basistheory.com
+  description: EU
+  x-fern-server-name: eu
 - url: https://api.test.basistheory.com
-  description: Test environment (TEST tenants)
+  description: Test
+  x-fern-server-name: test
 security:
 - ApiKey: []
 tags:
 - name: Reactors
-  description: Manage and invoke serverless Reactor functions.
 paths:
   /reactors:
-    post:
-      operationId: createReactor
-      tags:
-      - Reactors
-      summary: Create a reactor
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateReactorRequest'
-      responses:
-        '201':
-          description: The created reactor.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Reactor'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '422':
-          $ref: '#/components/responses/ValidationProblem'
     get:
-      operationId: listReactors
       tags:
       - Reactors
-      summary: List reactors
+      operationId: Reactors_Get
+      parameters:
+      - name: id
+        in: query
+        schema:
+          type:
+          - array
+          - 'null'
+          items:
+            maxLength: 36
+            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+            type: string
+            format: uuid
+      - name: name
+        in: query
+        schema:
+          maxLength: 200
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
+      - name: page
+        in: query
+        schema:
+          maximum: 2147483647
+          type:
+          - integer
+          - 'null'
+          format: int32
+          exclusiveMinimum: 0
+      - name: start
+        in: query
+        schema:
+          type:
+          - string
+          - 'null'
+      - name: size
+        in: query
+        schema:
+          maximum: 100
+          minimum: 0
+          type:
+          - integer
+          - 'null'
+          format: int32
       responses:
         '200':
-          description: A paginated list of reactors.
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReactorPaginatedList'
-  /reactors/{id}:
-    get:
-      operationId: getReactor
-      tags:
-      - Reactors
-      summary: Get a reactor
-      parameters:
-      - $ref: '#/components/parameters/ReactorId'
-      responses:
-        '200':
-          description: The requested reactor.
+        '404':
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Reactor'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    put:
-      operationId: updateReactor
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - reactors
+      x-fern-sdk-method-name: list
+      x-fern-pagination: true
+      summary: Reactors get
+      x-summary-source: derived
+    post:
       tags:
       - Reactors
-      summary: Update a reactor
-      parameters:
-      - $ref: '#/components/parameters/ReactorId'
+      operationId: Reactors_Create
       requestBody:
-        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateReactorRequest'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reactor'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - reactors
+      x-fern-sdk-method-name: create
+      x-fern-idempotent: true
+      summary: Reactors create
+      x-summary-source: derived
+  /reactors/{id}:
+    get:
+      tags:
+      - Reactors
+      operationId: Reactors_GetById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
       responses:
         '200':
-          description: The updated reactor.
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Reactor'
         '404':
-          $ref: '#/components/responses/NotFound'
-    patch:
-      operationId: patchReactor
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - reactors
+      x-fern-sdk-method-name: get
+      summary: Reactors get by id
+      x-summary-source: derived
+    put:
       tags:
       - Reactors
-      summary: Patch a reactor
+      operationId: Reactors_Update
       parameters:
-      - $ref: '#/components/parameters/ReactorId'
-      requestBody:
+      - name: id
+        in: path
         required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateReactorRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reactor'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - reactors
+      x-fern-sdk-method-name: update
+      x-fern-idempotent: true
+      summary: Reactors update
+      x-summary-source: derived
+    patch:
+      tags:
+      - Reactors
+      operationId: Reactors_Patch
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      requestBody:
         content:
           application/merge-patch+json:
             schema:
-              $ref: '#/components/schemas/CreateReactorRequest'
+              $ref: '#/components/schemas/PatchReactorRequest'
+        required: true
       responses:
-        '200':
-          description: The patched reactor.
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Reactor'
+                $ref: '#/components/schemas/ValidationProblemDetails'
         '404':
-          $ref: '#/components/responses/NotFound'
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - reactors
+      x-fern-sdk-method-name: patch
+      x-fern-idempotent: true
+      summary: Reactors patch
+      x-summary-source: derived
     delete:
-      operationId: deleteReactor
       tags:
       - Reactors
-      summary: Delete a reactor
+      operationId: Reactors_Delete
       parameters:
-      - $ref: '#/components/parameters/ReactorId'
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
       responses:
         '204':
-          description: The reactor was deleted.
+          description: No Content
         '404':
-          $ref: '#/components/responses/NotFound'
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - reactors
+      x-fern-sdk-method-name: delete
+      summary: Reactors delete
+      x-summary-source: derived
   /reactors/{id}/react:
     post:
-      operationId: invokeReactor
       tags:
       - Reactors
-      summary: Invoke a reactor
-      description: Invokes a reactor, detokenizing any tokens referenced in `args` and running the reactor's code. Requires an application with token:use permission.
+      operationId: Reactors_React
       parameters:
-      - $ref: '#/components/parameters/ReactorId'
-      requestBody:
+      - name: id
+        in: path
         required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      requestBody:
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/ReactRequest'
+            schema: {}
+        required: true
       responses:
         '200':
-          description: The reactor response.
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReactResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
         '404':
-          $ref: '#/components/responses/NotFound'
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
         '422':
-          $ref: '#/components/responses/ValidationProblem'
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '503':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - reactors
+      x-fern-sdk-method-name: react
+      summary: Reactors react
+      x-summary-source: derived
+  /reactors/{id}/react-async:
+    post:
+      tags:
+      - Reactors
+      operationId: Reactors_React_Async
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+        required: true
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncReactResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '422':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - reactors
+      x-fern-sdk-method-name: reactAsync
+      summary: Reactors react async
+      x-summary-source: derived
+  /reactors/{id}/results/{requestId}:
+    get:
+      tags:
+      - Reactors
+      operationId: Reactors_Result_GetById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      - name: requestId
+        in: path
+        required: true
+        schema:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema: {}
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncReactorPendingResult'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '422':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-fern-sdk-group-name:
+      - reactors
+      - results
+      x-fern-sdk-method-name: get
+      summary: Reactors result get by id
+      x-summary-source: derived
 components:
   schemas:
-    ReactRequest:
-      type: object
-      required:
-      - args
-      properties:
-        args:
-          type: object
-          additionalProperties: true
-          description: 'Arguments passed to the reactor. May contain detokenization expressions of the form {{ token: <tokenId> }}.'
-    ReactResponse:
+    AccessRule:
       type: object
       properties:
-        tokens:
-          type: object
-          additionalProperties: true
-        raw:
-          type: object
-          additionalProperties: true
+        description:
+          type:
+          - string
+          - 'null'
+        priority:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        container:
+          type:
+          - string
+          - 'null'
+        transform:
+          type:
+          - string
+          - 'null'
+        conditions:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Condition'
+        permissions:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      additionalProperties: false
+    Application:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        name:
+          maxLength: 200
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
+        key:
+          maxLength: 100
+          pattern: '[A-z0-9_.]+'
+          type:
+          - string
+          - 'null'
+          deprecated: true
+        keys:
+          maxItems: 3
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ApplicationKey'
+        type:
+          maxLength: 50
+          pattern: ^[A-z_]+$
+          type:
+          - string
+          - 'null'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        modified_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modified_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        permissions:
+          maxItems: 50
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        rules:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/AccessRule'
+      additionalProperties: false
+    RequestedReactor:
+      type: object
+      properties:
+        reactor:
+          $ref: '#/components/schemas/PendingReactor'
+        error_code:
+          type:
+          - string
+          - 'null'
+        error_message:
+          type:
+          - string
+          - 'null'
+        error_details:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+      additionalProperties: false
+    ReactorFormula:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        type:
+          maxLength: 25
+          pattern: ^(?:private|official)$
+          type:
+          - string
+          - 'null'
+        status:
+          maxLength: 25
+          pattern: ^(?:verified|coming_soon)$
+          type:
+          - string
+          - 'null'
+        name:
+          maxLength: 200
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
+        description:
+          maxLength: 1000
+          pattern: ^[\S\s]*$
+          type:
+          - string
+          - 'null'
+        icon:
+          maxLength: 50000
+          pattern: (^data:(image\/png|image\/jpg|image\/jpeg|image\/svg\+xml);\s*base64,\s*(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{4})$)|(^data:(image\/png|image\/jpg|image\/jpeg);\s*base64,\s*(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{4})$)
+          type:
+          - string
+          - 'null'
+        code:
+          maxLength: 4000
+          pattern: ^[\S\s]*$
+          type:
+          - string
+          - 'null'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        modified_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modified_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        configuration:
+          maxItems: 25
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ReactorFormulaConfiguration'
+        request_parameters:
+          maxItems: 25
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ReactorFormulaRequestParameter'
+      additionalProperties: false
+      deprecated: true
+    AsyncReactResponse:
+      type: object
+      properties:
+        asyncReactorRequestId:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    PendingReactor:
+      type: object
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+        runtime:
+          $ref: '#/components/schemas/ReactorRuntime'
+        configuration:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+      additionalProperties: false
+    RuntimeLogOptions:
+      type: object
+      properties:
+        enabled:
+          type:
+          - boolean
+          - 'null'
+        level:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
     ReactorPaginatedList:
       type: object
       properties:
         pagination:
           $ref: '#/components/schemas/Pagination'
         data:
-          type: array
+          maxItems: 100
+          type:
+          - array
+          - 'null'
           items:
             $ref: '#/components/schemas/Reactor'
-    Reactor:
+      additionalProperties: false
+    ReactResponse:
+      type: object
+      properties:
+        tokens: {}
+        raw: {}
+        body: {}
+        headers: {}
+      additionalProperties: false
+    ApplicationKey:
       type: object
       properties:
         id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
           type: string
           format: uuid
-        tenant_id:
-          type: string
+        key:
+          type:
+          - string
+          - 'null'
+        version:
+          type:
+          - string
+          - 'null'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
           format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+    CreateReactorRequest:
+      required:
+      - code
+      - name
+      type: object
+      properties:
         name:
+          maxLength: 200
+          minLength: 1
+          pattern: ^.+$
           type: string
         code:
+          maxLength: 50000
+          minLength: 1
+          pattern: ^[\S\s]*$
           type: string
-        configuration:
-          type: object
-          additionalProperties:
-            type: string
         application:
           $ref: '#/components/schemas/Application'
-        state:
-          type: string
-          description: Provisioning state for asynchronous runtimes.
-        created_at:
-          type: string
-          format: date-time
-    Pagination:
+        configuration:
+          maxLength: 25
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        runtime:
+          $ref: '#/components/schemas/ReactorRuntime'
+      additionalProperties: false
+    ReactorRuntime:
       type: object
       properties:
-        total_items:
-          type: integer
-        page_number:
-          type: integer
-        page_size:
-          type: integer
-        total_pages:
-          type: integer
-    Application:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        tenant_id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        key:
-          type: string
-          description: The application key, returned only on creation when create_key is true.
-        type:
-          type: string
-          enum:
-          - public
-          - private
-          - management
-          - expiring
+        async:
+          type:
+          - boolean
+          - 'null'
+        image:
+          type:
+          - string
+          - 'null'
+        dependencies:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        resolutions:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        warm_concurrency:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        timeout:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        resources:
+          type:
+          - string
+          - 'null'
         permissions:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccessRule'
-        expires_at:
-          type: string
-          format: date-time
-        created_at:
-          type: string
-          format: date-time
-    AccessRule:
-      type: object
-      properties:
-        description:
-          type: string
-        priority:
-          type: integer
-        container:
-          type: string
-        transform:
-          type: string
-          enum:
-          - redact
-          - mask
-          - reveal
-        permissions:
-          type: array
-          items:
-            type: string
+        logs:
+          $ref: '#/components/schemas/RuntimeLogOptions'
+      additionalProperties: false
     ValidationProblemDetails:
       type: object
       properties:
-        title:
-          type: string
-        status:
-          type: integer
         errors:
-          type: object
+          type:
+          - object
+          - 'null'
           additionalProperties:
             type: array
             items:
               type: string
-    CreateReactorRequest:
-      type: object
+        type:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        status:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        detail:
+          type:
+          - string
+          - 'null'
+        instance:
+          type:
+          - string
+          - 'null'
+      additionalProperties: {}
+    ReactorFormulaRequestParameter:
       required:
       - name
-      - code
-      properties:
-        name:
-          type: string
-        code:
-          type: string
-        configuration:
-          type: object
-          additionalProperties:
-            type: string
-        application:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-        runtime:
-          type: object
-          additionalProperties: true
-    ProblemDetails:
+      - type
       type: object
       properties:
-        title:
+        name:
+          maxLength: 200
+          minLength: 1
+          pattern: ^[A-z0-9][A-z0-9.\-_]*[A-z0-9]$
           type: string
+        description:
+          maxLength: 400
+          pattern: ^.*$
+          type:
+          - string
+          - 'null'
+        type:
+          maxLength: 25
+          minLength: 1
+          pattern: ^(?:string|boolean|number)$
+          type: string
+        optional:
+          type: boolean
+      additionalProperties: false
+    Pagination:
+      type: object
+      properties:
+        total_items:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        page_number:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        page_size:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        total_pages:
+          type:
+          - integer
+          - 'null'
+          format: int32
+        after:
+          type:
+          - string
+          - 'null'
+          deprecated: true
+        next:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    Condition:
+      type: object
+      properties:
+        attribute:
+          type:
+          - string
+          - 'null'
+        operator:
+          type:
+          - string
+          - 'null'
+        value:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    UpdateReactorRequest:
+      required:
+      - code
+      - name
+      type: object
+      properties:
+        name:
+          maxLength: 200
+          minLength: 1
+          pattern: ^.+$
+          type: string
+        application:
+          $ref: '#/components/schemas/Application'
+        code:
+          maxLength: 50000
+          minLength: 1
+          pattern: ^[\S\s]*$
+          type: string
+        configuration:
+          maxLength: 25
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        runtime:
+          $ref: '#/components/schemas/ReactorRuntime'
+      additionalProperties: false
+    AsyncReactorPendingResult:
+      type: object
+      properties:
         status:
-          type: integer
-        detail:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+      additionalProperties: false
+    PatchReactorRequest:
+      type: object
+      properties:
+        name:
+          maxLength: 200
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
+        application:
+          $ref: '#/components/schemas/Application'
+        code:
+          maxLength: 50000
+          pattern: ^[\S\s]*$
+          type:
+          - string
+          - 'null'
+        configuration:
+          maxLength: 25
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        runtime:
+          $ref: '#/components/schemas/ReactorRuntime'
+      additionalProperties: false
+    ReactorFormulaConfiguration:
+      required:
+      - name
+      - type
+      type: object
+      properties:
+        name:
+          maxLength: 200
+          minLength: 1
+          pattern: ^[\w-]+$
           type: string
-  responses:
-    ValidationProblem:
-      description: The request failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationProblemDetails'
-    Unauthorized:
-      description: The BT-API-KEY header is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetails'
-  parameters:
-    ReactorId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the reactor.
-      schema:
-        type: string
-        format: uuid
+        description:
+          maxLength: 400
+          pattern: ^.*$
+          type:
+          - string
+          - 'null'
+        type:
+          maxLength: 25
+          minLength: 1
+          pattern: ^(?:string|boolean|number)$
+          type: string
+      additionalProperties: false
+    Reactor:
+      type: object
+      properties:
+        id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        tenant_id:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type: string
+          format: uuid
+        name:
+          maxLength: 200
+          pattern: ^.+$
+          type:
+          - string
+          - 'null'
+        formula:
+          $ref: '#/components/schemas/ReactorFormula'
+        state:
+          type:
+          - string
+          - 'null'
+        code:
+          type:
+          - string
+          - 'null'
+        application:
+          $ref: '#/components/schemas/Application'
+        created_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        modified_by:
+          maxLength: 36
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modified_at:
+          maxLength: 40
+          type:
+          - string
+          - 'null'
+          format: date-time
+        configuration:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        runtime:
+          $ref: '#/components/schemas/ReactorRuntime'
+        requested:
+          $ref: '#/components/schemas/RequestedReactor'
+      additionalProperties: false
   securitySchemes:
     ApiKey:
       type: apiKey
-      in: header
+      description: Authorization by API Key inside request's BT-API-KEY header
       name: BT-API-KEY
-      description: Authenticate every request with a Basis Theory Application key supplied in the BT-API-KEY request header.
+      in: header
