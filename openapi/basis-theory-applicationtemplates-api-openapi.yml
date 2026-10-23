@@ -219,3 +219,9 @@ components:
       description: Authorization by API Key inside request's BT-API-KEY header
       name: BT-API-KEY
       in: header
+x-provenance:
+  method: harvested
+  publisher: Basis Theory
+  source: https://api.basistheory.com/swagger/v1/swagger.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
