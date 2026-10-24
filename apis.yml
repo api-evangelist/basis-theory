@@ -285,6 +285,8 @@ apis:
   humanURL: https://developers.basistheory.com/docs/api/tokens
   baseURL: https://api.basistheory.com
   tags:
+  - Application Keys
+  tags_raw:
   - ApplicationKeys
   properties:
   - type: OpenAPI
@@ -332,6 +334,8 @@ apis:
   humanURL: https://developers.basistheory.com/docs/api/tokens
   baseURL: https://api.basistheory.com
   tags:
+  - Application Templates
+  tags_raw:
   - ApplicationTemplates
   properties:
   - type: OpenAPI
@@ -562,6 +566,8 @@ apis:
   humanURL: https://developers.basistheory.com/docs/api/tokens
   baseURL: https://api.basistheory.com
   tags:
+  - Google Pay
+  tags_raw:
   - GooglePay
   properties:
   - type: OpenAPI
@@ -654,6 +660,8 @@ apis:
   humanURL: https://developers.basistheory.com/docs/api/tokens
   baseURL: https://api.basistheory.com
   tags:
+  - Network Tokens
+  tags_raw:
   - NetworkTokens
   properties:
   - type: OpenAPI
