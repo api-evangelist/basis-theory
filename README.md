@@ -1,4 +1,4 @@
-# Basis Theory (basis-theory)
+# Basis Theory
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,202 +66,142 @@
 
 Basis Theory is a PCI Level 1 compliant tokenization and data vault platform. Its API-first product lets developers tokenize, store, and use sensitive data - cardholder data, PII, PHI, and bank account numbers - without that data ever touching their own systems, using tokens, a detokenizing Proxy, serverless Reactors, and 3D Secure authentication.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/basis-theory/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/basis-theory/refs/heads/main/apis.yml)
+**Areas:** Tokenization · Data Vault · PCI Compliance · Payments · Security
 
-## Tags
+## Basis Theory on APIs.io
 
-- Tokenization
-- Data Vault
-- PCI Compliance
-- Payments
-- Security
+Everything profiled for Basis Theory is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/basis-theory/](https://apis.io/providers/basis-theory/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (10)
 
-- **Created:** 2026-06-20
-- **Modified:** 2026-06-20
+- [Basis Theory 3D Secure API](https://apis.io/apis/basis-theory/basis-theory-3d-secure-api/) — Create and authenticate 3D Secure sessions.
+- [Basis Theory Applications API](https://apis.io/apis/basis-theory/basis-theory-applications-api/) — Manage API credentials, permissions, and access rules.
+- [Basis Theory Logs API](https://apis.io/apis/basis-theory/basis-theory-logs-api/) — List audit logs of platform activity.
+- [Basis Theory Proxy API](https://apis.io/apis/basis-theory/basis-theory-proxy-api/) — Manage pre-configured proxies and invoke the detokenizing Proxy.
+- [Basis Theory Reactors API](https://apis.io/apis/basis-theory/basis-theory-reactors-api/) — Manage and invoke serverless Reactor functions.
+- [Basis Theory Tenants API](https://apis.io/apis/basis-theory/basis-theory-tenants-api/) — Manage the current tenant, usage reports, and security contact.
+- [Basis Theory Token Intents API](https://apis.io/apis/basis-theory/basis-theory-token-intents-api/) — Short-lived intents that capture data before conversion to a token.
+- [Basis Theory Tokenize / Detokenize API](https://apis.io/apis/basis-theory/basis-theory-tokenize-detokenize-api/) — Batch tokenization and detokenization.
+- [Basis Theory Tokens API](https://apis.io/apis/basis-theory/basis-theory-tokens-api/) — Create, retrieve, search, update, and delete tokens.
+- [Basis Theory Webhooks API](https://apis.io/apis/basis-theory/basis-theory-webhooks-api/) — Register webhook URLs and subscribe to event types.
 
-## APIs
+### Published properties
 
-### Basis Theory Tokens API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Create, retrieve, search, update, and delete tokens that securely vault sensitive data with masking, metadata, search indexes, fingerprinting, and token intents.
+#### Agentic access (1)
 
-- **Human URL:** [https://developers.basistheory.com/docs/api/tokens](https://developers.basistheory.com/docs/api/tokens)
-- **Base URL:** `https://api.basistheory.com`
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Tags
+- [Basis Theory Agentic Access](https://apis.io/agentic-access/basis-theory/basis-theory-agentic-access/)
 
-- Tokens
-- Tokenization
-- Data Vault
+#### Collections (11)
 
-#### Properties
+Postman and Open Collection request collections.
 
-- [Documentation](https://developers.basistheory.com/docs/api/tokens)
-- [API Reference](https://developers.basistheory.com/docs/api/tokens/token-object)
-- [OpenAPI](openapi/basis-theory-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/basis-theory.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/basis-theory.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Basis Theory API](https://apis.io/collections/basis-theory/open-basis-theory/)
+- [Basis Theory 3D Secure API](https://apis.io/collections/basis-theory/open-basis-theory-3d-secure-api/)
+- [Basis Theory 3D Secure Applications API](https://apis.io/collections/basis-theory/open-basis-theory-applications-api/)
+- [Basis Theory 3D Secure Logs API](https://apis.io/collections/basis-theory/open-basis-theory-logs-api/)
+- [Basis Theory 3D Secure Proxy API](https://apis.io/collections/basis-theory/open-basis-theory-proxy-api/)
+- [Basis Theory 3D Secure Reactors API](https://apis.io/collections/basis-theory/open-basis-theory-reactors-api/)
+- [Basis Theory 3D Secure Tenants API](https://apis.io/collections/basis-theory/open-basis-theory-tenants-api/)
+- [Basis Theory 3D Secure Token Intents API](https://apis.io/collections/basis-theory/open-basis-theory-token-intents-api/)
+- [Basis Theory 3D Secure Tokenize / Detokenize API](https://apis.io/collections/basis-theory/open-basis-theory-tokenize-detokenize-api/)
+- [Basis Theory 3D Secure Tokens API](https://apis.io/collections/basis-theory/open-basis-theory-tokens-api/)
+- [Basis Theory 3D Secure Webhooks API](https://apis.io/collections/basis-theory/open-basis-theory-webhooks-api/)
 
-### Basis Theory Tokenize / Detokenize API
+#### Security (3)
 
-Batch tokenization and detokenization endpoints that vault arbitrary object graphs into tokens and resolve token identifiers back to plaintext for authorized applications.
+Authentication, trust centre, and vulnerability disclosure.
 
-- **Human URL:** [https://developers.basistheory.com/docs/api/tokens/tokenize](https://developers.basistheory.com/docs/api/tokens/tokenize)
-- **Base URL:** `https://api.basistheory.com`
+- [Basis Theory Authentication](https://apis.io/security/basis-theory/basis-theory-authentication/)
+- [Basis Theory Domain Security](https://apis.io/security/basis-theory/basis-theory-domain-security/)
+- [Basis Theory Trust Center](https://apis.io/security/basis-theory/basis-theory-trust-center/)
 
-#### Tags
+#### Plans and pricing (1)
 
-- Tokenize
-- Detokenize
-- Batch
+Published plans, tiers and prices.
 
-#### Properties
+- [Basis Theory Plans Pricing](https://apis.io/plans/basis-theory/basis-theory-plans-pricing/)
 
-- [Documentation](https://developers.basistheory.com/docs/api/tokens/tokenize)
-- [API Reference](https://developers.basistheory.com/docs/api/tokens/detokenize)
-- [OpenAPI](openapi/basis-theory-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/basis-theory.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/basis-theory.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Rate limits (1)
 
-### Basis Theory Applications API
+Published request limits.
 
-Manage Applications (API credentials) with fine-grained permissions and access rules - the public, private, management, and expiring application types that authenticate every call to the platform.
+- [Basis Theory Rate Limits](https://apis.io/rate-limits/basis-theory/basis-theory-rate-limits/)
 
-- **Human URL:** [https://developers.basistheory.com/docs/api/applications](https://developers.basistheory.com/docs/api/applications)
-- **Base URL:** `https://api.basistheory.com`
+#### FinOps (1)
 
-#### Tags
+What the API costs to run, by operation.
 
-- Applications
-- API Keys
-- Permissions
+- [Basis Theory Finops](https://apis.io/finops/basis-theory/basis-theory-finops/)
 
-#### Properties
+## Where to find this API
 
-- [Documentation](https://developers.basistheory.com/docs/api/applications)
-- [API Reference](https://developers.basistheory.com/docs/api/applications/application-object)
-- [OpenAPI](openapi/basis-theory-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/basis-theory.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/basis-theory.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-### Basis Theory Proxy API
-
-Manage pre-configured proxies and invoke the Proxy (pre-configured or ephemeral) to detokenize data inline and forward plaintext to a trusted third-party destination over HTTP without storing it on your servers.
-
-- **Human URL:** [https://developers.basistheory.com/docs/api/proxies](https://developers.basistheory.com/docs/api/proxies)
-- **Base URL:** `https://api.basistheory.com`
-
-#### Tags
-
-- Proxy
-- Detokenize
-- Outbound
-
-#### Properties
-
-- [Documentation](https://developers.basistheory.com/docs/api/proxies)
-- [API Reference](https://developers.basistheory.com/docs/api/proxies/pre-configured-proxies)
-- [OpenAPI](openapi/basis-theory-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/basis-theory.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/basis-theory.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Basis Theory Reactors API
-
-Create and manage serverless Reactors - sandboxed JavaScript functions that detokenize tokens and run custom logic against third-party services - and invoke them synchronously or asynchronously.
-
-- **Human URL:** [https://developers.basistheory.com/docs/api/reactors](https://developers.basistheory.com/docs/api/reactors)
-- **Base URL:** `https://api.basistheory.com`
-
-#### Tags
-
-- Reactors
-- Serverless
-- Detokenize
-
-#### Properties
-
-- [Documentation](https://developers.basistheory.com/docs/api/reactors)
-- [API Reference](https://developers.basistheory.com/docs/api/reactors/reactor-object)
-- [OpenAPI](openapi/basis-theory-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/basis-theory.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/basis-theory.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Basis Theory 3D Secure API
-
-Create 3D Secure sessions against tokenized cards, run frictionless or challenge authentication, and retrieve authentication values, ECI, and liability-shift results for payment flows.
-
-- **Human URL:** [https://developers.basistheory.com/docs/api/3ds](https://developers.basistheory.com/docs/api/3ds)
-- **Base URL:** `https://api.basistheory.com`
-
-#### Tags
-
-- 3DS
-- Authentication
-- Payments
-
-#### Properties
-
-- [Documentation](https://developers.basistheory.com/docs/api/3ds)
-- [API Reference](https://developers.basistheory.com/docs/api/3ds/sessions)
-- [OpenAPI](openapi/basis-theory-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/basis-theory.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/basis-theory.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Basis Theory Tenants API
-
-Read and manage the current tenant, retrieve monthly active token usage reports, manage the security contact, and list audit logs of platform activity.
-
-- **Human URL:** [https://developers.basistheory.com/docs/api/tenants](https://developers.basistheory.com/docs/api/tenants)
-- **Base URL:** `https://api.basistheory.com`
-
-#### Tags
-
-- Tenants
-- Usage
-- Logs
-
-#### Properties
-
-- [Documentation](https://developers.basistheory.com/docs/api/tenants)
-- [API Reference](https://developers.basistheory.com/docs/api/logs)
-- [OpenAPI](openapi/basis-theory-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/basis-theory.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/basis-theory.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Basis Theory Webhooks API
-
-Register webhook URLs, subscribe to platform event types, and manage event subscriptions so downstream systems are notified of token, reactor, and other lifecycle events.
-
-- **Human URL:** [https://developers.basistheory.com/docs/api/webhooks](https://developers.basistheory.com/docs/api/webhooks)
-- **Base URL:** `https://api.basistheory.com`
-
-#### Tags
-
-- Webhooks
-- Events
-- Notifications
-
-#### Properties
-
-- [Documentation](https://developers.basistheory.com/docs/api/webhooks)
-- [API Reference](https://developers.basistheory.com/docs/api/webhooks/api)
-- [OpenAPI](openapi/basis-theory-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/basis-theory.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/basis-theory.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/Basis-Theory)
-- [LinkedIn](https://www.linkedin.com/company/basis-theory)
 - [Website](https://basistheory.com/)
 - [Documentation](https://developers.basistheory.com/docs)
-- [Plans](plans/basis-theory-plans-pricing.yml)
-- [Rate Limits](rate-limits/basis-theory-rate-limits.yml)
-- [Fin Ops](finops/basis-theory-finops.yml)
+- [Pricing](https://basistheory.com/pricing)
+- [Blog](https://blog.basistheory.com/rss.xml)
+- [Security](https://basistheory.com/security)
+- [Terms of service](https://basistheory.com/resources/terms-of-service)
+- [Privacy policy](https://basistheory.com/resources/privacy-policy)
+- [GitHub](https://github.com/Basis-Theory)
+- [Status](https://status.basistheory.com/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 42.9** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 48.4 |
+| Contract governance | 0.0 |
+| Operational transparency | 28.9 |
+| Developer ergonomics | 39.3 |
+| Access clarity | 60.5 |
+
+**Agent readiness 22.4** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | — |
+
+**Regulatory alignment 22.3** — Payments
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/basis-theory/](https://apis.io/providers/basis-theory/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Basis Theory: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/basis-theory/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
